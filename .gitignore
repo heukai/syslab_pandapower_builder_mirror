@@ -1,0 +1,15 @@
+# Python standard ignores
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+.eggs/
+.env
+.venv
+.idea/
+.vscode/
+*.log
+*.bak
+*.tmp
+.cache/
