@@ -1,0 +1,79 @@
+# Cable type electrical parameters
+#
+# Each entry defines the per-km impedance and thermal parameters for a
+# cable type used in the SYSLAB 0.4 kV grid.  These are registered as
+# pandapower standard types via pp.create_std_type().
+#
+# Source: SYSLAB cable datasheets (DTU Risø campus installation records).
+# Review with SYSLAB staff if cable replacements occur.
+
+cable_types:
+  "NOIK-AL-M 4x95 0.6/1kV":
+    r_ohm_per_km: 0.313
+    x_ohm_per_km: 0.078
+    c_nf_per_km: 350
+    max_i_ka: 9.665
+    r0_ohm_per_km: 1.283
+    x0_ohm_per_km: 0.312
+    c0_nf_per_km: 0
+    endtemp_degree: 70.0
+
+  "HIK-AL-S 4x95 0.6/1kV":
+    r_ohm_per_km: 0.313
+    x_ohm_per_km: 0.078
+    c_nf_per_km: 350
+    max_i_ka: 9.665
+    r0_ohm_per_km: 1.283
+    x0_ohm_per_km: 0.312
+    c0_nf_per_km: 0
+    endtemp_degree: 70.0
+
+  "HF-AL-S 4x95 0.6/1kV":
+    r_ohm_per_km: 0.313
+    x_ohm_per_km: 0.078
+    c_nf_per_km: 350
+    max_i_ka: 9.665
+    r0_ohm_per_km: 1.283
+    x0_ohm_per_km: 0.312
+    c0_nf_per_km: 0
+    endtemp_degree: 70.0
+
+  "DK-AQX-AL-S 4x95 0.6/1kV":
+    r_ohm_per_km: 0.313
+    x_ohm_per_km: 0.078
+    c_nf_per_km: 350
+    max_i_ka: 9.665
+    r0_ohm_per_km: 1.283
+    x0_ohm_per_km: 0.312
+    c0_nf_per_km: 0
+    endtemp_degree: 70.0
+
+  "NOIK-AL-S 4x150 0.6/1kV":
+    r_ohm_per_km: 0.202
+    x_ohm_per_km: 0.078
+    c_nf_per_km: 350
+    max_i_ka: 9.665
+    r0_ohm_per_km: 0.832
+    x0_ohm_per_km: 0.305
+    c0_nf_per_km: 0
+    endtemp_degree: 70.0
+
+  "HF-AL-S 4x240 0.6/1kV":
+    r_ohm_per_km: 0.122
+    x_ohm_per_km: 0.077
+    c_nf_per_km: 350
+    max_i_ka: 9.665
+    r0_ohm_per_km: 0.3556
+    x0_ohm_per_km: 0.217
+    c0_nf_per_km: 0
+    endtemp_degree: 70.0
+
+  "DK-AQX-AL-S 4x240 0.6/1kV":
+    r_ohm_per_km: 0.122
+    x_ohm_per_km: 0.077
+    c_nf_per_km: 350
+    max_i_ka: 9.665
+    r0_ohm_per_km: 0.3556
+    x0_ohm_per_km: 0.217
+    c0_nf_per_km: 0
+    endtemp_degree: 70.0

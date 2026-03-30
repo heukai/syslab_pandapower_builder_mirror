@@ -1,0 +1,224 @@
+# Inter-substation cable connections
+#
+# Each cable connects a bus endpoint on one switchboard to a bus endpoint
+# on another.  Bus names follow the pandapower naming convention:
+#   Busbar:  "{sw}_Busbar-{letter}"   e.g. "319-3_Busbar-A"
+#   Bay:     "{sw}_{bay}"             e.g. "319-2_Cable_A1A"
+#
+# The bus1/bus2 names must match buses created from hardware.xml bay and
+# busbar definitions.  When a cable lands directly on a busbar (no bay
+# on that side), the busbar name is used.
+#
+# Source: SYSLAB campus cable installation records.
+# Review with SYSLAB staff when cables are added, removed, or rerouted.
+
+cables:
+  # ── Cable A: 319-2 ↔ 319-3 ──
+  - name: Cable A1A
+    bus1: 319-2_Cable_A1A
+    bus2: 319-3_Cable_A1A
+    length_km: 0.021
+    cable_type: "NOIK-AL-M 4x95 0.6/1kV"
+
+  - name: Cable A1B
+    bus1: 319-2_Cable_A1B
+    bus2: 319-3_Cable_A1B
+    length_km: 0.021
+    cable_type: "NOIK-AL-M 4x95 0.6/1kV"
+
+  - name: Cable A2A
+    bus1: 319-2_Cable_A2A
+    bus2: 319-3_Cable_A2A
+    length_km: 0.021
+    cable_type: "HIK-AL-S 4x95 0.6/1kV"
+
+  - name: Cable A2B
+    bus1: 319-2_Cable_A2B
+    bus2: 319-3_Cable_A2B
+    length_km: 0.021
+    cable_type: "HIK-AL-S 4x95 0.6/1kV"
+
+  # ── Cable B: 715-2 ↔ 319-3 ──
+  - name: Cable B1A
+    bus1: 715-2_Cable_B1A
+    bus2: 319-3_Cable_B1A
+    length_km: 0.188
+    cable_type: "NOIK-AL-M 4x95 0.6/1kV"
+
+  - name: Cable B1B
+    bus1: 715-2_Cable_B1B
+    bus2: 319-3_Cable_B1B
+    length_km: 0.188
+    cable_type: "NOIK-AL-M 4x95 0.6/1kV"
+
+  - name: Cable B2A
+    bus1: 715-2_Cable_B2A
+    bus2: 319-3_Cable_B2A
+    length_km: 0.176
+    cable_type: "HF-AL-S 4x95 0.6/1kV"
+
+  - name: Cable B2B
+    bus1: 715-2_Cable_B2B
+    bus2: 319-3_Cable_B2B
+    length_km: 0.176
+    cable_type: "HF-AL-S 4x95 0.6/1kV"
+
+  # ── Cable C: 117-2 ↔ 319-3 ──
+  - name: Cable C1A
+    bus1: 117-2_Cable_C1A
+    bus2: 319-3_Cable_C1A
+    length_km: 0.690
+    cable_type: "HF-AL-S 4x240 0.6/1kV"
+
+  - name: Cable C1B
+    bus1: 117-2_Cable_C1B
+    bus2: 319-3_Cable_C1B
+    length_km: 0.690
+    cable_type: "HF-AL-S 4x240 0.6/1kV"
+
+  - name: Cable C2A
+    bus1: 117-2_Cable_C2A
+    bus2: 319-3_Cable_C2A
+    length_km: 0.690
+    cable_type: "HF-AL-S 4x240 0.6/1kV"
+
+  - name: Cable C2B
+    bus1: 117-2_Cable_C2B
+    bus2: 319-3_Cable_C2B
+    length_km: 0.690
+    cable_type: "HF-AL-S 4x240 0.6/1kV"
+
+  # ── Cable D: 117-4 ↔ 117-5 ──
+  - name: Cable D1
+    bus1: 117-4_Cable_D1_Manual
+    bus2: 117-5_Cable_D1
+    length_km: 0.005
+    cable_type: "DK-AQX-AL-S 4x240 0.6/1kV"
+
+  # ── Cable E: 716-2 ↔ 319-3 ──
+  - name: Cable E1A
+    bus1: 716-2_Cable_E1A
+    bus2: 319-3_Cable_E1A
+    length_km: 0.411
+    cable_type: "HF-AL-S 4x240 0.6/1kV"
+
+  - name: Cable E1B
+    bus1: 716-2_Cable_E1B
+    bus2: 319-3_Cable_E1B
+    length_km: 0.411
+    cable_type: "HF-AL-S 4x240 0.6/1kV"
+
+  - name: Cable E2A
+    bus1: 716-2_Cable_E2A
+    bus2: 319-3_Cable_E2A
+    length_km: 0.411
+    cable_type: "HF-AL-S 4x240 0.6/1kV"
+
+  - name: Cable E2B
+    bus1: 716-2_Cable_E2B
+    bus2: 319-3_Cable_E2B
+    length_km: 0.411
+    cable_type: "HF-AL-S 4x240 0.6/1kV"
+
+  # ── Cable F: 716-2 ↔ 715-2 ──
+  - name: Cable F1
+    bus1: 716-2_Cable_F1
+    bus2: 715-2_Cable_F1
+    length_km: 0.250
+    cable_type: "NOIK-AL-S 4x150 0.6/1kV"
+
+  # ── Cable G: 117-6 ↔ 117-5 (no cable bay on 117-6 side) ──
+  - name: Cable G1
+    bus1: 117-6_Busbar-A
+    bus2: 117-5_Cable_G1
+    length_km: 0.011
+    cable_type: "DK-AQX-AL-S 4x95 0.6/1kV"
+
+  # ── Cable H: 117-6 ↔ 117-4 (no cable bay on 117-6 side) ──
+  - name: Cable H1
+    bus1: 117-6_Busbar-B
+    bus2: 117-4_Cable_H1
+    length_km: 0.014
+    cable_type: "DK-AQX-AL-S 4x95 0.6/1kV"
+
+  # ── Cable J: 310-2 ↔ 319-4 ──
+  - name: Cable J1A
+    bus1: 310-2_Cable_J1A
+    bus2: 319-4_Cable_J1A
+    length_km: 0.068
+    cable_type: "HF-AL-S 4x240 0.6/1kV"
+
+  - name: Cable J1B
+    bus1: 310-2_Cable_J1B
+    bus2: 319-4_Cable_J1B
+    length_km: 0.068
+    cable_type: "HF-AL-S 4x240 0.6/1kV"
+
+  - name: Cable J2A
+    bus1: 310-2_Cable_J2A
+    bus2: 319-4_Cable_J2A
+    length_km: 0.068
+    cable_type: "HF-AL-S 4x240 0.6/1kV"
+
+  - name: Cable J2B
+    bus1: 310-2_Cable_J2B
+    bus2: 319-4_Cable_J2B
+    length_km: 0.068
+    cable_type: "HF-AL-S 4x240 0.6/1kV"
+
+  # ── Cable K: 330-12 ↔ 319-4 ──
+  - name: Cable K1A
+    bus1: 330-12_Cable_K1A
+    bus2: 319-4_Cable_K1A
+    length_km: 0.267
+    cable_type: "HF-AL-S 4x240 0.6/1kV"
+
+  - name: Cable K1B
+    bus1: 330-12_Cable_K1B
+    bus2: 319-4_Cable_K1B
+    length_km: 0.267
+    cable_type: "HF-AL-S 4x240 0.6/1kV"
+
+  - name: Cable K2A
+    bus1: 330-12_Cable_K2A
+    bus2: 319-4_Cable_K2A
+    length_km: 0.267
+    cable_type: "HF-AL-S 4x240 0.6/1kV"
+
+  - name: Cable K2B
+    bus1: 330-12_Cable_K2B
+    bus2: 319-4_Cable_K2B
+    length_km: 0.267
+    cable_type: "HF-AL-S 4x240 0.6/1kV"
+
+  # ── Cable L: 330-13 ↔ 330-12 ──
+  - name: Cable L1
+    bus1: 330-13_Cable_L1
+    bus2: 330-12_Cable_L1
+    length_km: 0.005
+    cable_type: "HF-AL-S 4x240 0.6/1kV"
+
+  # ── Cable X: 117-2 ↔ 117-5 (4 parallel cables, each with own bay) ──
+  - name: Cable X1A
+    bus1: 117-2_Cable_X1A_2
+    bus2: 117-5_Cable_X1A_5
+    length_km: 0.024
+    cable_type: "NOIK-AL-M 4x95 0.6/1kV"
+
+  - name: Cable X1B
+    bus1: 117-2_Cable_X1B_2
+    bus2: 117-5_Cable_X1B_5
+    length_km: 0.024
+    cable_type: "NOIK-AL-M 4x95 0.6/1kV"
+
+  - name: Cable X2A
+    bus1: 117-2_Cable_X2A_2
+    bus2: 117-5_Cable_X2A_5
+    length_km: 0.024
+    cable_type: "NOIK-AL-M 4x95 0.6/1kV"
+
+  - name: Cable X2B
+    bus1: 117-2_Cable_X2B_2
+    bus2: 117-5_Cable_X2B_5
+    length_km: 0.024
+    cable_type: "NOIK-AL-M 4x95 0.6/1kV"
