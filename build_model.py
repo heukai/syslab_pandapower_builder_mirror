@@ -25,6 +25,7 @@ import pandapower as pp
 
 from .builder import (
     create_syslab_model,
+    load_breaker_groups,
     save_model_version,
     save_switch_name_map,
 )
@@ -67,6 +68,34 @@ def load_model_version() -> dict:
     """Load model version and validity metadata."""
     ver_path = _MODEL_DIR / "model_version.json"
     with open(ver_path, encoding="utf-8") as f:
+        return json.load(f)
+
+
+def load_converter_connections() -> list[dict]:
+    """Load back-to-back converter definitions.
+
+    Each entry has keys: ``name``, ``primary_bus``, ``secondary_bus``.
+    Bus names use PP convention (hyphens in switchboard prefix).
+    Returns an empty list if the file is absent.
+    """
+    conv_path = _MODEL_DIR / "converter_connections.json"
+    if not conv_path.exists():
+        return []
+    with open(conv_path, encoding="utf-8") as f:
+        return json.load(f)
+
+
+def load_breaker_groups() -> dict:
+    """Load breaker group and inline port definitions.
+
+    Returns a dict with keys ``breaker_groups`` (list of group dicts)
+    and ``inline_ports`` (list of port dicts).  Returns empty lists
+    if the file is absent.
+    """
+    bg_path = _MODEL_DIR / "breaker_groups.json"
+    if not bg_path.exists():
+        return {"breaker_groups": [], "inline_ports": []}
+    with open(bg_path, encoding="utf-8") as f:
         return json.load(f)
 '''
 
@@ -112,8 +141,8 @@ def main(argv: list[str] | None = None) -> None:
     print(f"Building model from: {conf_dir}")
     print(f"Output directory:    {output_dir}")
 
-    # Build network + mapping
-    net, switch_map = create_syslab_model(conf_dir)
+    # Build network + mapping + converter definitions
+    net, switch_map, converters = create_syslab_model(conf_dir)
 
     print(f"  Buses:    {len(net.bus)}")
     print(f"  Switches: {len(net.switch)}")
@@ -129,6 +158,56 @@ def main(argv: list[str] | None = None) -> None:
     map_path = model_data_dir / "switch_name_map.json"
     save_switch_name_map(switch_map, map_path)
     print(f"  Written: {map_path}")
+
+    # Save converter connections
+    conv_path = model_data_dir / "converter_connections.json"
+    with open(conv_path, "w", encoding="utf-8") as f:
+        json.dump(
+            [{"name": c.name, "primary_bus": c.primary_bus, "secondary_bus": c.secondary_bus}
+             for c in converters],
+            f, indent=2,
+        )
+    print(f"  Written: {conv_path}")
+
+    # Save breaker groups + inline ports
+    groups, ports = load_breaker_groups()
+    bg_path = model_data_dir / "breaker_groups.json"
+    with open(bg_path, "w", encoding="utf-8") as f:
+        json.dump(
+            {
+                "breaker_groups": [
+                    {
+                        "name": g.name,
+                        "type": g.type,
+                        "description": g.description,
+                        "switches": [
+                            {"name": s.name, "default_closed": s.default_closed}
+                            for s in g.switches
+                        ],
+                        "interlocks": [
+                            {"group": i.group, "max_closed": i.max_closed, "members": i.members}
+                            for i in g.interlocks
+                        ],
+                    }
+                    for g in groups
+                ],
+                "inline_ports": [
+                    {
+                        "name": p.name,
+                        "cable": p.cable,
+                        "location": p.location,
+                        "description": p.description,
+                        "modes": [
+                            {"name": m.name, "description": m.description, "default": m.default}
+                            for m in p.modes
+                        ],
+                    }
+                    for p in ports
+                ],
+            },
+            f, indent=2,
+        )
+    print(f"  Written: {bg_path}")
 
     # Save model version
     save_model_version(

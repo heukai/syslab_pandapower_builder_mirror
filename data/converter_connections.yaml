@@ -1,0 +1,41 @@
+# Back-to-back converter connections
+#
+# These represent power-electronic converters that electrically ISOLATE
+# their primary and secondary sides.  Unlike cables or non-breaker
+# connections they do NOT transfer power passively — they are externally
+# controllable devices.
+#
+# Operating modes (secondary side):
+#
+#   grid_forming — The secondary side acts as a voltage source (ext_grid /
+#                  slack bus in the pandapower model).  Typically active
+#                  when no other grid connection exists in the secondary
+#                  side's electrical island.
+#
+#   pq           — The secondary side acts as a controllable four-quadrant
+#                  device (sgen in PP), emulating a load, generator, or
+#                  storage.  Requires another device in the island to be
+#                  grid-forming or a normal grid connection.
+#
+# Default logic applied by ConnectedGrid:
+#   - If the secondary side's island has NO grid connection →  grid_forming
+#   - Otherwise →  pq
+#
+# Source: SYSLAB switchboard diagrams (SVG), on-site inspection records.
+
+converters:
+
+  # ABB back-to-back converter inside switchboard 319-3.
+  # Primary side on the Supply busbar (via ABB_Pri breaker);
+  # secondary side connects to Busbar-B and Busbar-C via breakers.
+  - name: "ABB B2B 319-3"
+    primary_bus: "319-3_ABB_Pri"
+    secondary_bus: "319-3_ABB_Sec"
+
+  # Grid Emulator back-to-back converter bridging 319-3 and 319-4.
+  # Primary side on the Transformer busbar (via Amp_1 breaker in 319-3);
+  # secondary side connects to 319-4 Busbar-B and Busbar-C via GridEmu
+  # breakers.
+  - name: "Grid Emu B2B 319-3/319-4"
+    primary_bus: "319-3_Amp_1"
+    secondary_bus: "319-4_GridEmu"

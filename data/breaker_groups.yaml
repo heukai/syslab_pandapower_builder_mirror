@@ -1,0 +1,72 @@
+# Breaker groups — documentation, grouping, and switching constraints
+#
+# Each group collects related breakers with a description,
+# default states, and optional interlocks.
+#
+# Inline ports document cable plug points where mobile equipment
+# can be inserted.  Graph mutation logic for inline ports is
+# deferred to a future phase; only schema + documentation for now.
+
+breaker_groups:
+  - name: "319-3/319-4 Crossbar"
+    type: full-telemetry
+    description: |
+      Interconnection matrix between 319-3 and 319-4 busbars.
+      Each Cross bay has an interlock — only one breaker per bay
+      can be closed at a time.
+
+      Switching matrix (interlocked — max 1 per row):
+
+                  319-4 A      319-4 B      319-4 C
+      319-3 A    Cross_A_A    Cross_A_B       —
+      319-3 B       —         Cross_B_B    Cross_B_C
+      319-3 C    Cross_C_A       —         Cross_C_C
+    switches:
+      - name: "319_4_BRK_Cross_A_Busbar_A"
+        default_closed: false
+      - name: "319_4_BRK_Cross_A_Busbar_B"
+        default_closed: false
+      - name: "319_4_BRK_Cross_B_Busbar_B"
+        default_closed: false
+      - name: "319_4_BRK_Cross_B_Busbar_C"
+        default_closed: false
+      - name: "319_4_BRK_Cross_C_Busbar_A"
+        default_closed: false
+      - name: "319_4_BRK_Cross_C_Busbar_C"
+        default_closed: false
+    interlocks:
+      - group: "Cross_A"
+        max_closed: 1
+        members:
+          - "319_4_BRK_Cross_A_Busbar_A"
+          - "319_4_BRK_Cross_A_Busbar_B"
+      - group: "Cross_B"
+        max_closed: 1
+        members:
+          - "319_4_BRK_Cross_B_Busbar_B"
+          - "319_4_BRK_Cross_B_Busbar_C"
+      - group: "Cross_C"
+        max_closed: 1
+        members:
+          - "319_4_BRK_Cross_C_Busbar_A"
+          - "319_4_BRK_Cross_C_Busbar_C"
+
+inline_ports:
+  - name: "J2A Port"
+    cable: "J2A"
+    location: "319-4 end"
+    description: |
+      Inline plug at cable J2A between switchboard 319-4 and 310-2.
+      Allows inserting mobile equipment in series with the cable.
+      In June '25 snapshot: mobile B2B converter installed here,
+      separating 310 busbar from 319-4.
+    modes:
+      - name: pass-through
+        description: "Cable connected directly — no inserted equipment"
+        default: true
+      - name: b2b-converter
+        description: "Back-to-back converter inserted — galvanic isolation, creates two islands"
+      - name: load-tap
+        description: "Load/source tapped at port — adds a branch to the cable midpoint"
+      - name: impedance-extension
+        description: "Additional impedance inserted in series with the cable"

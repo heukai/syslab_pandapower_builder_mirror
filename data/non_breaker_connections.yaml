@@ -9,15 +9,9 @@
 # reviewed with SYSLAB staff when the physical installation changes.
 #
 # Source: SYSLAB switchboard diagrams (SVG), on-site inspection records.
+#
+# NOTE: Back-to-back converters (ABB B2B, Grid Emulator) are NOT listed
+# here — they electrically isolate their two sides and are modeled
+# separately in converter_connections.yaml.
 
-connections:
-  # 319-3 crossbar internal supply topology (see switchboard_overview_6.svg)
-  # Grid bay connects to Busbar-Supply, not Busbar-A
-  - name: "Grid 319-3"
-    bus1: 319-3_Grid
-    bus2: 319-3_Busbar-Supply
-    length_km: 0.005
-    cable_type: "HF-AL-S 4x240 0.6/1kV"
-    notes: >
-      Grid bay taps the Supply busbar, not Busbar-A. See SVG for details.
-
+connections: []
