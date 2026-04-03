@@ -1,0 +1,3 @@
+# syslab_pandapower_builder — builds the pandapower model from XML + YAML
+pandapower>=2.13
+PyYAML>=6.0
