@@ -3,11 +3,22 @@
 # Each group collects related breakers with a description,
 # default states, and optional interlocks.
 #
+# Conventions:
+#   - One group per switchboard (documenting all its bays and switches)
+#   - The crossbar group is separate (spans 319-3 ↔ 319-4)
+#   - Interlocks: every bay with 2+ breakers on different busbars
+#     gets max_closed=1 (only connected to one busbar at a time)
+#   - Single-breaker bays have no interlock entry
+#
 # Inline ports document cable plug points where mobile equipment
 # can be inserted.  Graph mutation logic for inline ports is
 # deferred to a future phase; only schema + documentation for now.
 
 breaker_groups:
+
+  # ─────────────────────────────────────────────────────────────────
+  # 319-3/319-4 Crossbar (spans two switchboards)
+  # ─────────────────────────────────────────────────────────────────
   - name: "319-3/319-4 Crossbar"
     type: full-telemetry
     description: |
@@ -51,7 +62,842 @@ breaker_groups:
           - "319_4_BRK_Cross_C_Busbar_A"
           - "319_4_BRK_Cross_C_Busbar_C"
 
+  # ─────────────────────────────────────────────────────────────────
+  # Switchboard 319-2  (Building 319, syslab-01)
+  # ─────────────────────────────────────────────────────────────────
+  - name: "Switchboard 319-2"
+    type: full-telemetry
+    description: |
+      DER hub in the turbine hall (Building 319). Houses diesel genset,
+      dump load, PV inverter (pv319), AirCon wind turbine, and CEE sockets.
+      2 busbars (A, B). Grid connection on Busbar-B only.
+      Connected to 319-3 via Cable A (4 runs: A1A, A1B, A2A, A2B).
+    switches:
+      # Grid — single breaker, B only
+      - {name: "319_2_BRK_Grid_Busbar_B", default_closed: false}
+      # Diesel
+      - {name: "319_2_BRK_Diesel_Busbar_A", default_closed: false}
+      - {name: "319_2_BRK_Diesel_Busbar_B", default_closed: false}
+      # Dumpload
+      - {name: "319_2_BRK_Dumpload_Busbar_A", default_closed: false}
+      - {name: "319_2_BRK_Dumpload_Busbar_B", default_closed: false}
+      # CEEx2
+      - {name: "319_2_BRK_CEEx2_Busbar_A", default_closed: false}
+      - {name: "319_2_BRK_CEEx2_Busbar_B", default_closed: false}
+      # CEE
+      - {name: "319_2_BRK_CEE_Busbar_A", default_closed: false}
+      - {name: "319_2_BRK_CEE_Busbar_B", default_closed: false}
+      # Aircon
+      - {name: "319_2_BRK_Aircon_Busbar_A", default_closed: false}
+      - {name: "319_2_BRK_Aircon_Busbar_B", default_closed: false}
+      # Cable_A1A → 319-3
+      - {name: "319_2_BRK_Cable_A1A_Busbar_A", default_closed: false}
+      - {name: "319_2_BRK_Cable_A1A_Busbar_B", default_closed: false}
+      # Cable_A1B → 319-3
+      - {name: "319_2_BRK_Cable_A1B_Busbar_A", default_closed: false}
+      - {name: "319_2_BRK_Cable_A1B_Busbar_B", default_closed: false}
+      # Cable_A2A → 319-3
+      - {name: "319_2_BRK_Cable_A2A_Busbar_A", default_closed: false}
+      - {name: "319_2_BRK_Cable_A2A_Busbar_B", default_closed: false}
+      # Cable_A2B → 319-3
+      - {name: "319_2_BRK_Cable_A2B_Busbar_A", default_closed: false}
+      - {name: "319_2_BRK_Cable_A2B_Busbar_B", default_closed: false}
+      # PV
+      - {name: "319_2_BRK_PV_Busbar_A", default_closed: false}
+      - {name: "319_2_BRK_PV_Busbar_B", default_closed: false}
+    interlocks:
+      - {group: "Diesel", max_closed: 1, members: ["319_2_BRK_Diesel_Busbar_A", "319_2_BRK_Diesel_Busbar_B"]}
+      - {group: "Dumpload", max_closed: 1, members: ["319_2_BRK_Dumpload_Busbar_A", "319_2_BRK_Dumpload_Busbar_B"]}
+      - {group: "CEEx2", max_closed: 1, members: ["319_2_BRK_CEEx2_Busbar_A", "319_2_BRK_CEEx2_Busbar_B"]}
+      - {group: "CEE", max_closed: 1, members: ["319_2_BRK_CEE_Busbar_A", "319_2_BRK_CEE_Busbar_B"]}
+      - {group: "Aircon", max_closed: 1, members: ["319_2_BRK_Aircon_Busbar_A", "319_2_BRK_Aircon_Busbar_B"]}
+      - {group: "Cable_A1A", max_closed: 1, members: ["319_2_BRK_Cable_A1A_Busbar_A", "319_2_BRK_Cable_A1A_Busbar_B"]}
+      - {group: "Cable_A1B", max_closed: 1, members: ["319_2_BRK_Cable_A1B_Busbar_A", "319_2_BRK_Cable_A1B_Busbar_B"]}
+      - {group: "Cable_A2A", max_closed: 1, members: ["319_2_BRK_Cable_A2A_Busbar_A", "319_2_BRK_Cable_A2A_Busbar_B"]}
+      - {group: "Cable_A2B", max_closed: 1, members: ["319_2_BRK_Cable_A2B_Busbar_A", "319_2_BRK_Cable_A2B_Busbar_B"]}
+      - {group: "PV", max_closed: 1, members: ["319_2_BRK_PV_Busbar_A", "319_2_BRK_PV_Busbar_B"]}
+
+  # ─────────────────────────────────────────────────────────────────
+  # Switchboard 319-3  (Building 319, syslab-52)
+  # ─────────────────────────────────────────────────────────────────
+  - name: "Switchboard 319-3"
+    type: full-telemetry
+    description: |
+      Central switching hub (Building 319). 5 busbars: A, B, C, Supply,
+      Transformer. ALL outer switchboards (319-2, 715-2, 117-2, 716-2)
+      connect here via Cables A, B, C, E. Houses ABB B2B converter
+      (primary on Supply busbar, secondary on B or C) and Grid Emulator
+      primary (Amp_1 on Transformer busbar). Grid infeed on Busbar-A.
+      Cross bays linking to 319-4 are in the separate Crossbar group.
+    switches:
+      # Supply / Transformer bays — single breaker each
+      - {name: "319_3_BRK_Supply_Busbar_Transformer", default_closed: false}
+      - {name: "319_3_BRK_Spare_Busbar_Transformer", default_closed: false}
+      - {name: "319_3_BRK_Amp_1_Busbar_Transformer", default_closed: false}
+      - {name: "319_3_BRK_Amp_2_Busbar_Transformer", default_closed: false}
+      # Grid — single breaker, A only
+      - {name: "319_3_BRK_Grid_Busbar_A", default_closed: false}
+      # ABB B2B converter
+      - {name: "319_3_BRK_ABB_Pri_Busbar_Supply", default_closed: false}
+      - {name: "319_3_BRK_ABB_Sec_Busbar_B", default_closed: false}
+      - {name: "319_3_BRK_ABB_Sec_Busbar_C", default_closed: false}
+      # Cable_E2A → 716-2  (A, C)
+      - {name: "319_3_BRK_Cable_E2A_Busbar_A", default_closed: false}
+      - {name: "319_3_BRK_Cable_E2A_Busbar_C", default_closed: false}
+      # Cable_E2B → 716-2  (A, C)
+      - {name: "319_3_BRK_Cable_E2B_Busbar_A", default_closed: false}
+      - {name: "319_3_BRK_Cable_E2B_Busbar_C", default_closed: false}
+      # Cable_E1A → 716-2  (A, B)
+      - {name: "319_3_BRK_Cable_E1A_Busbar_A", default_closed: false}
+      - {name: "319_3_BRK_Cable_E1A_Busbar_B", default_closed: false}
+      # Cable_E1B → 716-2  (A, B)
+      - {name: "319_3_BRK_Cable_E1B_Busbar_A", default_closed: false}
+      - {name: "319_3_BRK_Cable_E1B_Busbar_B", default_closed: false}
+      # Cable_B2A → 715-2  (A, B)
+      - {name: "319_3_BRK_Cable_B2A_Busbar_A", default_closed: false}
+      - {name: "319_3_BRK_Cable_B2A_Busbar_B", default_closed: false}
+      # Cable_B2B → 715-2  (A, B)
+      - {name: "319_3_BRK_Cable_B2B_Busbar_A", default_closed: false}
+      - {name: "319_3_BRK_Cable_B2B_Busbar_B", default_closed: false}
+      # Cable_B1A → 715-2  (B, C)
+      - {name: "319_3_BRK_Cable_B1A_Busbar_B", default_closed: false}
+      - {name: "319_3_BRK_Cable_B1A_Busbar_C", default_closed: false}
+      # Cable_B1B → 715-2  (B, C)
+      - {name: "319_3_BRK_Cable_B1B_Busbar_B", default_closed: false}
+      - {name: "319_3_BRK_Cable_B1B_Busbar_C", default_closed: false}
+      # Cable_A2A → 319-2  (B, C)
+      - {name: "319_3_BRK_Cable_A2A_Busbar_B", default_closed: false}
+      - {name: "319_3_BRK_Cable_A2A_Busbar_C", default_closed: false}
+      # Cable_A2B → 319-2  (B, C)
+      - {name: "319_3_BRK_Cable_A2B_Busbar_B", default_closed: false}
+      - {name: "319_3_BRK_Cable_A2B_Busbar_C", default_closed: false}
+      # Cable_A1A → 319-2  (A, C)
+      - {name: "319_3_BRK_Cable_A1A_Busbar_A", default_closed: false}
+      - {name: "319_3_BRK_Cable_A1A_Busbar_C", default_closed: false}
+      # Cable_A1B → 319-2  (A, C)
+      - {name: "319_3_BRK_Cable_A1B_Busbar_A", default_closed: false}
+      - {name: "319_3_BRK_Cable_A1B_Busbar_C", default_closed: false}
+      # Cable_C2A → 117-2  (A, C)
+      - {name: "319_3_BRK_Cable_C2A_Busbar_A", default_closed: false}
+      - {name: "319_3_BRK_Cable_C2A_Busbar_C", default_closed: false}
+      # Cable_C2B → 117-2  (A, C)
+      - {name: "319_3_BRK_Cable_C2B_Busbar_A", default_closed: false}
+      - {name: "319_3_BRK_Cable_C2B_Busbar_C", default_closed: false}
+      # Cable_C1A → 117-2  (A, B)
+      - {name: "319_3_BRK_Cable_C1A_Busbar_A", default_closed: false}
+      - {name: "319_3_BRK_Cable_C1A_Busbar_B", default_closed: false}
+      # Cable_C1B → 117-2  (A, B)
+      - {name: "319_3_BRK_Cable_C1B_Busbar_A", default_closed: false}
+      - {name: "319_3_BRK_Cable_C1B_Busbar_B", default_closed: false}
+    interlocks:
+      - {group: "ABB_Sec", max_closed: 1, members: ["319_3_BRK_ABB_Sec_Busbar_B", "319_3_BRK_ABB_Sec_Busbar_C"]}
+      - {group: "Cable_E2A", max_closed: 1, members: ["319_3_BRK_Cable_E2A_Busbar_A", "319_3_BRK_Cable_E2A_Busbar_C"]}
+      - {group: "Cable_E2B", max_closed: 1, members: ["319_3_BRK_Cable_E2B_Busbar_A", "319_3_BRK_Cable_E2B_Busbar_C"]}
+      - {group: "Cable_E1A", max_closed: 1, members: ["319_3_BRK_Cable_E1A_Busbar_A", "319_3_BRK_Cable_E1A_Busbar_B"]}
+      - {group: "Cable_E1B", max_closed: 1, members: ["319_3_BRK_Cable_E1B_Busbar_A", "319_3_BRK_Cable_E1B_Busbar_B"]}
+      - {group: "Cable_B2A", max_closed: 1, members: ["319_3_BRK_Cable_B2A_Busbar_A", "319_3_BRK_Cable_B2A_Busbar_B"]}
+      - {group: "Cable_B2B", max_closed: 1, members: ["319_3_BRK_Cable_B2B_Busbar_A", "319_3_BRK_Cable_B2B_Busbar_B"]}
+      - {group: "Cable_B1A", max_closed: 1, members: ["319_3_BRK_Cable_B1A_Busbar_B", "319_3_BRK_Cable_B1A_Busbar_C"]}
+      - {group: "Cable_B1B", max_closed: 1, members: ["319_3_BRK_Cable_B1B_Busbar_B", "319_3_BRK_Cable_B1B_Busbar_C"]}
+      - {group: "Cable_A2A", max_closed: 1, members: ["319_3_BRK_Cable_A2A_Busbar_B", "319_3_BRK_Cable_A2A_Busbar_C"]}
+      - {group: "Cable_A2B", max_closed: 1, members: ["319_3_BRK_Cable_A2B_Busbar_B", "319_3_BRK_Cable_A2B_Busbar_C"]}
+      - {group: "Cable_A1A", max_closed: 1, members: ["319_3_BRK_Cable_A1A_Busbar_A", "319_3_BRK_Cable_A1A_Busbar_C"]}
+      - {group: "Cable_A1B", max_closed: 1, members: ["319_3_BRK_Cable_A1B_Busbar_A", "319_3_BRK_Cable_A1B_Busbar_C"]}
+      - {group: "Cable_C2A", max_closed: 1, members: ["319_3_BRK_Cable_C2A_Busbar_A", "319_3_BRK_Cable_C2A_Busbar_C"]}
+      - {group: "Cable_C2B", max_closed: 1, members: ["319_3_BRK_Cable_C2B_Busbar_A", "319_3_BRK_Cable_C2B_Busbar_C"]}
+      - {group: "Cable_C1A", max_closed: 1, members: ["319_3_BRK_Cable_C1A_Busbar_A", "319_3_BRK_Cable_C1A_Busbar_B"]}
+      - {group: "Cable_C1B", max_closed: 1, members: ["319_3_BRK_Cable_C1B_Busbar_A", "319_3_BRK_Cable_C1B_Busbar_B"]}
+
+  # ─────────────────────────────────────────────────────────────────
+  # Switchboard 319-4  (Building 319, syslab-52)
+  # ─────────────────────────────────────────────────────────────────
+  - name: "Switchboard 319-4"
+    type: full-telemetry
+    description: |
+      Crossbar extension (Building 319). 3 busbars: A, B, C.
+      Connects to 310-2 via Cable J (4 runs) and to 330-12 via Cable K
+      (4 runs). Houses Grid Emulator B2B secondary (GridEmu bay) and
+      P2X equipment. The Cross bays linking 319-3 ↔ 319-4 are in the
+      separate Crossbar group. Most cable bays have inline ports.
+    switches:
+      # Spare_1 (A, C)
+      - {name: "319_4_BRK_Spare_1_Busbar_A", default_closed: false}
+      - {name: "319_4_BRK_Spare_1_Busbar_C", default_closed: false}
+      # Spare_2 (A, B)
+      - {name: "319_4_BRK_Spare_2_Busbar_A", default_closed: false}
+      - {name: "319_4_BRK_Spare_2_Busbar_B", default_closed: false}
+      # P2X (A, C)
+      - {name: "319_4_BRK_P2X_Busbar_A", default_closed: false}
+      - {name: "319_4_BRK_P2X_Busbar_C", default_closed: false}
+      # GridEmu (B, C)
+      - {name: "319_4_BRK_GridEmu_Busbar_B", default_closed: false}
+      - {name: "319_4_BRK_GridEmu_Busbar_C", default_closed: false}
+      # Spare_3 (A, B)
+      - {name: "319_4_BRK_Spare_3_Busbar_A", default_closed: false}
+      - {name: "319_4_BRK_Spare_3_Busbar_B", default_closed: false}
+      # Cable_K1A → 330-12  (B, C)
+      - {name: "319_4_BRK_Cable_K1A_Busbar_B", default_closed: false}
+      - {name: "319_4_BRK_Cable_K1A_Busbar_C", default_closed: false}
+      # Cable_K1B → 330-12  (B, C)
+      - {name: "319_4_BRK_Cable_K1B_Busbar_B", default_closed: false}
+      - {name: "319_4_BRK_Cable_K1B_Busbar_C", default_closed: false}
+      # Cable_K2A → 330-12  (A, B)
+      - {name: "319_4_BRK_Cable_K2A_Busbar_A", default_closed: false}
+      - {name: "319_4_BRK_Cable_K2A_Busbar_B", default_closed: false}
+      # Cable_K2B → 330-12  (A, B)
+      - {name: "319_4_BRK_Cable_K2B_Busbar_A", default_closed: false}
+      - {name: "319_4_BRK_Cable_K2B_Busbar_B", default_closed: false}
+      # Cable_J1A → 310-2  (B, C)
+      - {name: "319_4_BRK_Cable_J1A_Busbar_B", default_closed: false}
+      - {name: "319_4_BRK_Cable_J1A_Busbar_C", default_closed: false}
+      # Cable_J1B → 310-2  (B, C)
+      - {name: "319_4_BRK_Cable_J1B_Busbar_B", default_closed: false}
+      - {name: "319_4_BRK_Cable_J1B_Busbar_C", default_closed: false}
+      # Cable_J2A → 310-2  (A, C)
+      - {name: "319_4_BRK_Cable_J2A_Busbar_A", default_closed: false}
+      - {name: "319_4_BRK_Cable_J2A_Busbar_C", default_closed: false}
+      # Cable_J2B → 310-2  (A, C)
+      - {name: "319_4_BRK_Cable_J2B_Busbar_A", default_closed: false}
+      - {name: "319_4_BRK_Cable_J2B_Busbar_C", default_closed: false}
+    interlocks:
+      - {group: "Spare_1", max_closed: 1, members: ["319_4_BRK_Spare_1_Busbar_A", "319_4_BRK_Spare_1_Busbar_C"]}
+      - {group: "Spare_2", max_closed: 1, members: ["319_4_BRK_Spare_2_Busbar_A", "319_4_BRK_Spare_2_Busbar_B"]}
+      - {group: "P2X", max_closed: 1, members: ["319_4_BRK_P2X_Busbar_A", "319_4_BRK_P2X_Busbar_C"]}
+      - {group: "GridEmu", max_closed: 1, members: ["319_4_BRK_GridEmu_Busbar_B", "319_4_BRK_GridEmu_Busbar_C"]}
+      - {group: "Spare_3", max_closed: 1, members: ["319_4_BRK_Spare_3_Busbar_A", "319_4_BRK_Spare_3_Busbar_B"]}
+      - {group: "Cable_K1A", max_closed: 1, members: ["319_4_BRK_Cable_K1A_Busbar_B", "319_4_BRK_Cable_K1A_Busbar_C"]}
+      - {group: "Cable_K1B", max_closed: 1, members: ["319_4_BRK_Cable_K1B_Busbar_B", "319_4_BRK_Cable_K1B_Busbar_C"]}
+      - {group: "Cable_K2A", max_closed: 1, members: ["319_4_BRK_Cable_K2A_Busbar_A", "319_4_BRK_Cable_K2A_Busbar_B"]}
+      - {group: "Cable_K2B", max_closed: 1, members: ["319_4_BRK_Cable_K2B_Busbar_A", "319_4_BRK_Cable_K2B_Busbar_B"]}
+      - {group: "Cable_J1A", max_closed: 1, members: ["319_4_BRK_Cable_J1A_Busbar_B", "319_4_BRK_Cable_J1A_Busbar_C"]}
+      - {group: "Cable_J1B", max_closed: 1, members: ["319_4_BRK_Cable_J1B_Busbar_B", "319_4_BRK_Cable_J1B_Busbar_C"]}
+      - {group: "Cable_J2A", max_closed: 1, members: ["319_4_BRK_Cable_J2A_Busbar_A", "319_4_BRK_Cable_J2A_Busbar_C"]}
+      - {group: "Cable_J2B", max_closed: 1, members: ["319_4_BRK_Cable_J2B_Busbar_A", "319_4_BRK_Cable_J2B_Busbar_C"]}
+
+  # ─────────────────────────────────────────────────────────────────
+  # Switchboard 117-2  (Building 117, syslab-11)
+  # ─────────────────────────────────────────────────────────────────
+  - name: "Switchboard 117-2"
+    type: full-telemetry
+    description: |
+      Building 117 main panel (DR1 hall). 3 busbars: A, B, and a
+      dedicated Grid busbar. Houses battery storage (batt1), PV
+      inverter (pv117), and CEE sockets. Connected to 319-3 via
+      Cable C (4 runs). Internal X-cables (single-breaker) crosslink
+      to 117-5. Grid_2 bay has 3 breakers (Grid busbar + A + B).
+    switches:
+      # Grid_2 — 3 breakers (Grid, A, B)
+      - {name: "117_2_BRK_Grid_2_Busbar_Grid", default_closed: false}
+      - {name: "117_2_BRK_Grid_2_Busbar_A", default_closed: false}
+      - {name: "117_2_BRK_Grid_2_Busbar_B", default_closed: false}
+      # Battery (A, B)
+      - {name: "117_2_BRK_Battery_Busbar_A", default_closed: false}
+      - {name: "117_2_BRK_Battery_Busbar_B", default_closed: false}
+      # CEEx2 (A, B)
+      - {name: "117_2_BRK_CEEx2_Busbar_A", default_closed: false}
+      - {name: "117_2_BRK_CEEx2_Busbar_B", default_closed: false}
+      # Cable_X — single-breaker crosslinks to 117-5
+      - {name: "117_2_BRK_Cable_X1A_2_Busbar_A", default_closed: false}
+      - {name: "117_2_BRK_Cable_X1B_2_Busbar_A", default_closed: false}
+      - {name: "117_2_BRK_Cable_X2A_2_Busbar_B", default_closed: false}
+      - {name: "117_2_BRK_Cable_X2B_2_Busbar_B", default_closed: false}
+      # Cable_C1A → 319-3 (A, B)
+      - {name: "117_2_BRK_Cable_C1A_Busbar_A", default_closed: false}
+      - {name: "117_2_BRK_Cable_C1A_Busbar_B", default_closed: false}
+      # Cable_C1B → 319-3 (A, B)
+      - {name: "117_2_BRK_Cable_C1B_Busbar_A", default_closed: false}
+      - {name: "117_2_BRK_Cable_C1B_Busbar_B", default_closed: false}
+      # Cable_C2A → 319-3 (A, B)
+      - {name: "117_2_BRK_Cable_C2A_Busbar_A", default_closed: false}
+      - {name: "117_2_BRK_Cable_C2A_Busbar_B", default_closed: false}
+      # Cable_C2B → 319-3 (A, B)
+      - {name: "117_2_BRK_Cable_C2B_Busbar_A", default_closed: false}
+      - {name: "117_2_BRK_Cable_C2B_Busbar_B", default_closed: false}
+      # PV (A, B)
+      - {name: "117_2_BRK_PV_Busbar_A", default_closed: false}
+      - {name: "117_2_BRK_PV_Busbar_B", default_closed: false}
+    interlocks:
+      - {group: "Grid_2_AB", max_closed: 1, members: ["117_2_BRK_Grid_2_Busbar_A", "117_2_BRK_Grid_2_Busbar_B"]}
+      - {group: "Battery", max_closed: 1, members: ["117_2_BRK_Battery_Busbar_A", "117_2_BRK_Battery_Busbar_B"]}
+      - {group: "CEEx2", max_closed: 1, members: ["117_2_BRK_CEEx2_Busbar_A", "117_2_BRK_CEEx2_Busbar_B"]}
+      - {group: "Cable_C1A", max_closed: 1, members: ["117_2_BRK_Cable_C1A_Busbar_A", "117_2_BRK_Cable_C1A_Busbar_B"]}
+      - {group: "Cable_C1B", max_closed: 1, members: ["117_2_BRK_Cable_C1B_Busbar_A", "117_2_BRK_Cable_C1B_Busbar_B"]}
+      - {group: "Cable_C2A", max_closed: 1, members: ["117_2_BRK_Cable_C2A_Busbar_A", "117_2_BRK_Cable_C2A_Busbar_B"]}
+      - {group: "Cable_C2B", max_closed: 1, members: ["117_2_BRK_Cable_C2B_Busbar_A", "117_2_BRK_Cable_C2B_Busbar_B"]}
+      - {group: "PV", max_closed: 1, members: ["117_2_BRK_PV_Busbar_A", "117_2_BRK_PV_Busbar_B"]}
+
+  # ─────────────────────────────────────────────────────────────────
+  # Switchboard 117-4  (Building 117, syslab-11)
+  # ─────────────────────────────────────────────────────────────────
+  - name: "Switchboard 117-4"
+    type: full-telemetry
+    description: |
+      Grid infeed panel (Building 117). Single busbar (A). Main grid
+      entry point for the Building 117 cluster. Feeds 117-5 via Cable D
+      and 117-6 Busbar-B via Cable H. Simplest switchboard — 4 bays,
+      all single-breaker, no interlocks.
+    switches:
+      - {name: "117_4_BRK_Grid_Busbar_A", default_closed: false}
+      - {name: "117_4_BRK_Container_3_Busbar_A", default_closed: false}
+      - {name: "117_4_BRK_Cable_H1_Busbar_A", default_closed: false}
+      - {name: "117_4_BRK_Cable_D1_Manual_Busbar_A", default_closed: false}
+    interlocks: []
+
+  # ─────────────────────────────────────────────────────────────────
+  # Switchboard 117-5  (Building 117, syslab-11)
+  # ─────────────────────────────────────────────────────────────────
+  - name: "Switchboard 117-5"
+    type: full-telemetry
+    description: |
+      Building 117 distribution panel (DR1 hall). 2 busbars: A, B.
+      Houses containers, heat pump, booster heater, CEE sockets.
+      Connected to 117-4 via Cable D, to 117-6 Busbar-A via Cable G,
+      and to 117-2 via internal X-cables (single-breaker crosslinks).
+    switches:
+      # Cable_D1 → 117-4 (A, B)
+      - {name: "117_5_BRK_Cable_D1_Busbar_A", default_closed: false}
+      - {name: "117_5_BRK_Cable_D1_Busbar_B", default_closed: false}
+      # Cable_X — single-breaker crosslinks to 117-2
+      - {name: "117_5_BRK_Cable_X1A_5_Busbar_A", default_closed: false}
+      - {name: "117_5_BRK_Cable_X1B_5_Busbar_A", default_closed: false}
+      - {name: "117_5_BRK_Cable_X2A_5_Busbar_B", default_closed: false}
+      - {name: "117_5_BRK_Cable_X2B_5_Busbar_B", default_closed: false}
+      # CEEx1_1 (A, B)
+      - {name: "117_5_BRK_CEEx1_1_Busbar_A", default_closed: false}
+      - {name: "117_5_BRK_CEEx1_1_Busbar_B", default_closed: false}
+      # Container_1 (A, B)
+      - {name: "117_5_BRK_Container_1_Busbar_A", default_closed: false}
+      - {name: "117_5_BRK_Container_1_Busbar_B", default_closed: false}
+      # Container_2 (A, B)
+      - {name: "117_5_BRK_Container_2_Busbar_A", default_closed: false}
+      - {name: "117_5_BRK_Container_2_Busbar_B", default_closed: false}
+      # Cable_G1 → 117-6 (A, B)
+      - {name: "117_5_BRK_Cable_G1_Busbar_A", default_closed: false}
+      - {name: "117_5_BRK_Cable_G1_Busbar_B", default_closed: false}
+      # Booster_Heater (A, B)
+      - {name: "117_5_BRK_Booster_Heater_Busbar_A", default_closed: false}
+      - {name: "117_5_BRK_Booster_Heater_Busbar_B", default_closed: false}
+      # Heatpump (A, B)
+      - {name: "117_5_BRK_Heatpump_Busbar_A", default_closed: false}
+      - {name: "117_5_BRK_Heatpump_Busbar_B", default_closed: false}
+      # CEEx1_2 (A, B)
+      - {name: "117_5_BRK_CEEx1_2_Busbar_A", default_closed: false}
+      - {name: "117_5_BRK_CEEx1_2_Busbar_B", default_closed: false}
+    interlocks:
+      - {group: "Cable_D1", max_closed: 1, members: ["117_5_BRK_Cable_D1_Busbar_A", "117_5_BRK_Cable_D1_Busbar_B"]}
+      - {group: "CEEx1_1", max_closed: 1, members: ["117_5_BRK_CEEx1_1_Busbar_A", "117_5_BRK_CEEx1_1_Busbar_B"]}
+      - {group: "Container_1", max_closed: 1, members: ["117_5_BRK_Container_1_Busbar_A", "117_5_BRK_Container_1_Busbar_B"]}
+      - {group: "Container_2", max_closed: 1, members: ["117_5_BRK_Container_2_Busbar_A", "117_5_BRK_Container_2_Busbar_B"]}
+      - {group: "Cable_G1", max_closed: 1, members: ["117_5_BRK_Cable_G1_Busbar_A", "117_5_BRK_Cable_G1_Busbar_B"]}
+      - {group: "Booster_Heater", max_closed: 1, members: ["117_5_BRK_Booster_Heater_Busbar_A", "117_5_BRK_Booster_Heater_Busbar_B"]}
+      - {group: "Heatpump", max_closed: 1, members: ["117_5_BRK_Heatpump_Busbar_A", "117_5_BRK_Heatpump_Busbar_B"]}
+      - {group: "CEEx1_2", max_closed: 1, members: ["117_5_BRK_CEEx1_2_Busbar_A", "117_5_BRK_CEEx1_2_Busbar_B"]}
+
+  # ─────────────────────────────────────────────────────────────────
+  # Switchboard 117-6  (Building 117, syslab-26)
+  # ─────────────────────────────────────────────────────────────────
+  - name: "Switchboard 117-6"
+    type: full-telemetry
+    description: |
+      EV charging hub (Building 117 EVSE panel). 2 busbars: A (SYSLAB
+      feed via Cable G from 117-5), B (grid feed via Cable H from
+      117-4). 8 EVSE bays, each interlocked A↔B to select power
+      source. No cable bays — cables G and H land directly on busbars.
+    switches:
+      - {name: "117_6_BRK_EVSE_01_Busbar_A", default_closed: false}
+      - {name: "117_6_BRK_EVSE_01_Busbar_B", default_closed: false}
+      - {name: "117_6_BRK_EVSE_02_Busbar_A", default_closed: false}
+      - {name: "117_6_BRK_EVSE_02_Busbar_B", default_closed: false}
+      - {name: "117_6_BRK_EVSE_03_Busbar_A", default_closed: false}
+      - {name: "117_6_BRK_EVSE_03_Busbar_B", default_closed: false}
+      - {name: "117_6_BRK_EVSE_04_Busbar_A", default_closed: false}
+      - {name: "117_6_BRK_EVSE_04_Busbar_B", default_closed: false}
+      - {name: "117_6_BRK_EVSE_05_Busbar_A", default_closed: false}
+      - {name: "117_6_BRK_EVSE_05_Busbar_B", default_closed: false}
+      - {name: "117_6_BRK_EVSE_06_Busbar_A", default_closed: false}
+      - {name: "117_6_BRK_EVSE_06_Busbar_B", default_closed: false}
+      - {name: "117_6_BRK_EVSE_07_Busbar_A", default_closed: false}
+      - {name: "117_6_BRK_EVSE_07_Busbar_B", default_closed: false}
+      - {name: "117_6_BRK_EVSE_08_Busbar_A", default_closed: false}
+      - {name: "117_6_BRK_EVSE_08_Busbar_B", default_closed: false}
+    interlocks:
+      - {group: "EVSE_01", max_closed: 1, members: ["117_6_BRK_EVSE_01_Busbar_A", "117_6_BRK_EVSE_01_Busbar_B"]}
+      - {group: "EVSE_02", max_closed: 1, members: ["117_6_BRK_EVSE_02_Busbar_A", "117_6_BRK_EVSE_02_Busbar_B"]}
+      - {group: "EVSE_03", max_closed: 1, members: ["117_6_BRK_EVSE_03_Busbar_A", "117_6_BRK_EVSE_03_Busbar_B"]}
+      - {group: "EVSE_04", max_closed: 1, members: ["117_6_BRK_EVSE_04_Busbar_A", "117_6_BRK_EVSE_04_Busbar_B"]}
+      - {group: "EVSE_05", max_closed: 1, members: ["117_6_BRK_EVSE_05_Busbar_A", "117_6_BRK_EVSE_05_Busbar_B"]}
+      - {group: "EVSE_06", max_closed: 1, members: ["117_6_BRK_EVSE_06_Busbar_A", "117_6_BRK_EVSE_06_Busbar_B"]}
+      - {group: "EVSE_07", max_closed: 1, members: ["117_6_BRK_EVSE_07_Busbar_A", "117_6_BRK_EVSE_07_Busbar_B"]}
+      - {group: "EVSE_08", max_closed: 1, members: ["117_6_BRK_EVSE_08_Busbar_A", "117_6_BRK_EVSE_08_Busbar_B"]}
+
+  # ─────────────────────────────────────────────────────────────────
+  # Switchboard 310-2  (Building 310, syslab-53)
+  # ─────────────────────────────────────────────────────────────────
+  - name: "Switchboard 310-2"
+    type: full-telemetry
+    description: |
+      Thermal/energy storage hub (Building 310). 2 busbars: A, B.
+      Houses CHP, rock storage, booster heater, CEE sockets, and
+      spare bays. Connected to 319-4 via Cable J (4 runs: J1A, J1B,
+      J2A, J2B). Cable J2A has an inline port at the 319-4 end.
+    switches:
+      # Grid (A, B)
+      - {name: "310_2_BRK_Grid_Busbar_A", default_closed: false}
+      - {name: "310_2_BRK_Grid_Busbar_B", default_closed: false}
+      # Cable_J1A → 319-4 (A, B)
+      - {name: "310_2_BRK_Cable_J1A_Busbar_A", default_closed: false}
+      - {name: "310_2_BRK_Cable_J1A_Busbar_B", default_closed: false}
+      # Cable_J1B → 319-4 (A, B)
+      - {name: "310_2_BRK_Cable_J1B_Busbar_A", default_closed: false}
+      - {name: "310_2_BRK_Cable_J1B_Busbar_B", default_closed: false}
+      # Cable_J2A → 319-4 (A, B)
+      - {name: "310_2_BRK_Cable_J2A_Busbar_A", default_closed: false}
+      - {name: "310_2_BRK_Cable_J2A_Busbar_B", default_closed: false}
+      # Cable_J2B → 319-4 (A, B)
+      - {name: "310_2_BRK_Cable_J2B_Busbar_A", default_closed: false}
+      - {name: "310_2_BRK_Cable_J2B_Busbar_B", default_closed: false}
+      # RockStorage (A, B)
+      - {name: "310_2_BRK_RockStorage_Busbar_A", default_closed: false}
+      - {name: "310_2_BRK_RockStorage_Busbar_B", default_closed: false}
+      # Spare_1 (A, B)
+      - {name: "310_2_BRK_Spare_1_Busbar_A", default_closed: false}
+      - {name: "310_2_BRK_Spare_1_Busbar_B", default_closed: false}
+      # CHP (A, B)
+      - {name: "310_2_BRK_CHP_Busbar_A", default_closed: false}
+      - {name: "310_2_BRK_CHP_Busbar_B", default_closed: false}
+      # BoosterHeater (A, B)
+      - {name: "310_2_BRK_BoosterHeater_Busbar_A", default_closed: false}
+      - {name: "310_2_BRK_BoosterHeater_Busbar_B", default_closed: false}
+      # CEE_1 (A, B)
+      - {name: "310_2_BRK_CEE_1_Busbar_A", default_closed: false}
+      - {name: "310_2_BRK_CEE_1_Busbar_B", default_closed: false}
+      # CEE_2 (A, B)
+      - {name: "310_2_BRK_CEE_2_Busbar_A", default_closed: false}
+      - {name: "310_2_BRK_CEE_2_Busbar_B", default_closed: false}
+      # Spare_2 (A, B)
+      - {name: "310_2_BRK_Spare_2_Busbar_A", default_closed: false}
+      - {name: "310_2_BRK_Spare_2_Busbar_B", default_closed: false}
+      # Spare_3 (A, B)
+      - {name: "310_2_BRK_Spare_3_Busbar_A", default_closed: false}
+      - {name: "310_2_BRK_Spare_3_Busbar_B", default_closed: false}
+    interlocks:
+      - {group: "Grid", max_closed: 1, members: ["310_2_BRK_Grid_Busbar_A", "310_2_BRK_Grid_Busbar_B"]}
+      - {group: "Cable_J1A", max_closed: 1, members: ["310_2_BRK_Cable_J1A_Busbar_A", "310_2_BRK_Cable_J1A_Busbar_B"]}
+      - {group: "Cable_J1B", max_closed: 1, members: ["310_2_BRK_Cable_J1B_Busbar_A", "310_2_BRK_Cable_J1B_Busbar_B"]}
+      - {group: "Cable_J2A", max_closed: 1, members: ["310_2_BRK_Cable_J2A_Busbar_A", "310_2_BRK_Cable_J2A_Busbar_B"]}
+      - {group: "Cable_J2B", max_closed: 1, members: ["310_2_BRK_Cable_J2B_Busbar_A", "310_2_BRK_Cable_J2B_Busbar_B"]}
+      - {group: "RockStorage", max_closed: 1, members: ["310_2_BRK_RockStorage_Busbar_A", "310_2_BRK_RockStorage_Busbar_B"]}
+      - {group: "Spare_1", max_closed: 1, members: ["310_2_BRK_Spare_1_Busbar_A", "310_2_BRK_Spare_1_Busbar_B"]}
+      - {group: "CHP", max_closed: 1, members: ["310_2_BRK_CHP_Busbar_A", "310_2_BRK_CHP_Busbar_B"]}
+      - {group: "BoosterHeater", max_closed: 1, members: ["310_2_BRK_BoosterHeater_Busbar_A", "310_2_BRK_BoosterHeater_Busbar_B"]}
+      - {group: "CEE_1", max_closed: 1, members: ["310_2_BRK_CEE_1_Busbar_A", "310_2_BRK_CEE_1_Busbar_B"]}
+      - {group: "CEE_2", max_closed: 1, members: ["310_2_BRK_CEE_2_Busbar_A", "310_2_BRK_CEE_2_Busbar_B"]}
+      - {group: "Spare_2", max_closed: 1, members: ["310_2_BRK_Spare_2_Busbar_A", "310_2_BRK_Spare_2_Busbar_B"]}
+      - {group: "Spare_3", max_closed: 1, members: ["310_2_BRK_Spare_3_Busbar_A", "310_2_BRK_Spare_3_Busbar_B"]}
+
+  # ─────────────────────────────────────────────────────────────────
+  # Switchboard 330-12  (Building 330, syslab-50)
+  # ─────────────────────────────────────────────────────────────────
+  - name: "Switchboard 330-12"
+    type: full-telemetry
+    description: |
+      Largest DER/load hub (Building 330 — PES office / lab). 2 busbars:
+      A, B. Houses PV, Gaia wind turbine, heat pumps, workshop, demo
+      labs, PV+battery hybrids, booster heater, and 7 spare bays.
+      Connected to 319-4 via Cable K (4 runs) and to 330-13 via Cable L.
+    switches:
+      # Cable_K1A → 319-4 (A, B)
+      - {name: "330_12_BRK_Cable_K1A_Busbar_A", default_closed: false}
+      - {name: "330_12_BRK_Cable_K1A_Busbar_B", default_closed: false}
+      # Cable_K1B → 319-4 (A, B)
+      - {name: "330_12_BRK_Cable_K1B_Busbar_A", default_closed: false}
+      - {name: "330_12_BRK_Cable_K1B_Busbar_B", default_closed: false}
+      # Cable_K2A → 319-4 (A, B)
+      - {name: "330_12_BRK_Cable_K2A_Busbar_A", default_closed: false}
+      - {name: "330_12_BRK_Cable_K2A_Busbar_B", default_closed: false}
+      # Cable_K2B → 319-4 (A, B)
+      - {name: "330_12_BRK_Cable_K2B_Busbar_A", default_closed: false}
+      - {name: "330_12_BRK_Cable_K2B_Busbar_B", default_closed: false}
+      # Spare_1 (A, B)
+      - {name: "330_12_BRK_Spare_1_Busbar_A", default_closed: false}
+      - {name: "330_12_BRK_Spare_1_Busbar_B", default_closed: false}
+      # Grid (A, B)
+      - {name: "330_12_BRK_Grid_Busbar_A", default_closed: false}
+      - {name: "330_12_BRK_Grid_Busbar_B", default_closed: false}
+      # Cable_L1 → 330-13 (A, B)
+      - {name: "330_12_BRK_Cable_L1_Busbar_A", default_closed: false}
+      - {name: "330_12_BRK_Cable_L1_Busbar_B", default_closed: false}
+      # BoosterHeater (A, B)
+      - {name: "330_12_BRK_BoosterHeater_Busbar_A", default_closed: false}
+      - {name: "330_12_BRK_BoosterHeater_Busbar_B", default_closed: false}
+      # PV_1 (A, B)
+      - {name: "330_12_BRK_PV_1_Busbar_A", default_closed: false}
+      - {name: "330_12_BRK_PV_1_Busbar_B", default_closed: false}
+      # Workshop (A, B)
+      - {name: "330_12_BRK_Workshop_Busbar_A", default_closed: false}
+      - {name: "330_12_BRK_Workshop_Busbar_B", default_closed: false}
+      # Demolab_1 (A, B)
+      - {name: "330_12_BRK_Demolab_1_Busbar_A", default_closed: false}
+      - {name: "330_12_BRK_Demolab_1_Busbar_B", default_closed: false}
+      # Spare_2 (A, B)
+      - {name: "330_12_BRK_Spare_2_Busbar_A", default_closed: false}
+      - {name: "330_12_BRK_Spare_2_Busbar_B", default_closed: false}
+      # Spare_3 (A, B)
+      - {name: "330_12_BRK_Spare_3_Busbar_A", default_closed: false}
+      - {name: "330_12_BRK_Spare_3_Busbar_B", default_closed: false}
+      # Gaia (A, B)
+      - {name: "330_12_BRK_Gaia_Busbar_A", default_closed: false}
+      - {name: "330_12_BRK_Gaia_Busbar_B", default_closed: false}
+      # HeatPump_1 (A, B)
+      - {name: "330_12_BRK_HeatPump_1_Busbar_A", default_closed: false}
+      - {name: "330_12_BRK_HeatPump_1_Busbar_B", default_closed: false}
+      # HeatPump_2 (A, B)
+      - {name: "330_12_BRK_HeatPump_2_Busbar_A", default_closed: false}
+      - {name: "330_12_BRK_HeatPump_2_Busbar_B", default_closed: false}
+      # Demolab_2 (A, B)
+      - {name: "330_12_BRK_Demolab_2_Busbar_A", default_closed: false}
+      - {name: "330_12_BRK_Demolab_2_Busbar_B", default_closed: false}
+      # PVBatt_2 (A, B)
+      - {name: "330_12_BRK_PVBatt_2_Busbar_A", default_closed: false}
+      - {name: "330_12_BRK_PVBatt_2_Busbar_B", default_closed: false}
+      # PVBatt_3 (A, B)
+      - {name: "330_12_BRK_PVBatt_3_Busbar_A", default_closed: false}
+      - {name: "330_12_BRK_PVBatt_3_Busbar_B", default_closed: false}
+      # Spare_4 (A, B)
+      - {name: "330_12_BRK_Spare_4_Busbar_A", default_closed: false}
+      - {name: "330_12_BRK_Spare_4_Busbar_B", default_closed: false}
+      # Spare_5 (A, B)
+      - {name: "330_12_BRK_Spare_5_Busbar_A", default_closed: false}
+      - {name: "330_12_BRK_Spare_5_Busbar_B", default_closed: false}
+      # Spare_6 (A, B)
+      - {name: "330_12_BRK_Spare_6_Busbar_A", default_closed: false}
+      - {name: "330_12_BRK_Spare_6_Busbar_B", default_closed: false}
+      # Spare_7 (A, B)
+      - {name: "330_12_BRK_Spare_7_Busbar_A", default_closed: false}
+      - {name: "330_12_BRK_Spare_7_Busbar_B", default_closed: false}
+    interlocks:
+      - {group: "Cable_K1A", max_closed: 1, members: ["330_12_BRK_Cable_K1A_Busbar_A", "330_12_BRK_Cable_K1A_Busbar_B"]}
+      - {group: "Cable_K1B", max_closed: 1, members: ["330_12_BRK_Cable_K1B_Busbar_A", "330_12_BRK_Cable_K1B_Busbar_B"]}
+      - {group: "Cable_K2A", max_closed: 1, members: ["330_12_BRK_Cable_K2A_Busbar_A", "330_12_BRK_Cable_K2A_Busbar_B"]}
+      - {group: "Cable_K2B", max_closed: 1, members: ["330_12_BRK_Cable_K2B_Busbar_A", "330_12_BRK_Cable_K2B_Busbar_B"]}
+      - {group: "Spare_1", max_closed: 1, members: ["330_12_BRK_Spare_1_Busbar_A", "330_12_BRK_Spare_1_Busbar_B"]}
+      - {group: "Grid", max_closed: 1, members: ["330_12_BRK_Grid_Busbar_A", "330_12_BRK_Grid_Busbar_B"]}
+      - {group: "Cable_L1", max_closed: 1, members: ["330_12_BRK_Cable_L1_Busbar_A", "330_12_BRK_Cable_L1_Busbar_B"]}
+      - {group: "BoosterHeater", max_closed: 1, members: ["330_12_BRK_BoosterHeater_Busbar_A", "330_12_BRK_BoosterHeater_Busbar_B"]}
+      - {group: "PV_1", max_closed: 1, members: ["330_12_BRK_PV_1_Busbar_A", "330_12_BRK_PV_1_Busbar_B"]}
+      - {group: "Workshop", max_closed: 1, members: ["330_12_BRK_Workshop_Busbar_A", "330_12_BRK_Workshop_Busbar_B"]}
+      - {group: "Demolab_1", max_closed: 1, members: ["330_12_BRK_Demolab_1_Busbar_A", "330_12_BRK_Demolab_1_Busbar_B"]}
+      - {group: "Spare_2", max_closed: 1, members: ["330_12_BRK_Spare_2_Busbar_A", "330_12_BRK_Spare_2_Busbar_B"]}
+      - {group: "Spare_3", max_closed: 1, members: ["330_12_BRK_Spare_3_Busbar_A", "330_12_BRK_Spare_3_Busbar_B"]}
+      - {group: "Gaia", max_closed: 1, members: ["330_12_BRK_Gaia_Busbar_A", "330_12_BRK_Gaia_Busbar_B"]}
+      - {group: "HeatPump_1", max_closed: 1, members: ["330_12_BRK_HeatPump_1_Busbar_A", "330_12_BRK_HeatPump_1_Busbar_B"]}
+      - {group: "HeatPump_2", max_closed: 1, members: ["330_12_BRK_HeatPump_2_Busbar_A", "330_12_BRK_HeatPump_2_Busbar_B"]}
+      - {group: "Demolab_2", max_closed: 1, members: ["330_12_BRK_Demolab_2_Busbar_A", "330_12_BRK_Demolab_2_Busbar_B"]}
+      - {group: "PVBatt_2", max_closed: 1, members: ["330_12_BRK_PVBatt_2_Busbar_A", "330_12_BRK_PVBatt_2_Busbar_B"]}
+      - {group: "PVBatt_3", max_closed: 1, members: ["330_12_BRK_PVBatt_3_Busbar_A", "330_12_BRK_PVBatt_3_Busbar_B"]}
+      - {group: "Spare_4", max_closed: 1, members: ["330_12_BRK_Spare_4_Busbar_A", "330_12_BRK_Spare_4_Busbar_B"]}
+      - {group: "Spare_5", max_closed: 1, members: ["330_12_BRK_Spare_5_Busbar_A", "330_12_BRK_Spare_5_Busbar_B"]}
+      - {group: "Spare_6", max_closed: 1, members: ["330_12_BRK_Spare_6_Busbar_A", "330_12_BRK_Spare_6_Busbar_B"]}
+      - {group: "Spare_7", max_closed: 1, members: ["330_12_BRK_Spare_7_Busbar_A", "330_12_BRK_Spare_7_Busbar_B"]}
+
+  # ─────────────────────────────────────────────────────────────────
+  # Switchboard 330-13  (Building 330, syslab-51)
+  # ─────────────────────────────────────────────────────────────────
+  - name: "Switchboard 330-13"
+    type: full-telemetry
+    description: |
+      EV charging hub (Building 330 EVSE panel). 2 busbars: A (grid),
+      B (SYSLAB). 8 EVSE bays (EVSE_11–18), each interlocked A↔B.
+      Connected to 330-12 via Cable L. Grid connection on A and B.
+    switches:
+      # Cable_L1 → 330-12 (A, B)
+      - {name: "330_13_BRK_Cable_L1_Busbar_A", default_closed: false}
+      - {name: "330_13_BRK_Cable_L1_Busbar_B", default_closed: false}
+      # Grid (A, B)
+      - {name: "330_13_BRK_Grid_Busbar_A", default_closed: false}
+      - {name: "330_13_BRK_Grid_Busbar_B", default_closed: false}
+      # EVSE bays
+      - {name: "330_13_BRK_EVSE_11_Busbar_A", default_closed: false}
+      - {name: "330_13_BRK_EVSE_11_Busbar_B", default_closed: false}
+      - {name: "330_13_BRK_EVSE_12_Busbar_A", default_closed: false}
+      - {name: "330_13_BRK_EVSE_12_Busbar_B", default_closed: false}
+      - {name: "330_13_BRK_EVSE_13_Busbar_A", default_closed: false}
+      - {name: "330_13_BRK_EVSE_13_Busbar_B", default_closed: false}
+      - {name: "330_13_BRK_EVSE_14_Busbar_A", default_closed: false}
+      - {name: "330_13_BRK_EVSE_14_Busbar_B", default_closed: false}
+      - {name: "330_13_BRK_EVSE_15_Busbar_A", default_closed: false}
+      - {name: "330_13_BRK_EVSE_15_Busbar_B", default_closed: false}
+      - {name: "330_13_BRK_EVSE_16_Busbar_A", default_closed: false}
+      - {name: "330_13_BRK_EVSE_16_Busbar_B", default_closed: false}
+      - {name: "330_13_BRK_EVSE_17_Busbar_A", default_closed: false}
+      - {name: "330_13_BRK_EVSE_17_Busbar_B", default_closed: false}
+      - {name: "330_13_BRK_EVSE_18_Busbar_A", default_closed: false}
+      - {name: "330_13_BRK_EVSE_18_Busbar_B", default_closed: false}
+    interlocks:
+      - {group: "Cable_L1", max_closed: 1, members: ["330_13_BRK_Cable_L1_Busbar_A", "330_13_BRK_Cable_L1_Busbar_B"]}
+      - {group: "Grid", max_closed: 1, members: ["330_13_BRK_Grid_Busbar_A", "330_13_BRK_Grid_Busbar_B"]}
+      - {group: "EVSE_11", max_closed: 1, members: ["330_13_BRK_EVSE_11_Busbar_A", "330_13_BRK_EVSE_11_Busbar_B"]}
+      - {group: "EVSE_12", max_closed: 1, members: ["330_13_BRK_EVSE_12_Busbar_A", "330_13_BRK_EVSE_12_Busbar_B"]}
+      - {group: "EVSE_13", max_closed: 1, members: ["330_13_BRK_EVSE_13_Busbar_A", "330_13_BRK_EVSE_13_Busbar_B"]}
+      - {group: "EVSE_14", max_closed: 1, members: ["330_13_BRK_EVSE_14_Busbar_A", "330_13_BRK_EVSE_14_Busbar_B"]}
+      - {group: "EVSE_15", max_closed: 1, members: ["330_13_BRK_EVSE_15_Busbar_A", "330_13_BRK_EVSE_15_Busbar_B"]}
+      - {group: "EVSE_16", max_closed: 1, members: ["330_13_BRK_EVSE_16_Busbar_A", "330_13_BRK_EVSE_16_Busbar_B"]}
+      - {group: "EVSE_17", max_closed: 1, members: ["330_13_BRK_EVSE_17_Busbar_A", "330_13_BRK_EVSE_17_Busbar_B"]}
+      - {group: "EVSE_18", max_closed: 1, members: ["330_13_BRK_EVSE_18_Busbar_A", "330_13_BRK_EVSE_18_Busbar_B"]}
+
+  # ─────────────────────────────────────────────────────────────────
+  # Switchboard 715-2  (Building 715, syslab-09)
+  # ─────────────────────────────────────────────────────────────────
+  - name: "Switchboard 715-2"
+    type: full-telemetry
+    description: |
+      FlexHouse & PV hub (utility shed next to Building 715). 3 busbars:
+      A, B, and a dedicated Grid busbar. Houses FlexHouse 772, PV
+      inverter (pv715), and a spare bay. Connected to 319-3 via Cable B
+      (4 runs) and to 716-2 via Cable F.
+      Grid bay has 3 breakers: Grid (dedicated busbar) + A/B selectors.
+    switches:
+      # Grid — 3 breakers (Grid, A, B)
+      - {name: "715_2_BRK_Grid_Busbar_Grid", default_closed: false}
+      - {name: "715_2_BRK_Grid_Busbar_A", default_closed: false}
+      - {name: "715_2_BRK_Grid_Busbar_B", default_closed: false}
+      # Spare (A, B)
+      - {name: "715_2_BRK_Spare_Busbar_A", default_closed: false}
+      - {name: "715_2_BRK_Spare_Busbar_B", default_closed: false}
+      # Flexhouse_1 (A, B)
+      - {name: "715_2_BRK_Flexhouse_1_Busbar_A", default_closed: false}
+      - {name: "715_2_BRK_Flexhouse_1_Busbar_B", default_closed: false}
+      # PV (A, B)
+      - {name: "715_2_BRK_PV_Busbar_A", default_closed: false}
+      - {name: "715_2_BRK_PV_Busbar_B", default_closed: false}
+      # Cable_F1 → 716-2 (A, B)
+      - {name: "715_2_BRK_Cable_F1_Busbar_A", default_closed: false}
+      - {name: "715_2_BRK_Cable_F1_Busbar_B", default_closed: false}
+      # Cable_B2A → 319-3 (A, B)
+      - {name: "715_2_BRK_Cable_B2A_Busbar_A", default_closed: false}
+      - {name: "715_2_BRK_Cable_B2A_Busbar_B", default_closed: false}
+      # Cable_B2B → 319-3 (A, B)
+      - {name: "715_2_BRK_Cable_B2B_Busbar_A", default_closed: false}
+      - {name: "715_2_BRK_Cable_B2B_Busbar_B", default_closed: false}
+      # Cable_B1A → 319-3 (A, B)
+      - {name: "715_2_BRK_Cable_B1A_Busbar_A", default_closed: false}
+      - {name: "715_2_BRK_Cable_B1A_Busbar_B", default_closed: false}
+      # Cable_B1B → 319-3 (A, B)
+      - {name: "715_2_BRK_Cable_B1B_Busbar_A", default_closed: false}
+      - {name: "715_2_BRK_Cable_B1B_Busbar_B", default_closed: false}
+    interlocks:
+      - {group: "Grid_AB", max_closed: 1, members: ["715_2_BRK_Grid_Busbar_A", "715_2_BRK_Grid_Busbar_B"]}
+      - {group: "Spare", max_closed: 1, members: ["715_2_BRK_Spare_Busbar_A", "715_2_BRK_Spare_Busbar_B"]}
+      - {group: "Flexhouse_1", max_closed: 1, members: ["715_2_BRK_Flexhouse_1_Busbar_A", "715_2_BRK_Flexhouse_1_Busbar_B"]}
+      - {group: "PV", max_closed: 1, members: ["715_2_BRK_PV_Busbar_A", "715_2_BRK_PV_Busbar_B"]}
+      - {group: "Cable_F1", max_closed: 1, members: ["715_2_BRK_Cable_F1_Busbar_A", "715_2_BRK_Cable_F1_Busbar_B"]}
+      - {group: "Cable_B2A", max_closed: 1, members: ["715_2_BRK_Cable_B2A_Busbar_A", "715_2_BRK_Cable_B2A_Busbar_B"]}
+      - {group: "Cable_B2B", max_closed: 1, members: ["715_2_BRK_Cable_B2B_Busbar_A", "715_2_BRK_Cable_B2B_Busbar_B"]}
+      - {group: "Cable_B1A", max_closed: 1, members: ["715_2_BRK_Cable_B1A_Busbar_A", "715_2_BRK_Cable_B1A_Busbar_B"]}
+      - {group: "Cable_B1B", max_closed: 1, members: ["715_2_BRK_Cable_B1B_Busbar_A", "715_2_BRK_Cable_B1B_Busbar_B"]}
+
+  # ─────────────────────────────────────────────────────────────────
+  # Switchboard 716-2  (Building 716, syslab-29)
+  # ─────────────────────────────────────────────────────────────────
+  - name: "Switchboard 716-2"
+    type: full-telemetry
+    description: |
+      FlexHouse & residential DER hub (Building 716). 2 busbars: A, B.
+      Houses FlexHouse 417, FlexHouse 418, PV inverter (pv716), heat
+      pump, booster heater, CEE socket, and 4 spare bays. Connected
+      to 319-3 via Cable E (4 runs) and to 715-2 via Cable F.
+    switches:
+      # Grid (A, B)
+      - {name: "716_2_BRK_Grid_Busbar_A", default_closed: false}
+      - {name: "716_2_BRK_Grid_Busbar_B", default_closed: false}
+      # Cable_F1 → 715-2 (A, B)
+      - {name: "716_2_BRK_Cable_F1_Busbar_A", default_closed: false}
+      - {name: "716_2_BRK_Cable_F1_Busbar_B", default_closed: false}
+      # Cable_E1A → 319-3 (A, B)
+      - {name: "716_2_BRK_Cable_E1A_Busbar_A", default_closed: false}
+      - {name: "716_2_BRK_Cable_E1A_Busbar_B", default_closed: false}
+      # Cable_E1B → 319-3 (A, B)
+      - {name: "716_2_BRK_Cable_E1B_Busbar_A", default_closed: false}
+      - {name: "716_2_BRK_Cable_E1B_Busbar_B", default_closed: false}
+      # Cable_E2A → 319-3 (A, B)
+      - {name: "716_2_BRK_Cable_E2A_Busbar_A", default_closed: false}
+      - {name: "716_2_BRK_Cable_E2A_Busbar_B", default_closed: false}
+      # Cable_E2B → 319-3 (A, B)
+      - {name: "716_2_BRK_Cable_E2B_Busbar_A", default_closed: false}
+      - {name: "716_2_BRK_Cable_E2B_Busbar_B", default_closed: false}
+      # Flexhouse_3 (A, B)
+      - {name: "716_2_BRK_Flexhouse_3_Busbar_A", default_closed: false}
+      - {name: "716_2_BRK_Flexhouse_3_Busbar_B", default_closed: false}
+      # Flexhouse_2 (A, B)
+      - {name: "716_2_BRK_Flexhouse_2_Busbar_A", default_closed: false}
+      - {name: "716_2_BRK_Flexhouse_2_Busbar_B", default_closed: false}
+      # HeatPump (A, B)
+      - {name: "716_2_BRK_HeatPump_Busbar_A", default_closed: false}
+      - {name: "716_2_BRK_HeatPump_Busbar_B", default_closed: false}
+      # BoosterHeater (A, B)
+      - {name: "716_2_BRK_BoosterHeater_Busbar_A", default_closed: false}
+      - {name: "716_2_BRK_BoosterHeater_Busbar_B", default_closed: false}
+      # PV (A, B)
+      - {name: "716_2_BRK_PV_Busbar_A", default_closed: false}
+      - {name: "716_2_BRK_PV_Busbar_B", default_closed: false}
+      # CEE (A, B)
+      - {name: "716_2_BRK_CEE_Busbar_A", default_closed: false}
+      - {name: "716_2_BRK_CEE_Busbar_B", default_closed: false}
+      # Spare_1 (A, B)
+      - {name: "716_2_BRK_Spare_1_Busbar_A", default_closed: false}
+      - {name: "716_2_BRK_Spare_1_Busbar_B", default_closed: false}
+      # Spare_2 (A, B)
+      - {name: "716_2_BRK_Spare_2_Busbar_A", default_closed: false}
+      - {name: "716_2_BRK_Spare_2_Busbar_B", default_closed: false}
+      # Spare_3 (A, B)
+      - {name: "716_2_BRK_Spare_3_Busbar_A", default_closed: false}
+      - {name: "716_2_BRK_Spare_3_Busbar_B", default_closed: false}
+      # Spare_4 (A, B)
+      - {name: "716_2_BRK_Spare_4_Busbar_A", default_closed: false}
+      - {name: "716_2_BRK_Spare_4_Busbar_B", default_closed: false}
+    interlocks:
+      - {group: "Grid", max_closed: 1, members: ["716_2_BRK_Grid_Busbar_A", "716_2_BRK_Grid_Busbar_B"]}
+      - {group: "Cable_F1", max_closed: 1, members: ["716_2_BRK_Cable_F1_Busbar_A", "716_2_BRK_Cable_F1_Busbar_B"]}
+      - {group: "Cable_E1A", max_closed: 1, members: ["716_2_BRK_Cable_E1A_Busbar_A", "716_2_BRK_Cable_E1A_Busbar_B"]}
+      - {group: "Cable_E1B", max_closed: 1, members: ["716_2_BRK_Cable_E1B_Busbar_A", "716_2_BRK_Cable_E1B_Busbar_B"]}
+      - {group: "Cable_E2A", max_closed: 1, members: ["716_2_BRK_Cable_E2A_Busbar_A", "716_2_BRK_Cable_E2A_Busbar_B"]}
+      - {group: "Cable_E2B", max_closed: 1, members: ["716_2_BRK_Cable_E2B_Busbar_A", "716_2_BRK_Cable_E2B_Busbar_B"]}
+      - {group: "Flexhouse_3", max_closed: 1, members: ["716_2_BRK_Flexhouse_3_Busbar_A", "716_2_BRK_Flexhouse_3_Busbar_B"]}
+      - {group: "Flexhouse_2", max_closed: 1, members: ["716_2_BRK_Flexhouse_2_Busbar_A", "716_2_BRK_Flexhouse_2_Busbar_B"]}
+      - {group: "HeatPump", max_closed: 1, members: ["716_2_BRK_HeatPump_Busbar_A", "716_2_BRK_HeatPump_Busbar_B"]}
+      - {group: "BoosterHeater", max_closed: 1, members: ["716_2_BRK_BoosterHeater_Busbar_A", "716_2_BRK_BoosterHeater_Busbar_B"]}
+      - {group: "PV", max_closed: 1, members: ["716_2_BRK_PV_Busbar_A", "716_2_BRK_PV_Busbar_B"]}
+      - {group: "CEE", max_closed: 1, members: ["716_2_BRK_CEE_Busbar_A", "716_2_BRK_CEE_Busbar_B"]}
+      - {group: "Spare_1", max_closed: 1, members: ["716_2_BRK_Spare_1_Busbar_A", "716_2_BRK_Spare_1_Busbar_B"]}
+      - {group: "Spare_2", max_closed: 1, members: ["716_2_BRK_Spare_2_Busbar_A", "716_2_BRK_Spare_2_Busbar_B"]}
+      - {group: "Spare_3", max_closed: 1, members: ["716_2_BRK_Spare_3_Busbar_A", "716_2_BRK_Spare_3_Busbar_B"]}
+      - {group: "Spare_4", max_closed: 1, members: ["716_2_BRK_Spare_4_Busbar_A", "716_2_BRK_Spare_4_Busbar_B"]}
+
+# ═══════════════════════════════════════════════════════════════════
+# Inline Ports
+# ═══════════════════════════════════════════════════════════════════
+# Cable plug points on 319-3 and 319-4 where mobile equipment can
+# be inserted. All ports share the same 4 operating modes. Graph
+# mutation logic is deferred to a future phase.
+
 inline_ports:
+
+  # ── 319-3 Cable Bays (16 ports) ─────────────────────────────────
+
+  - name: "A1A Port"
+    cable: "A1A"
+    location: "319-3 end"
+    description: "Inline plug at cable A1A between 319-3 and 319-2."
+    modes: &standard_modes
+      - {name: pass-through, description: "Cable connected directly — no inserted equipment", default: true}
+      - {name: b2b-converter, description: "Back-to-back converter inserted — galvanic isolation"}
+      - {name: load-tap, description: "Load/source tapped at port — adds a branch to the cable midpoint"}
+      - {name: impedance-extension, description: "Additional impedance inserted in series with the cable"}
+
+  - name: "A1B Port"
+    cable: "A1B"
+    location: "319-3 end"
+    description: "Inline plug at cable A1B between 319-3 and 319-2."
+    modes: *standard_modes
+
+  - name: "A2A Port"
+    cable: "A2A"
+    location: "319-3 end"
+    description: "Inline plug at cable A2A between 319-3 and 319-2."
+    modes: *standard_modes
+
+  - name: "A2B Port"
+    cable: "A2B"
+    location: "319-3 end"
+    description: "Inline plug at cable A2B between 319-3 and 319-2."
+    modes: *standard_modes
+
+  - name: "B1A Port"
+    cable: "B1A"
+    location: "319-3 end"
+    description: "Inline plug at cable B1A between 319-3 and 715-2."
+    modes: *standard_modes
+
+  - name: "B1B Port"
+    cable: "B1B"
+    location: "319-3 end"
+    description: "Inline plug at cable B1B between 319-3 and 715-2."
+    modes: *standard_modes
+
+  - name: "B2A Port"
+    cable: "B2A"
+    location: "319-3 end"
+    description: "Inline plug at cable B2A between 319-3 and 715-2."
+    modes: *standard_modes
+
+  - name: "B2B Port"
+    cable: "B2B"
+    location: "319-3 end"
+    description: "Inline plug at cable B2B between 319-3 and 715-2."
+    modes: *standard_modes
+
+  - name: "C1A Port"
+    cable: "C1A"
+    location: "319-3 end"
+    description: "Inline plug at cable C1A between 319-3 and 117-2."
+    modes: *standard_modes
+
+  - name: "C1B Port"
+    cable: "C1B"
+    location: "319-3 end"
+    description: "Inline plug at cable C1B between 319-3 and 117-2."
+    modes: *standard_modes
+
+  - name: "C2A Port"
+    cable: "C2A"
+    location: "319-3 end"
+    description: "Inline plug at cable C2A between 319-3 and 117-2."
+    modes: *standard_modes
+
+  - name: "C2B Port"
+    cable: "C2B"
+    location: "319-3 end"
+    description: "Inline plug at cable C2B between 319-3 and 117-2."
+    modes: *standard_modes
+
+  - name: "E1A Port"
+    cable: "E1A"
+    location: "319-3 end"
+    description: "Inline plug at cable E1A between 319-3 and 716-2."
+    modes: *standard_modes
+
+  - name: "E1B Port"
+    cable: "E1B"
+    location: "319-3 end"
+    description: "Inline plug at cable E1B between 319-3 and 716-2."
+    modes: *standard_modes
+
+  - name: "E2A Port"
+    cable: "E2A"
+    location: "319-3 end"
+    description: "Inline plug at cable E2A between 319-3 and 716-2."
+    modes: *standard_modes
+
+  - name: "E2B Port"
+    cable: "E2B"
+    location: "319-3 end"
+    description: "Inline plug at cable E2B between 319-3 and 716-2."
+    modes: *standard_modes
+
+  # ── 319-4 Cable Bays (8 ports) ──────────────────────────────────
+
+  - name: "J1A Port"
+    cable: "J1A"
+    location: "319-4 end"
+    description: "Inline plug at cable J1A between 319-4 and 310-2."
+    modes: *standard_modes
+
+  - name: "J1B Port"
+    cable: "J1B"
+    location: "319-4 end"
+    description: "Inline plug at cable J1B between 319-4 and 310-2."
+    modes: *standard_modes
+
   - name: "J2A Port"
     cable: "J2A"
     location: "319-4 end"
@@ -60,13 +906,34 @@ inline_ports:
       Allows inserting mobile equipment in series with the cable.
       In June '25 snapshot: mobile B2B converter installed here,
       separating 310 busbar from 319-4.
-    modes:
-      - name: pass-through
-        description: "Cable connected directly — no inserted equipment"
-        default: true
-      - name: b2b-converter
-        description: "Back-to-back converter inserted — galvanic isolation, creates two islands"
-      - name: load-tap
-        description: "Load/source tapped at port — adds a branch to the cable midpoint"
-      - name: impedance-extension
-        description: "Additional impedance inserted in series with the cable"
+    modes: *standard_modes
+
+  - name: "J2B Port"
+    cable: "J2B"
+    location: "319-4 end"
+    description: "Inline plug at cable J2B between 319-4 and 310-2."
+    modes: *standard_modes
+
+  - name: "K1A Port"
+    cable: "K1A"
+    location: "319-4 end"
+    description: "Inline plug at cable K1A between 319-4 and 330-12."
+    modes: *standard_modes
+
+  - name: "K1B Port"
+    cable: "K1B"
+    location: "319-4 end"
+    description: "Inline plug at cable K1B between 319-4 and 330-12."
+    modes: *standard_modes
+
+  - name: "K2A Port"
+    cable: "K2A"
+    location: "319-4 end"
+    description: "Inline plug at cable K2A between 319-4 and 330-12."
+    modes: *standard_modes
+
+  - name: "K2B Port"
+    cable: "K2B"
+    location: "319-4 end"
+    description: "Inline plug at cable K2B between 319-4 and 330-12."
+    modes: *standard_modes
