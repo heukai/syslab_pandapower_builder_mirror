@@ -397,7 +397,160 @@ def build_pp_network(
             name=link.name,
         )
 
+    # Phase 5: Assign bus geodata for pandapower plotting
+    _assign_bus_geodata(net)
+
     return net
+
+
+# ── Bus geodata for PP-native plotting ───────────────────────────────
+#
+# PP simple_plot draws switches as small rectangles on edges, so buses
+# need generous spacing.  Bays are arranged in a grid pattern (multiple
+# columns) below their busbar rather than a single vertical stack.
+#
+# Grid positions mirror syslab_data.visualization.topology._SB_GRID_POS
+# but use PP-style hyphen names (e.g. "319-2").
+
+_SB_GRID_POS_PP: dict[str, tuple[int, int]] = {
+    # Centre
+    "319-3": (-1, -1),    "319-4": (1, -1),
+    # Bottom row
+    "715-2": (-5, -2),    "117-2": (-2, -3),   "117-5": (0, -3),
+    "117-4": (1, -3),     "117-6": (2, -3),    "319-2": (5, -2),
+    # Top row
+    "716-2": (-5, 3),     "330-13": (-2, 3),   "330-12": (1, 4),
+    "310-2": (5, 2),
+}
+
+_GEO_X_SCALE  = 40.0   # world-units per grid column
+_GEO_Y_SCALE  = 55.0   # world-units per grid row
+_GEO_BB_DX    =  8.0   # horizontal spacing between busbars
+_GEO_BAY_DX   =  6.0   # horizontal spacing between bay columns
+_GEO_BAY_DY   =  6.0   # vertical spacing between bay rows
+_GEO_BAY_TOP  = 10.0   # gap between busbar row and first bay row
+_GEO_BAY_COLS =  4      # max columns in bay grid
+
+
+def _sb_of_pp_bus(name: str) -> str | None:
+    """Extract switchboard prefix from a PP bus name.
+
+    ``"319-2_Busbar-A"`` → ``"319-2"``
+    ``"330-13_Cable_K1A"`` → ``"330-13"``
+    """
+    m = re.match(r"^(\d+-\d+)_", name)
+    return m.group(1) if m else None
+
+
+def _assign_bus_geodata(net: pp.pandapowerNet) -> None:
+    """Set ``bus.geo`` for every bus using a switchboard-clustered layout.
+
+    Busbars are placed in a horizontal row at the top of each
+    switchboard cluster.  Bays fan out in a grid (up to
+    ``_GEO_BAY_COLS`` columns) below their assigned busbar.
+
+    After this, ``pandapower.plotting.simple_plot(net)`` renders the
+    SYSLAB grid with the recognisable physical layout.
+    """
+    from collections import defaultdict
+    import math
+
+    # ---- Classify buses ------------------------------------------------
+    busbars: dict[str, list[tuple[int, str]]] = defaultdict(list)
+    bays:    dict[str, list[tuple[int, str]]] = defaultdict(list)
+
+    for idx in net.bus.index:
+        name = net.bus.at[idx, "name"]
+        sb = _sb_of_pp_bus(name)
+        if sb is None:
+            continue
+        if "_Busbar-" in name:
+            busbars[sb].append((idx, name))
+        else:
+            bays[sb].append((idx, name))
+
+    # ---- SB anchor positions -------------------------------------------
+    all_sbs = set(busbars) | set(bays)
+    fallback_col = max((c for c, _ in _SB_GRID_POS_PP.values()), default=0) + 2
+    sb_anchor: dict[str, tuple[float, float]] = {}
+    for sb in sorted(all_sbs):
+        if sb in _SB_GRID_POS_PP:
+            col, row = _SB_GRID_POS_PP[sb]
+        else:
+            col, row = fallback_col, 0
+            fallback_col += 2
+        sb_anchor[sb] = (col * _GEO_X_SCALE, row * _GEO_Y_SCALE)
+
+    # ---- Place busbars in a horizontal row -----------------------------
+    def _is_special(name: str) -> bool:
+        suffix = name.split("_Busbar-")[-1] if "_Busbar-" in name else ""
+        return suffix not in {"A", "B", "C"}
+
+    busbar_xy: dict[int, tuple[float, float]] = {}
+
+    for sb, bb_list in busbars.items():
+        ax_x, ax_y = sb_anchor[sb]
+        # Sort: special busbars (Grid, Supply, …) first, then regular A/B/C
+        special = sorted(
+            [(i, n) for i, n in bb_list if _is_special(n)], key=lambda t: t[1],
+        )
+        regular = sorted(
+            [(i, n) for i, n in bb_list if not _is_special(n)], key=lambda t: t[1],
+        )
+        all_ordered = special + regular
+        n = len(all_ordered)
+        # Centre the row horizontally on the anchor
+        x_start = ax_x - (n - 1) / 2.0 * _GEO_BB_DX
+        for i, (idx, _name) in enumerate(all_ordered):
+            busbar_xy[idx] = (x_start + i * _GEO_BB_DX, ax_y)
+
+    # ---- Bay → busbar assignment via switch table ----------------------
+    bay_to_bb: dict[int, int] = {}
+    for sw_idx in net.switch.index:
+        if net.switch.at[sw_idx, "et"] == "b":
+            bus = int(net.switch.at[sw_idx, "bus"])
+            elem = int(net.switch.at[sw_idx, "element"])
+            if bus in busbar_xy and elem not in busbar_xy:
+                bay_to_bb.setdefault(elem, bus)
+            elif elem in busbar_xy and bus not in busbar_xy:
+                bay_to_bb.setdefault(bus, elem)
+
+    # ---- Place bays in a grid below their busbar -----------------------
+    bay_counts: dict[int, int] = defaultdict(int)  # per-busbar counter
+    bay_xy: dict[int, tuple[float, float]] = {}
+
+    for sb, bay_list in bays.items():
+        for idx, _name in sorted(bay_list, key=lambda t: t[1]):
+            bb_idx = bay_to_bb.get(idx)
+            if bb_idx is not None and bb_idx in busbar_xy:
+                bx, by = busbar_xy[bb_idx]
+                j = bay_counts[bb_idx]
+                col = j % _GEO_BAY_COLS
+                row = j // _GEO_BAY_COLS
+                # Centre the grid columns under the busbar
+                x = bx + (col - (_GEO_BAY_COLS - 1) / 2.0) * _GEO_BAY_DX
+                y = by - _GEO_BAY_TOP - row * _GEO_BAY_DY
+                bay_xy[idx] = (x, y)
+                bay_counts[bb_idx] += 1
+            else:
+                # No switch connection — centre below all SB busbars
+                sb_bbs = [
+                    busbar_xy[i] for i, _ in busbars.get(sb, [])
+                    if i in busbar_xy
+                ]
+                if sb_bbs:
+                    mx = sum(p[0] for p in sb_bbs) / len(sb_bbs)
+                    my = min(p[1] for p in sb_bbs) - _GEO_BAY_TOP
+                else:
+                    mx, my = sb_anchor.get(sb, (0.0, 0.0))
+                    my -= _GEO_BAY_TOP
+                bay_xy[idx] = (mx, my)
+
+    # ---- Write GeoJSON to net.bus.geo ----------------------------------
+    for idx, (x, y) in {**busbar_xy, **bay_xy}.items():
+        net.bus.at[idx, "geo"] = json.dumps(
+            {"coordinates": [x, y], "type": "Point"}
+        )
 
 
 # ── Switch name map generation ───────────────────────────────────────
