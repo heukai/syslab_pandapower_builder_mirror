@@ -287,7 +287,7 @@ breaker_groups:
       to 117-5. Grid_2 bay has 3 breakers (Grid busbar + A + B).
     switches:
       # Grid_2 — 3 breakers (Grid, A, B)
-      - {name: "117_2_BRK_Grid_2_Busbar_Grid", default_closed: false}
+      - {name: "117_2_BRK_Grid_2_Busbar_Grid", default_closed: false, logged: false}
       - {name: "117_2_BRK_Grid_2_Busbar_A", default_closed: false}
       - {name: "117_2_BRK_Grid_2_Busbar_B", default_closed: false}
       # Battery (A, B)
@@ -340,7 +340,7 @@ breaker_groups:
       - {name: "117_4_BRK_Grid_Busbar_A", default_closed: false}
       - {name: "117_4_BRK_Container_3_Busbar_A", default_closed: false}
       - {name: "117_4_BRK_Cable_H1_Busbar_A", default_closed: false}
-      - {name: "117_4_BRK_Cable_D1_Manual_Busbar_A", default_closed: false}
+      - {name: "117_4_BRK_Cable_D1_Manual_Busbar_A", default_closed: false, logged: false}
     interlocks: []
 
   # ─────────────────────────────────────────────────────────────────
@@ -404,22 +404,22 @@ breaker_groups:
       117-4). 8 EVSE bays, each interlocked A↔B to select power
       source. No cable bays — cables G and H land directly on busbars.
     switches:
-      - {name: "117_6_BRK_EVSE_01_Busbar_A", default_closed: false}
-      - {name: "117_6_BRK_EVSE_01_Busbar_B", default_closed: false}
-      - {name: "117_6_BRK_EVSE_02_Busbar_A", default_closed: false}
-      - {name: "117_6_BRK_EVSE_02_Busbar_B", default_closed: false}
-      - {name: "117_6_BRK_EVSE_03_Busbar_A", default_closed: false}
-      - {name: "117_6_BRK_EVSE_03_Busbar_B", default_closed: false}
-      - {name: "117_6_BRK_EVSE_04_Busbar_A", default_closed: false}
-      - {name: "117_6_BRK_EVSE_04_Busbar_B", default_closed: false}
-      - {name: "117_6_BRK_EVSE_05_Busbar_A", default_closed: false}
-      - {name: "117_6_BRK_EVSE_05_Busbar_B", default_closed: false}
-      - {name: "117_6_BRK_EVSE_06_Busbar_A", default_closed: false}
-      - {name: "117_6_BRK_EVSE_06_Busbar_B", default_closed: false}
-      - {name: "117_6_BRK_EVSE_07_Busbar_A", default_closed: false}
-      - {name: "117_6_BRK_EVSE_07_Busbar_B", default_closed: false}
-      - {name: "117_6_BRK_EVSE_08_Busbar_A", default_closed: false}
-      - {name: "117_6_BRK_EVSE_08_Busbar_B", default_closed: false}
+      - {name: "117_6_BRK_EVSE_01_Busbar_A", default_closed: false, logged: false}
+      - {name: "117_6_BRK_EVSE_01_Busbar_B", default_closed: false, logged: false}
+      - {name: "117_6_BRK_EVSE_02_Busbar_A", default_closed: false, logged: false}
+      - {name: "117_6_BRK_EVSE_02_Busbar_B", default_closed: false, logged: false}
+      - {name: "117_6_BRK_EVSE_03_Busbar_A", default_closed: false, logged: false}
+      - {name: "117_6_BRK_EVSE_03_Busbar_B", default_closed: false, logged: false}
+      - {name: "117_6_BRK_EVSE_04_Busbar_A", default_closed: false, logged: false}
+      - {name: "117_6_BRK_EVSE_04_Busbar_B", default_closed: false, logged: false}
+      - {name: "117_6_BRK_EVSE_05_Busbar_A", default_closed: false, logged: false}
+      - {name: "117_6_BRK_EVSE_05_Busbar_B", default_closed: false, logged: false}
+      - {name: "117_6_BRK_EVSE_06_Busbar_A", default_closed: false, logged: false}
+      - {name: "117_6_BRK_EVSE_06_Busbar_B", default_closed: false, logged: false}
+      - {name: "117_6_BRK_EVSE_07_Busbar_A", default_closed: false, logged: false}
+      - {name: "117_6_BRK_EVSE_07_Busbar_B", default_closed: false, logged: false}
+      - {name: "117_6_BRK_EVSE_08_Busbar_A", default_closed: false, logged: false}
+      - {name: "117_6_BRK_EVSE_08_Busbar_B", default_closed: false, logged: false}
     interlocks:
       - {group: "EVSE_01", max_closed: 1, members: ["117_6_BRK_EVSE_01_Busbar_A", "117_6_BRK_EVSE_01_Busbar_B"]}
       - {group: "EVSE_02", max_closed: 1, members: ["117_6_BRK_EVSE_02_Busbar_A", "117_6_BRK_EVSE_02_Busbar_B"]}
@@ -658,7 +658,7 @@ breaker_groups:
       Grid bay has 3 breakers: Grid (dedicated busbar) + A/B selectors.
     switches:
       # Grid — 3 breakers (Grid, A, B)
-      - {name: "715_2_BRK_Grid_Busbar_Grid", default_closed: false}
+      - {name: "715_2_BRK_Grid_Busbar_Grid", default_closed: false, logged: false}
       - {name: "715_2_BRK_Grid_Busbar_A", default_closed: false}
       - {name: "715_2_BRK_Grid_Busbar_B", default_closed: false}
       # Spare (A, B)

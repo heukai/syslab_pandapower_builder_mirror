@@ -118,6 +118,7 @@ class SwitchDefault:
     """A switch within a breaker group with its default state."""
     name: str
     default_closed: bool
+    logged: bool = True
 
 
 @dataclass(frozen=True)
@@ -176,7 +177,11 @@ def load_breaker_groups(
             type=g["type"],
             description=g["description"],
             switches=[
-                SwitchDefault(name=s["name"], default_closed=s["default_closed"])
+                SwitchDefault(
+                    name=s["name"],
+                    default_closed=s["default_closed"],
+                    logged=s.get("logged", True),
+                )
                 for s in g.get("switches", [])
             ],
             interlocks=[

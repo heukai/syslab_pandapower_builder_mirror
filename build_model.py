@@ -181,7 +181,7 @@ def main(argv: list[str] | None = None) -> None:
                         "type": g.type,
                         "description": g.description,
                         "switches": [
-                            {"name": s.name, "default_closed": s.default_closed}
+                            {"name": s.name, "default_closed": s.default_closed, "logged": s.logged}
                             for s in g.switches
                         ],
                         "interlocks": [
