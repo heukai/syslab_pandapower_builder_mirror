@@ -25,6 +25,33 @@ ADR-0002 for the rationale):
 - `data/*.yaml` — the curated engineering data (`cables.yaml`,
   `cable_types.yaml`, `non_breaker_connections.yaml`,
   `converter_connections.yaml`, `breaker_groups.yaml`).
+  `non_breaker_connections.yaml` is currently empty (`connections: []`).
+- `tests/test_builder.py` — pytest coverage for the builder.
+
+## Usage
+
+Run from the workspace root (the outer folder holding the sibling repos):
+
+```powershell
+python -m syslab_pandapower_builder.build_model `
+    --conf-dir syslab-master-conf/conf `
+    --output-dir syslab_pandapower `
+    --valid-from 2023-08-15
+```
+
+| Flag | Default | Meaning |
+|---|---|---|
+| `--conf-dir` | `syslab-master-conf/conf` | Folder with the per-substation `hardware.xml` files |
+| `--output-dir` | `syslab_pandapower` | Target package; artifacts go to `<output-dir>/model_data/` |
+| `--valid-from` | *(required)* | ISO date from which this model configuration is valid |
+| `--valid-to` | open-ended | ISO date when it stopped being valid |
+| `--notes` | empty | Free text stored in `model_version.json` |
+
+Outputs in `model_data/`: `syslab_grid.json`, `switch_name_map.json`,
+`converter_connections.json`, `breaker_groups.json`, `model_version.json`;
+plus an auto-generated `create_model.py` loader in the output dir.
+`syslab_pandapower` is a public repo — check the diff before committing
+generated files.
 
 ## See also
 

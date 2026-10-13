@@ -5,11 +5,13 @@ Usage::
     python -m syslab_pandapower_builder.build_model \
         --conf-dir syslab-master-conf/conf \
         --output-dir syslab_pandapower \
-        --valid-from 2023-08-15
+        --valid-from 2023-08-15 [--valid-to DATE] [--notes TEXT]
 
 Outputs written to ``<output-dir>/``:
     model_data/syslab_grid.json       — serialized pandapower network
     model_data/switch_name_map.json   — BRK name → switch index mapping
+    model_data/converter_connections.json — B2B converter definitions
+    model_data/breaker_groups.json    — breaker groups + inline ports
     model_data/model_version.json     — version/validity metadata
     create_model.py                   — thin loader (auto-generated)
 """

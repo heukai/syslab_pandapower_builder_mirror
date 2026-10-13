@@ -4,16 +4,18 @@ This package reads hardware.xml files (breaker topology) and curated
 engineering data files (cables, non-breaker connections, cable parameters,
 converter connections) to produce:
 
-- A pandapower model (both Python source and serialized JSON)
+- A serialized pandapower model (syslab_grid.json)
 - A BRK-name-to-switch-index mapping table (switch_name_map.json)
 - A converter connections manifest (converter_connections.json)
+- Breaker groups and inline ports (breaker_groups.json)
 - A model version manifest with validity time range (model_version.json)
+- A thin ``create_model.py`` loader (auto-generated)
 
 The outputs are committed to the ``syslab_pandapower`` repository.
 
 Data files
 ----------
-The ``data/`` directory contains four curated YAML input files:
+The ``data/`` directory contains five curated YAML input files:
 
 - **cable_types.yaml** — Electrical parameters for cable types used in
   the SYSLAB grid (impedance, capacitance, ampacity).
@@ -25,6 +27,10 @@ The ``data/`` directory contains four curated YAML input files:
 - **converter_connections.yaml** — Back-to-back (B2B) converter
   definitions.  These devices electrically *isolate* primary and
   secondary sides and are NOT modeled as pandapower lines.  See below.
+- **breaker_groups.yaml** — Named breaker groups (one per switchboard plus
+  the 319-3/319-4 crossbar) with descriptions, default states and
+  ``max_closed`` interlocks, plus inline-port definitions for cable plug
+  points.  Serialized to ``breaker_groups.json``.
 
 Converter modeling
 ------------------
@@ -56,9 +62,13 @@ Build workflow::
 
     python -m syslab_pandapower_builder.build_model \\
         --conf-dir syslab-master-conf/conf \\
+        --output-dir syslab_pandapower \\
         --valid-from 2023-08-15
 
-This produces all artifacts in ``syslab_pandapower/model_data/``.
+``--valid-from`` is required; ``--valid-to`` (default: open-ended) and
+``--notes`` are optional.  Run from the workspace root.  All artifacts are
+written to ``<output-dir>/model_data/`` (default output dir:
+``syslab_pandapower``).
 """
 
 __version__ = "0.1.0"
