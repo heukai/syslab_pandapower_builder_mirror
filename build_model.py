@@ -11,7 +11,8 @@ Outputs written to ``<output-dir>/``:
     model_data/syslab_grid.json       — serialized pandapower network
     model_data/switch_name_map.json   — BRK name → switch index mapping
     model_data/converter_connections.json — B2B converter definitions
-    model_data/breaker_groups.json    — breaker groups + inline ports
+    model_data/breaker_groups.json    — breaker groups + inline/socket ports
+    model_data/equipment_catalog.json — equipment + cable types for ports
     model_data/model_version.json     — version/validity metadata
     create_model.py                   — thin loader (auto-generated)
 """
@@ -25,9 +26,12 @@ from pathlib import Path
 
 import pandapower as pp
 
+from .hardware_parser import load_grid_switchboards
 from .builder import (
     create_syslab_model,
+    derive_socket_ports,
     load_breaker_groups,
+    load_equipment_catalog,
     save_model_version,
     save_switch_name_map,
 )
@@ -63,6 +67,18 @@ def load_switch_name_map() -> dict[str, int]:
     """Load the BRK-name → switch-index mapping table."""
     map_path = _MODEL_DIR / "switch_name_map.json"
     with open(map_path, encoding="utf-8") as f:
+        return json.load(f)
+
+
+def load_equipment_catalog() -> dict:
+    """Load the equipment catalog (``equipment`` list and ``cable_types``).
+
+    Returns empty containers if the file is absent.
+    """
+    cat_path = _MODEL_DIR / "equipment_catalog.json"
+    if not cat_path.exists():
+        return {"equipment": [], "cable_types": {}}
+    with open(cat_path, encoding="utf-8") as f:
         return json.load(f)
 
 
@@ -173,6 +189,7 @@ def main(argv: list[str] | None = None) -> None:
 
     # Save breaker groups + inline ports
     groups, ports = load_breaker_groups()
+    socket_ports = derive_socket_ports(load_grid_switchboards(conf_dir))
     bg_path = model_data_dir / "breaker_groups.json"
     with open(bg_path, "w", encoding="utf-8") as f:
         json.dump(
@@ -206,10 +223,27 @@ def main(argv: list[str] | None = None) -> None:
                     }
                     for p in ports
                 ],
+                "socket_ports": [
+                    {
+                        "name": p.name,
+                        "switchboard": p.switchboard,
+                        "bay": p.bay,
+                        "bus": p.bus,
+                        "switches": p.switches,
+                        "description": p.description,
+                    }
+                    for p in socket_ports
+                ],
             },
             f, indent=2,
         )
     print(f"  Written: {bg_path}")
+
+    # Save equipment catalog (devices/cables assignable to ports)
+    cat_path = model_data_dir / "equipment_catalog.json"
+    with open(cat_path, "w", encoding="utf-8") as f:
+        json.dump(load_equipment_catalog(), f, indent=2)
+    print(f"  Written: {cat_path}")
 
     # Save model version
     save_model_version(

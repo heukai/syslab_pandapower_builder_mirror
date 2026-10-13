@@ -24,7 +24,8 @@ ADR-0002 for the rationale):
   serialized model JSON.
 - `data/*.yaml` — the curated engineering data (`cables.yaml`,
   `cable_types.yaml`, `non_breaker_connections.yaml`,
-  `converter_connections.yaml`, `breaker_groups.yaml`).
+  `converter_connections.yaml`, `breaker_groups.yaml`) plus
+  `equipment_catalog.yaml` (flexibly deployed devices, see below).
   `non_breaker_connections.yaml` is currently empty (`connections: []`).
 - `tests/test_builder.py` — pytest coverage for the builder.
 
@@ -48,8 +49,23 @@ python -m syslab_pandapower_builder.build_model `
 | `--notes` | empty | Free text stored in `model_version.json` |
 
 Outputs in `model_data/`: `syslab_grid.json`, `switch_name_map.json`,
-`converter_connections.json`, `breaker_groups.json`, `model_version.json`;
+`converter_connections.json`, `breaker_groups.json` (breaker groups, inline
+ports and `socket_ports`), `equipment_catalog.json`, `model_version.json`;
 plus an auto-generated `create_model.py` loader in the output dir.
+
+## Ports and equipment catalog
+
+Temporary equipment is never wired into the model (syslab_data ADR-0004).
+Instead the build publishes the plug points and the devices that can be
+assigned to them:
+
+- **Inline ports** — curated in `breaker_groups.yaml` (24 on 319-3/319-4).
+- **Socket ports** — derived automatically from every `CEE*` bay with
+  breakers in `hardware.xml` (`derive_socket_ports`).
+- **Equipment catalog** — `data/equipment_catalog.yaml` + the standard
+  cable types, validated by `load_equipment_catalog`. Parameters of
+  `status: placeholder` entries are still to be supplied by SYSLAB staff.
+
 `syslab_pandapower` is a public repo — check the diff before committing
 generated files.
 

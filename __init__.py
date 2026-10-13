@@ -7,7 +7,8 @@ converter connections) to produce:
 - A serialized pandapower model (syslab_grid.json)
 - A BRK-name-to-switch-index mapping table (switch_name_map.json)
 - A converter connections manifest (converter_connections.json)
-- Breaker groups and inline ports (breaker_groups.json)
+- Breaker groups, inline ports and CEE socket ports (breaker_groups.json)
+- An equipment catalog for port assignments (equipment_catalog.json)
 - A model version manifest with validity time range (model_version.json)
 - A thin ``create_model.py`` loader (auto-generated)
 
@@ -15,7 +16,7 @@ The outputs are committed to the ``syslab_pandapower`` repository.
 
 Data files
 ----------
-The ``data/`` directory contains five curated YAML input files:
+The ``data/`` directory contains six curated YAML input files:
 
 - **cable_types.yaml** — Electrical parameters for cable types used in
   the SYSLAB grid (impedance, capacitance, ampacity).
@@ -33,7 +34,15 @@ The ``data/`` directory contains five curated YAML input files:
 - **breaker_groups.yaml** — Named breaker groups (one per switchboard plus
   the 319-3/319-4 crossbar) with descriptions, default states and
   ``max_closed`` interlocks, plus inline-port definitions for cable plug
-  points.  Serialized to ``breaker_groups.json``.
+  points.  Serialized to ``breaker_groups.json``.  CEE socket ports are
+  not listed here; they are derived from the ``CEE*`` bays in
+  ``hardware.xml``.
+- **equipment_catalog.yaml** — Lab-owned devices that are deployed
+  flexibly (mobile loads, inline impedance, mobile converter).  Not part
+  of the grid model; assigned to ports per experiment (syslab_data
+  ADR-0004).  Published as ``equipment_catalog.json`` together with the
+  cable types.  Entries with ``status: placeholder`` still need their
+  parameters filled in.
 
 Converter modeling
 ------------------

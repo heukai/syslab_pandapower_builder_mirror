@@ -1,0 +1,70 @@
+# Equipment catalog - lab-owned devices that are deployed flexibly
+#
+# These are NOT part of the background grid model.  They are the items a
+# user can assign to a port (inline port or CEE socket port) for one
+# experiment; see syslab_data ADR-0004.  Standard cable types come from
+# cable_types.yaml and are published together with this catalog in
+# model_data/equipment_catalog.json.
+#
+# Fixed converters (ABB B2B, Grid Emulator) stay in converter_connections.yaml.
+#
+# Fields
+#   id            stable identifier used in experiment port assignments
+#   kind          load | impedance | converter
+#   terminals     1 (socket-type) or 2 (inline-type)
+#   ports         port kinds the device can be plugged into: socket | inline
+#   parameters    electrical data; null = not yet filled in
+#   status        placeholder = quantity/name known, parameters still to be
+#                 supplied by SYSLAB staff (do not rely on null values)
+#
+# Source: SYSLAB staff.  Parameters marked null must be reviewed and filled
+# in before the entry is used for simulation.
+
+equipment:
+
+  # -- Mobile loads (three units, controllable like the dump load) --
+  - id: mobile_load_1
+    name: "Mobile Load 1"
+    kind: load
+    terminals: 1
+    ports: [socket, inline]
+    parameters: {p_max_kw: null, q_max_kvar: null, controllable: true}
+    status: placeholder
+
+  - id: mobile_load_2
+    name: "Mobile Load 2"
+    kind: load
+    terminals: 1
+    ports: [socket, inline]
+    parameters: {p_max_kw: null, q_max_kvar: null, controllable: true}
+    status: placeholder
+
+  - id: mobile_load_3
+    name: "Mobile Load 3"
+    kind: load
+    terminals: 1
+    ports: [socket, inline]
+    parameters: {p_max_kw: null, q_max_kvar: null, controllable: true}
+    status: placeholder
+
+  # -- Inline impedance (two terminals, series element in a cable) --
+  - id: inline_impedance
+    name: "Inline impedance"
+    kind: impedance
+    terminals: 2
+    ports: [inline]
+    parameters: {r_ohm: null, x_ohm: null}
+    status: placeholder
+
+  # -- Mobile converter (two terminals, isolates its two sides) --
+  # Fed from an inline port; the other side either feeds back into an
+  # inline port or is plugged into a socket port as a load.  Always has to
+  # be declared manually because it splits islands.
+  - id: mobile_converter
+    name: "Mobile converter"
+    kind: converter
+    terminals: 2
+    ports: [inline, socket]
+    modes: [grid_forming, pq]
+    parameters: {s_max_kva: null}
+    status: placeholder

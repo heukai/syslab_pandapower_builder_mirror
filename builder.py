@@ -217,6 +217,97 @@ def load_breaker_groups(
     return groups, ports
 
 
+# -- Socket ports (CEE bays) ------------------------------------------
+
+#: Bays whose name starts with this prefix are CEE sockets where mobile
+#: equipment can be plugged in (syslab_data ADR-0004).
+SOCKET_BAY_PREFIX = "CEE"
+
+
+@dataclass(frozen=True)
+class SocketPortDef:
+    """A CEE socket bay: one-terminal plug point behind a bay breaker."""
+    name: str                   # e.g. "319-2 CEEx2"
+    switchboard: str            # e.g. "319-2"
+    bay: str                    # e.g. "CEEx2"
+    bus: str                    # PP bay bus name, e.g. "319-2_CEEx2"
+    switches: list[str]         # BRK names of the bay breakers
+    description: str
+
+
+def derive_socket_ports(
+    switchboards: dict[str, SwitchboardDef],
+) -> list[SocketPortDef]:
+    """Derive socket ports from ``hardware.xml`` bays named ``CEE*``.
+
+    Only bays with at least one breaker are included (bays without a
+    breaker are not modeled as buses).  Result is sorted by switchboard
+    and bay name.
+    """
+    ports: list[SocketPortDef] = []
+    for sw_name in sorted(switchboards):
+        sw = switchboards[sw_name]
+        for bay in sorted(sw.bays, key=lambda b: b.name):
+            if not bay.name.startswith(SOCKET_BAY_PREFIX) or not bay.breakers:
+                continue
+            bay_bus = _bay_bus_name(sw.name, bay.name)
+            switches = [
+                _derive_brk_name(_bb_bus_name(sw.name, brk.busbar), bay_bus)
+                for brk in bay.breakers
+            ]
+            ports.append(SocketPortDef(
+                name=f"{sw.name} {bay.name}",
+                switchboard=sw.name,
+                bay=bay.name,
+                bus=bay_bus,
+                switches=[s for s in switches if s],
+                description=(
+                    f"CEE socket {bay.name} on {sw.name}; plug point for "
+                    "mobile equipment or a cable to another port."
+                ),
+            ))
+    return ports
+
+
+# -- Equipment catalog ------------------------------------------------
+
+_EQUIPMENT_KINDS = {"load": 1, "impedance": 2, "converter": 2}
+_PORT_KINDS = {"socket", "inline"}
+
+
+def load_equipment_catalog(path: Path | None = None) -> dict:
+    """Load and validate the flexibly deployed equipment catalog.
+
+    Returns ``{"equipment": [...], "cable_types": {...}}`` where
+    ``cable_types`` is the content of ``cable_types.yaml`` (standard cables
+    that can be used for port-to-port connections).
+    """
+    if path is None:
+        path = _DATA_DIR / "equipment_catalog.yaml"
+    with open(path, encoding="utf-8") as f:
+        data = yaml.safe_load(f)
+
+    equipment = data.get("equipment") or []
+    seen: set[str] = set()
+    for e in equipment:
+        eid = e["id"]
+        if eid in seen:
+            raise ValueError(f"Duplicate equipment id: {eid!r}")
+        seen.add(eid)
+        kind = e["kind"]
+        if kind not in _EQUIPMENT_KINDS:
+            raise ValueError(f"{eid}: unknown kind {kind!r}")
+        if e["terminals"] != _EQUIPMENT_KINDS[kind]:
+            raise ValueError(
+                f"{eid}: kind {kind!r} needs {_EQUIPMENT_KINDS[kind]} terminal(s)"
+            )
+        bad = set(e["ports"]) - _PORT_KINDS
+        if bad or not e["ports"]:
+            raise ValueError(f"{eid}: invalid ports {e['ports']!r}")
+
+    return {"equipment": equipment, "cable_types": load_cable_types()}
+
+
 # ── PP naming helpers ────────────────────────────────────────────────
 
 
