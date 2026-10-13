@@ -22,8 +22,11 @@ The ``data/`` directory contains five curated YAML input files:
 - **cables.yaml** — Inter-substation cable definitions linking bus
   endpoints in different switchboards.
 - **non_breaker_connections.yaml** — Physical wiring that hardware.xml
-  does not describe (connections without breakers).  Currently empty;
-  back-to-back converters were moved to their own file.
+  does not describe (connections without breakers).  Currently empty: every
+  breakerless connection known today is a cable in ``cables.yaml`` (including
+  cables that land directly on a busbar).  Temporary equipment is NOT
+  listed here (see syslab_data ADR-0004).
+  Back-to-back converters were moved to their own file.
 - **converter_connections.yaml** — Back-to-back (B2B) converter
   definitions.  These devices electrically *isolate* primary and
   secondary sides and are NOT modeled as pandapower lines.  See below.
