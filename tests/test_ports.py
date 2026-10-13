@@ -11,6 +11,7 @@ from syslab_pandapower_builder.builder import (
     create_syslab_model,
     derive_socket_ports,
     load_equipment_catalog,
+    portable_source_path,
 )
 from syslab_pandapower_builder.hardware_parser import BayDef, BreakerDef, SwitchboardDef
 
@@ -79,6 +80,18 @@ class TestSocketPortsAgainstModel:
             assert len(p.switches) == 2
             for s in p.switches:
                 assert s in switch_map, f"{s} ({p.name})"
+
+
+class TestPortableSourcePath:
+    def test_relative_below_base(self, tmp_path):
+        (tmp_path / "syslab-master-conf" / "conf").mkdir(parents=True)
+        got = portable_source_path(tmp_path / "syslab-master-conf" / "conf", tmp_path)
+        assert got == "syslab-master-conf/conf"
+
+    def test_outside_base_keeps_last_two_parts(self, tmp_path):
+        got = portable_source_path(Path("C:/Users/someone/git/ws/syslab-master-conf/conf"), tmp_path)
+        assert got == "syslab-master-conf/conf"
+        assert "someone" not in got
 
 
 class TestEquipmentCatalog:

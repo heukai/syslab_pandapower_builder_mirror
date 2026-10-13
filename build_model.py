@@ -32,6 +32,7 @@ from .builder import (
     derive_socket_ports,
     load_breaker_groups,
     load_equipment_catalog,
+    portable_source_path,
     save_model_version,
     save_switch_name_map,
 )
@@ -250,7 +251,7 @@ def main(argv: list[str] | None = None) -> None:
         model_data_dir,
         valid_from=args.valid_from,
         valid_to=args.valid_to,
-        hardware_xml_source=str(conf_dir),
+        hardware_xml_source=portable_source_path(conf_dir),
         notes=args.notes,
     )
     print(f"  Written: {model_data_dir / 'model_version.json'}")

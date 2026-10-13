@@ -710,6 +710,22 @@ def save_switch_name_map(switch_map: dict[str, int], path: Path | str) -> None:
         json.dump(switch_map, f, indent=2, sort_keys=True)
 
 
+def portable_source_path(path: Path | str, base: Path | str | None = None) -> str:
+    """Return *path* relative to *base* (default: cwd) in POSIX form.
+
+    Used for provenance fields in published files so that local absolute
+    paths (user names, drive letters) do not leak into the public
+    ``syslab_pandapower`` repo.  If *path* is not below *base*, only its
+    last two components are kept (e.g. ``"syslab-master-conf/conf"``).
+    """
+    path = Path(path).resolve()
+    base = Path(base).resolve() if base is not None else Path.cwd().resolve()
+    try:
+        return path.relative_to(base).as_posix()
+    except ValueError:
+        return "/".join(path.parts[-2:])
+
+
 def save_model_version(
     output_dir: Path | str,
     *,
