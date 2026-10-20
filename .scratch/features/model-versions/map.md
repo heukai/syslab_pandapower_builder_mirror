@@ -27,6 +27,8 @@ Settled while charting (maintainer, 2026-10-20):
 - **The technical staff will contribute directly to future versioning.** Every format decision (the change record, the change
   log) is judged by whether staff can read and edit it without the code. The human-readable change log is the frame for the
   first conversation with them.
+- **NEVER PUSH, NEVER COMMIT to the lab repositories `syslab/` and `syslab-userspace/`** (read-only sources in the
+  workspace; see the workspace `AGENTS.md`). Tell every subagent.
 - **Rules that hold:** a declared configuration is applied as given; Q is not evidence; zero voltage means an open breaker.
 - **Repos:** builder (`kheu-home`, private), `syslab_pandapower` (public, `dev` only: no private data or paths), `syslab_data`
   (`kheu-personal`). Skills: grilling and domain-modeling for grilling tickets; prototype; research.
@@ -42,6 +44,8 @@ Settled while charting (maintainer, 2026-10-20):
   model: the current era's model is already behind its sources.
 
 ## Decisions so far
+
+- [Access to the figure repository and the hardware.xml history](issues/01-access-to-figure-repo-and-hardware-history.md): both lab repos are in the workspace, read-only (never push): `syslab/conf` has `hardware.xml` history from 2015, `syslab-userspace` has figures v4 to v7 and the Java label mappings; the `syslab-master-conf` copy is stale.
 
 ## Not yet specified
 
