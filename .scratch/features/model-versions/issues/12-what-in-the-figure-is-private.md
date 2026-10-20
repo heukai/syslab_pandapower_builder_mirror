@@ -1,7 +1,7 @@
 # What in the switchboard overview figure is private or operator-only?
 
 Type: research
-Status: open
+Status: resolved
 Blocked by: -
 
 ## Question
@@ -35,3 +35,31 @@ what the Java code reads from the figure.
 
 **Second pass pending** the access ticket: what the Java code binds (ids or labels), whether it holds a label -> breaker
 table already, and whether a running UI fills in a real user name. The ticket stays open until then.
+
+## Answer
+
+Both passes done (2026-10-20/21, agents). Findings: branch `research/figure-privacy`, commits `dd6f9e9` (samples) and
+`523af04` (Java mappings and figure history), `.scratch/features/model-versions/research/figure-privacy.md`; never merged.
+
+**The label map already exists.** `SwitchboardsOverviewDisplet.java` binds the figure by element id only (never by text or
+position). Each breaker is one entry (switchboard, busbar, bay, element id): 290 in the v7 era, no duplicates. Bay and busbar
+names are those of `hardware.xml`, so the model's breaker name follows directly (`{swbd}_BRK_{bay}_{busbar}`): 277 of 290 match
+`switch_name_map.json` exactly, 2 differ only by `Grid` vs `Busbar_Grid`, 11 are where the model lags `hardware.xml` (Boiler,
+119-10, Cable Q1); 18 model breakers have no symbol in the figure (B conductors of the X cables, some spares, EVSE_12 on 330-13).
+So the label map is generated from the Java table, not from geometry (revises the first pass's 85-90 % estimate); geometry is
+needed only for 316-2's unbound symbols (also missing from `hardware.xml`). Breaker element ids are stable v6 -> v7.
+
+**Versions tie together.** At every commit, every breaker id in the Java table exists in the figure it loads: v4 from
+2018-07-02 to 2020-06-23 (116 breakers, old busbar names), v6 from 2023-06-23 to 2026-08-13 (275-283), v7 from 2026-10-05 (290);
+v5 was never loaded. Figure, Java and `syslab/conf` changes land on the same days (2026-08-13 Boiler, 2026-10-05 119-10).
+
+**Privacy.** Every committed figure holds placeholders only; the operator UI writes the logged-in user name into `textUser` at
+runtime, in memory only, never to the file. No IPs, URLs, emails, hosts or credentials in any of the 40 Java versions. Strip list
+(first pass) confirmed, with additions: every committed v4 carries an absolute export path naming a personal account, so the
+final check rejects home-directory and drive-letter paths; the layers to keep are set per figure version (v4 differs); element
+ids must be kept unchanged (they are the join key to the Java table); the `Lines` layer stays; `OutOfService`, `Emstop` and the
+login layer are runtime state and go.
+
+**Disagreements for the data owner:** the Java code labels 330-13's former EVSE_12 bay `Cable_Q1` while syslab-51's
+`hardware.xml` still says `EVSE_12`; 119-10's emergency-stop id is a placeholder that is not in the figure; two line ids on the
+319-3 supply side are missing from v7.

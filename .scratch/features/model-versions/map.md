@@ -46,6 +46,7 @@ Settled while charting (maintainer, 2026-10-20):
 ## Decisions so far
 
 - [Access to the figure repository and the hardware.xml history](issues/01-access-to-figure-repo-and-hardware-history.md): both lab repos are in the workspace, read-only (never push): `syslab/conf` has `hardware.xml` history from 2015, `syslab-userspace` has figures v4 to v7 and the Java label mappings; the `syslab-master-conf` copy is stale.
+- [What in the switchboard overview figure is private or operator-only?](issues/12-what-in-the-figure-is-private.md): nothing private in the committed figures except a personal export path in v4; strip editor metadata and the runtime layers (login, out of service, emergency stop) by name, keep element ids; the Java displet already holds an element-id -> (switchboard, busbar, bay) table that maps 277 of 290 breakers straight to model names, so the label map comes from the Java code, not geometry.
 
 ## Not yet specified
 
