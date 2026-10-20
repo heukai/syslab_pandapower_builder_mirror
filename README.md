@@ -63,8 +63,8 @@ assigned to them:
 - **Inline ports** — curated in `breaker_groups.yaml` (24 on 319-3/319-4).
 - **Socket ports** — derived automatically from every `CEE*` bay with
   breakers in `hardware.xml` (`derive_socket_ports`).
-  In a CEE bay each meter belongs to a separate device, a plug, like the
-  meters in the cable bays belong to separate parallel cables. `hardware.xml`
+  In a CEE bay each meter belongs to a separate plug, i.e. a separate mobile
+  device, like the meters in the cable bays belong to separate parallel cables. `hardware.xml`
   defines neither plugs nor their busbar, so the model keeps one bus per
   socket; `data/socket_meters.yaml` (declared) lists the meters of each port
   as `meters` (`A`/`B` for the CEEx2 bays of 319-2 and 117-2, `*` for a bay

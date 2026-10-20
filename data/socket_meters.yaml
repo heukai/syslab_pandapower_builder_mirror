@@ -1,8 +1,9 @@
 # Meters of the CEE socket ports, declared by the maintainer (2026-10-20).
 #
-# In a CEE bay each meter belongs to a separate device, a plug: the meters of a
+# In a CEE bay each meter belongs to a separate plug, i.e. a separate mobile
+# device (the plug is where the mobile device is connected): the meters of a
 # CEE bay are separate plugs in the same way as the meters in the cable bays
-# are separate parallel cables (device = plug). A bay with a single meter has
+# are separate parallel cables (mobile device = plug). A bay with a single meter has
 # one plug (310-2, 117-5, 716-2: one plug, two breakers, one per busbar); the
 # CEEx2 bays of 319-2 and 117-2 have two plugs, one per busbar, each with its
 # own meter (.A/.B, _1/_2).

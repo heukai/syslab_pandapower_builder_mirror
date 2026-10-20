@@ -234,7 +234,7 @@ class SocketPortDef:
     switches: list[str]         # BRK names of the bay breakers
     description: str
     #: busbar letter -> measurement name ("A": "CEEx2.A"); a bay with a single
-    #: meter stores it under "*".  Each meter is a separate device (plug), like
+    #: meter stores it under "*".  Each meter is a separate plug (mobile device), like
     #: the meters of cable bays are separate parallel cables.  Empty when not
     #: declared.
     meters: dict[str, str] = field(default_factory=dict)
