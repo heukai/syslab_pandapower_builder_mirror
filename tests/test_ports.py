@@ -129,7 +129,7 @@ class TestEquipmentCatalog:
 
 
 class TestSocketMeters:
-    """One plug per socket; meters per busbar feed (data/socket_meters.yaml)."""
+    """Each meter of a CEE bay is a separate plug (data/socket_meters.yaml)."""
 
     @pytest.fixture(scope="class")
     def ports(self):

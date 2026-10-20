@@ -1,12 +1,16 @@
 # Meters of the CEE socket ports, declared by the maintainer (2026-10-20).
 #
-# Every socket is ONE physical plug behind two busbar breakers (Busbar_A, Busbar_B;
-# at most one closed). hardware.xml does not define plugs, so the model has one bus
-# per socket (see derive_socket_ports). This file only says which measurement belongs
-# to which busbar feed of that plug:
-#   meters: {A: <name>, B: <name>}   one meter per busbar (319-2 CEEx2, 117-2 CEEx2);
-#                                    the active one is on the closed busbar
-#   meter: <name>                    one meter for the plug (all other CEE bays)
+# In a CEE bay each meter belongs to a separate device, a plug: the meters of a
+# CEE bay are separate plugs in the same way as the meters in the cable bays
+# are separate parallel cables (device = plug). A bay with a single meter has
+# one plug (310-2, 117-5, 716-2: one plug, two breakers, one per busbar); the
+# CEEx2 bays of 319-2 and 117-2 have two plugs, one per busbar, each with its
+# own meter (.A/.B, _1/_2).
+# hardware.xml defines neither the plugs nor their busbar, and the model has
+# one bus per socket (see derive_socket_ports): this file only says which
+# measurement belongs to which plug.
+#   meters: {A: <name>, B: <name>}   one meter = one plug per busbar (CEEx2)
+#   meter: <name>                    one meter (plug) for the bay
 # Names are the data's measurement names without type prefix and unit
 # (P_CEEx2.B[kW] -> CEEx2.B).
 

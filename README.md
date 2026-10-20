@@ -63,10 +63,12 @@ assigned to them:
 - **Inline ports** — curated in `breaker_groups.yaml` (24 on 319-3/319-4).
 - **Socket ports** — derived automatically from every `CEE*` bay with
   breakers in `hardware.xml` (`derive_socket_ports`).
-  A socket is one plug behind two busbar breakers (at most one closed), so it
-  is one bus, not one per meter. Some sockets (319-2 and 117-2 `CEEx2`) have one
-  meter per busbar feed; `data/socket_meters.yaml` (declared) lists them as
-  `meters` on the port (`A`/`B`, or `*` for a single meter).
+  In a CEE bay each meter belongs to a separate device, a plug, like the
+  meters in the cable bays belong to separate parallel cables. `hardware.xml`
+  defines neither plugs nor their busbar, so the model keeps one bus per
+  socket; `data/socket_meters.yaml` (declared) lists the meters of each port
+  as `meters` (`A`/`B` for the CEEx2 bays of 319-2 and 117-2, `*` for a bay
+  with a single meter).
 - **Equipment catalog** — `data/equipment_catalog.yaml` + the standard
   cable types, validated by `load_equipment_catalog`. Parameters of
   `status: placeholder` entries are still to be supplied by SYSLAB staff.
