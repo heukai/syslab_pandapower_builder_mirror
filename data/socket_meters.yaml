@@ -1,14 +1,14 @@
 # Meters of the CEE socket ports, declared by the maintainer (2026-10-20).
 #
-# A CEE bay with an interlocked breaker pair has ONE plug that can be fed from
+# A CEE bay has a socket into which mobile equipment or a cable is plugged.
+# A bay with an interlocked breaker pair has ONE socket that can be fed from
 # either busbar (310-2, 117-5, 716-2, 319-2 CEE ...): one meter, one port.
-# A CEEx2 bay (319-2, 117-2) has NO interlock: it has TWO plugs, each tied to
-# one busbar and metered separately, so each plug is a port of its own
+# A CEEx2 bay (319-2, 117-2) has NO interlock: it has TWO sockets, each tied
+# to one busbar and metered separately, so each socket is a port of its own
 # ("319-2 CEEx2.A" on Busbar_A, "319-2 CEEx2.B" on Busbar_B; see
-# derive_socket_ports). In a CEE bay each meter belongs to a separate plug, i.e.
-# a separate mobile device, like the meters in the cable bays belong to separate
-# parallel cables (mobile device = plug).
-# hardware.xml defines neither the plugs nor their meters' busbars; this file
+# derive_socket_ports). Each meter of a CEE bay belongs to a separate socket,
+# like the meters in the cable bays belong to separate parallel cables.
+# hardware.xml defines neither the sockets nor their meters' busbars; this file
 # says which measurement belongs to which port. The name is the data's
 # measurement name without type prefix and unit (P_CEEx2.B[kW] -> CEEx2.B).
 

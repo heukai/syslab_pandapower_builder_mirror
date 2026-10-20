@@ -43,13 +43,13 @@ class TestDeriveSocketPorts:
         assert p.switchboard == "319-2"
         assert p.bay == "CEE"
         assert p.bus == "319-2_CEE"
-        assert p.plug == ""
+        assert p.busbar == ""
         assert p.switches == ["319_2_BRK_CEE_Busbar_A", "319_2_BRK_CEE_Busbar_B"]
 
-    def test_bay_without_interlock_has_one_plug_per_busbar(self):
+    def test_bay_without_interlock_has_one_socket_per_busbar(self):
         a, b = derive_socket_ports({"319-2": _sb("319-2", [_bay("CEEx2", interlock=False)])})
-        assert (a.name, a.plug, a.bus) == ("319-2 CEEx2.A", "A", "319-2_CEEx2.A")
-        assert (b.name, b.plug, b.bus) == ("319-2 CEEx2.B", "B", "319-2_CEEx2.B")
+        assert (a.name, a.busbar, a.bus) == ("319-2 CEEx2.A", "A", "319-2_CEEx2.A")
+        assert (b.name, b.busbar, b.bus) == ("319-2 CEEx2.B", "B", "319-2_CEEx2.B")
         assert a.switches == ["319_2_BRK_CEEx2_Busbar_A"]
         assert b.switches == ["319_2_BRK_CEEx2_Busbar_B"]
 
@@ -86,7 +86,7 @@ class TestSocketPortsAgainstModel:
     def test_switches_in_switch_map(self, model):
         _, switch_map, ports = model
         for p in ports:
-            assert len(p.switches) == (1 if p.plug else 2), p.name
+            assert len(p.switches) == (1 if p.busbar else 2), p.name
             for s in p.switches:
                 assert s in switch_map, f"{s} ({p.name})"
 
@@ -138,7 +138,7 @@ class TestEquipmentCatalog:
 
 
 class TestSocketMeters:
-    """Each meter of a CEE bay is a separate plug (data/socket_meters.yaml)."""
+    """Each meter of a CEE bay belongs to a separate socket (data/socket_meters.yaml)."""
 
     @pytest.fixture(scope="class")
     def ports(self):
@@ -153,18 +153,18 @@ class TestSocketMeters:
         assert len(ports) == 10
         assert all(p.meter for p in ports.values())
 
-    def test_ceex2_has_two_plugs_each_tied_to_a_busbar(self, ports):
-        assert (ports["319-2 CEEx2.A"].plug, ports["319-2 CEEx2.A"].meter) == ("A", "CEEx2.A")
-        assert (ports["319-2 CEEx2.B"].plug, ports["319-2 CEEx2.B"].meter) == ("B", "CEEx2.B")
+    def test_ceex2_has_two_sockets_each_tied_to_a_busbar(self, ports):
+        assert (ports["319-2 CEEx2.A"].busbar, ports["319-2 CEEx2.A"].meter) == ("A", "CEEx2.A")
+        assert (ports["319-2 CEEx2.B"].busbar, ports["319-2 CEEx2.B"].meter) == ("B", "CEEx2.B")
         assert ports["117-2 CEEx2.A"].meter == "CEEx2_1"
         assert ports["117-2 CEEx2.B"].meter == "CEEx2_2"
 
-    def test_interlocked_bays_have_one_plug_on_either_busbar(self, ports):
+    def test_interlocked_bays_have_one_socket_on_either_busbar(self, ports):
         for name, p in ports.items():
             if "CEEx2" not in name:
-                assert p.plug == "" and len(p.switches) == 2, name
+                assert p.busbar == "" and len(p.switches) == 2, name
 
-    def test_independent_plugs_are_separate_buses_with_one_switch(self):
+    def test_sockets_per_busbar_are_separate_buses_with_one_switch(self):
         net, switch_map, _ = create_syslab_model(_CONF_DIR)
         names = set(net.bus["name"])
         assert {"319-2_CEEx2.A", "319-2_CEEx2.B"} <= names

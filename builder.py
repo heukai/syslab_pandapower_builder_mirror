@@ -226,29 +226,30 @@ SOCKET_BAY_PREFIX = "CEE"
 
 @dataclass(frozen=True)
 class SocketPortDef:
-    """A CEE plug: one-terminal plug point behind one or two busbar breakers.
+    """A CEE socket: one-terminal port where mobile equipment or a cable is plugged in.
 
-    Most CEE bays have one plug and an interlocked breaker pair (the plug is
-    fed from either busbar).  A bay with two breakers and *no* interlock
-    (``CEEx2`` of 319-2 and 117-2) has two plugs, each tied to its own busbar
-    and metered separately; each plug is a port of its own (``plug`` = the
-    busbar letter).
+    Most CEE bays have one socket and an interlocked breaker pair (the socket
+    is fed from either busbar).  A bay with two breakers and *no* interlock
+    (``CEEx2`` of 319-2 and 117-2) has two sockets, each tied to its own
+    busbar and metered separately; each socket is a port of its own
+    (``busbar`` = the busbar letter).
     """
-    name: str                   # "319-2 CEE", or "319-2 CEEx2.A" for a plug tied to a busbar
+    name: str                   # "319-2 CEE", or "319-2 CEEx2.A" for a socket tied to a busbar
     switchboard: str            # e.g. "319-2"
     bay: str                    # e.g. "CEEx2"
     bus: str                    # PP bus name, e.g. "319-2_CEEx2.A"
-    switches: list[str]         # BRK names of the breakers feeding this plug
+    switches: list[str]         # BRK names of the breakers feeding this socket
     description: str
-    plug: str = ""              # busbar letter of a plug tied to one busbar, else ""
-    #: measurement name of the plug's meter ("CEEx2.A"), without type prefix and
-    #: unit; empty when not declared.  Each meter is a separate plug (mobile
-    #: device), like the meters of cable bays are separate parallel cables.
+    busbar: str = ""            # busbar letter of a socket tied to one busbar, else ""
+    #: measurement name of the socket's meter ("CEEx2.A"), without type prefix
+    #: and unit; empty when not declared.  Each meter of a CEE bay belongs to a
+    #: separate socket, like the meters of cable bays belong to separate
+    #: parallel cables.
     meter: str = ""
 
 
-def has_independent_plugs(bay: BayDef) -> bool:
-    """A CEE bay with two or more breakers and no interlock: one plug per breaker."""
+def has_socket_per_busbar(bay: BayDef) -> bool:
+    """A CEE bay with two or more breakers and no interlock: one socket per breaker."""
     return (
         bay.name.startswith(SOCKET_BAY_PREFIX)
         and len(bay.breakers) >= 2
@@ -279,7 +280,7 @@ def derive_socket_ports(
 
     Only bays with at least one breaker are included (bays without a
     breaker are not modeled as buses).  A bay without interlock and with two
-    breakers (:func:`has_independent_plugs`) gives one port per plug.  Result
+    breakers (:func:`has_socket_per_busbar`) gives one port per socket.  Result
     is sorted by switchboard and bay name.  ``meters`` (see
     :func:`load_socket_meters`) is attached by port name; a name that matches
     no port is an error.
@@ -292,15 +293,15 @@ def derive_socket_ports(
             if not bay.name.startswith(SOCKET_BAY_PREFIX) or not bay.breakers:
                 continue
             bay_bus = _bay_bus_name(sw.name, bay.name)
-            if has_independent_plugs(bay):
+            if has_socket_per_busbar(bay):
                 groups = [
                     (f"{bay.name}.{busbar_suffix(brk.busbar)}", busbar_suffix(brk.busbar), [brk])
                     for brk in bay.breakers
                 ]
             else:
                 groups = [(bay.name, "", list(bay.breakers))]
-            for plug_name, plug, brks in groups:
-                name = f"{sw.name} {plug_name}"
+            for socket_name, letter, brks in groups:
+                name = f"{sw.name} {socket_name}"
                 switches = [
                     _derive_brk_name(_bb_bus_name(sw.name, brk.busbar), bay_bus)
                     for brk in brks
@@ -309,13 +310,13 @@ def derive_socket_ports(
                     name=name,
                     switchboard=sw.name,
                     bay=bay.name,
-                    bus=_bay_bus_name(sw.name, plug_name),
+                    bus=_bay_bus_name(sw.name, socket_name),
                     switches=[s for s in switches if s],
                     description=(
-                        f"CEE socket {plug_name} on {sw.name}; plug point for "
+                        f"CEE socket {socket_name} on {sw.name}; plug point for "
                         "mobile equipment or a cable to another port."
                     ),
-                    plug=plug,
+                    busbar=letter,
                     meter=meters.pop(name, ""),
                 ))
     if meters:
@@ -511,7 +512,7 @@ def build_pp_network(
                 continue
             else:
                 bay_name = _bay_bus_name(sw.name, bay.name)
-                independent = has_independent_plugs(bay)
+                independent = has_socket_per_busbar(bay)
                 bay_idx = None
                 if not independent:
                     bay_idx = pp.create_bus(
@@ -521,7 +522,7 @@ def build_pp_network(
                     bb_name = _bb_bus_name(sw.name, brk.busbar)
                     brk_name = _derive_brk_name(bb_name, bay_name)
                     if independent:
-                        # one plug per breaker, each on its own bus
+                        # one socket per breaker, each on its own bus
                         bay_idx = pp.create_bus(
                             net,
                             name=_bay_bus_name(

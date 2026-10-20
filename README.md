@@ -63,12 +63,13 @@ assigned to them:
 - **Inline ports** — curated in `breaker_groups.yaml` (24 on 319-3/319-4).
 - **Socket ports** — derived automatically from every `CEE*` bay with
   breakers in `hardware.xml` (`derive_socket_ports`).
-  A CEE bay with an interlocked breaker pair has one plug that can be fed from
+  A CEE bay has a socket into which mobile equipment or a cable is plugged.
+  A bay with an interlocked breaker pair has one socket that can be fed from
   either busbar (one port). A bay with two breakers and no interlock (`CEEx2`
-  of 319-2 and 117-2) has two plugs, each tied to one busbar with its own
-  meter: one bus and one port per plug (`319-2 CEEx2.A`, `.B`). Each meter
-  belongs to a separate plug, i.e. a separate mobile device, like the meters
-  in the cable bays belong to separate parallel cables. `data/socket_meters.yaml`
+  of 319-2 and 117-2) has two sockets, each tied to one busbar with its own
+  meter: one bus and one port per socket (`319-2 CEEx2.A`, `.B`). Each meter
+  belongs to a separate socket, like the meters in the cable bays belong to
+  separate parallel cables. `data/socket_meters.yaml`
   (declared) names the meter of each port (`meter` in `breaker_groups.json`).
 - **Equipment catalog** — `data/equipment_catalog.yaml` + the standard
   cable types, validated by `load_equipment_catalog`. Parameters of
