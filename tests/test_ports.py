@@ -126,3 +126,43 @@ class TestEquipmentCatalog:
         p.write_text(yaml.safe_dump({"equipment": [e, e]}), encoding="utf-8")
         with pytest.raises(ValueError, match="Duplicate"):
             load_equipment_catalog(p)
+
+
+class TestSocketMeters:
+    """One plug per socket; meters per busbar feed (data/socket_meters.yaml)."""
+
+    @pytest.fixture(scope="class")
+    def ports(self):
+        from syslab_pandapower_builder.builder import load_socket_meters
+        from syslab_pandapower_builder.hardware_parser import load_grid_switchboards
+        return {
+            p.name: p
+            for p in derive_socket_ports(load_grid_switchboards(_CONF_DIR), load_socket_meters())
+        }
+
+    def test_every_port_has_meters(self, ports):
+        assert len(ports) == 8
+        assert all(p.meters for p in ports.values())
+
+    def test_per_busbar_meters_on_the_two_ceex2(self, ports):
+        assert ports["319-2 CEEx2"].meters == {"A": "CEEx2.A", "B": "CEEx2.B"}
+        assert ports["117-2 CEEx2"].meters == {"A": "CEEx2_1", "B": "CEEx2_2"}
+
+    def test_other_sockets_have_one_meter(self, ports):
+        for name, p in ports.items():
+            if name not in ("319-2 CEEx2", "117-2 CEEx2"):
+                assert list(p.meters) == ["*"], name
+
+    def test_busbar_letters_must_match_breakers(self):
+        from syslab_pandapower_builder.hardware_parser import load_grid_switchboards
+        with pytest.raises(ValueError, match="busbar"):
+            derive_socket_ports(
+                load_grid_switchboards(_CONF_DIR), {"319-2 CEEx2": {"C": "CEEx2.C"}}
+            )
+
+    def test_meter_and_meters_are_exclusive(self, tmp_path):
+        from syslab_pandapower_builder.builder import load_socket_meters
+        f = tmp_path / "m.yaml"
+        f.write_text("sockets:\n  - {port: x, meter: a, meters: {A: a}}\n")
+        with pytest.raises(ValueError, match="either"):
+            load_socket_meters(f)

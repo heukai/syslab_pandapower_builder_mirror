@@ -13,7 +13,7 @@ from __future__ import annotations
 
 import json
 import re
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 
 import pandapower as pp
@@ -233,17 +233,44 @@ class SocketPortDef:
     bus: str                    # PP bay bus name, e.g. "319-2_CEEx2"
     switches: list[str]         # BRK names of the bay breakers
     description: str
+    #: busbar letter -> measurement name ("A": "CEEx2.A"); one meter for the
+    #: whole plug is stored under "*".  Empty when not declared.
+    meters: dict[str, str] = field(default_factory=dict)
+
+
+def load_socket_meters(path: Path | None = None) -> dict[str, dict[str, str]]:
+    """Load ``socket_meters.yaml``: ``{port name: {busbar letter or "*": meter}}``.
+
+    A socket is one plug behind two busbar breakers; some have one meter per
+    busbar feed (``A``/``B``), the others one meter (``*``).
+    """
+    if path is None:
+        path = _DATA_DIR / "socket_meters.yaml"
+    with open(path, encoding="utf-8") as f:
+        data = yaml.safe_load(f)
+    out: dict[str, dict[str, str]] = {}
+    for e in data.get("sockets") or []:
+        port = e["port"]
+        if port in out:
+            raise ValueError(f"Duplicate socket port: {port!r}")
+        if ("meters" in e) == ("meter" in e):
+            raise ValueError(f"{port}: give either 'meters' or 'meter'")
+        out[port] = {"*": e["meter"]} if "meter" in e else dict(e["meters"])
+    return out
 
 
 def derive_socket_ports(
     switchboards: dict[str, SwitchboardDef],
+    meters: dict[str, dict[str, str]] | None = None,
 ) -> list[SocketPortDef]:
     """Derive socket ports from ``hardware.xml`` bays named ``CEE*``.
 
     Only bays with at least one breaker are included (bays without a
     breaker are not modeled as buses).  Result is sorted by switchboard
-    and bay name.
+    and bay name.  ``meters`` (see :func:`load_socket_meters`) is attached
+    by port name; busbar letters must match the bay's breakers.
     """
+    meters = meters or {}
     ports: list[SocketPortDef] = []
     for sw_name in sorted(switchboards):
         sw = switchboards[sw_name]
@@ -255,8 +282,14 @@ def derive_socket_ports(
                 _derive_brk_name(_bb_bus_name(sw.name, brk.busbar), bay_bus)
                 for brk in bay.breakers
             ]
+            name = f"{sw.name} {bay.name}"
+            port_meters = meters.get(name, {})
+            letters = {busbar_suffix(brk.busbar) for brk in bay.breakers}
+            bad = set(port_meters) - letters - {"*"}
+            if bad:
+                raise ValueError(f"{name}: meters for busbar {sorted(bad)} but breakers on {sorted(letters)}")
             ports.append(SocketPortDef(
-                name=f"{sw.name} {bay.name}",
+                name=name,
                 switchboard=sw.name,
                 bay=bay.name,
                 bus=bay_bus,
@@ -265,6 +298,7 @@ def derive_socket_ports(
                     f"CEE socket {bay.name} on {sw.name}; plug point for "
                     "mobile equipment or a cable to another port."
                 ),
+                meters=dict(port_meters),
             ))
     return ports
 

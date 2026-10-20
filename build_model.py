@@ -30,6 +30,7 @@ from .hardware_parser import load_grid_switchboards
 from .builder import (
     create_syslab_model,
     derive_socket_ports,
+    load_socket_meters,
     load_breaker_groups,
     load_equipment_catalog,
     portable_source_path,
@@ -235,7 +236,9 @@ def main(argv: list[str] | None = None) -> None:
 
     # Save breaker groups + inline ports
     groups, ports = load_breaker_groups()
-    socket_ports = derive_socket_ports(load_grid_switchboards(conf_dir))
+    socket_ports = derive_socket_ports(
+        load_grid_switchboards(conf_dir), load_socket_meters()
+    )
     bg_path = model_data_dir / "breaker_groups.json"
     with open(bg_path, "w", encoding="utf-8") as f:
         json.dump(
@@ -277,6 +280,7 @@ def main(argv: list[str] | None = None) -> None:
                         "bus": p.bus,
                         "switches": p.switches,
                         "description": p.description,
+                        "meters": p.meters,
                     }
                     for p in socket_ports
                 ],

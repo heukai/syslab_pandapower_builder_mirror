@@ -25,7 +25,8 @@ ADR-0002 for the rationale):
 - `data/*.yaml` — the curated engineering data (`cables.yaml`,
   `cable_types.yaml`, `non_breaker_connections.yaml`,
   `converter_connections.yaml`, `breaker_groups.yaml`) plus
-  `equipment_catalog.yaml` (flexibly deployed devices, see below).
+  `equipment_catalog.yaml` (flexibly deployed devices, see below) and
+  `socket_meters.yaml` (meters of the socket ports).
   `non_breaker_connections.yaml` is currently empty (`connections: []`).
 - `tests/test_builder.py` — pytest coverage for the builder.
 
@@ -62,6 +63,10 @@ assigned to them:
 - **Inline ports** — curated in `breaker_groups.yaml` (24 on 319-3/319-4).
 - **Socket ports** — derived automatically from every `CEE*` bay with
   breakers in `hardware.xml` (`derive_socket_ports`).
+  A socket is one plug behind two busbar breakers (at most one closed), so it
+  is one bus, not one per meter. Some sockets (319-2 and 117-2 `CEEx2`) have one
+  meter per busbar feed; `data/socket_meters.yaml` (declared) lists them as
+  `meters` on the port (`A`/`B`, or `*` for a single meter).
 - **Equipment catalog** — `data/equipment_catalog.yaml` + the standard
   cable types, validated by `load_equipment_catalog`. Parameters of
   `status: placeholder` entries are still to be supplied by SYSLAB staff.
