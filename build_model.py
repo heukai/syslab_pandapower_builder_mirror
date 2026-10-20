@@ -280,7 +280,8 @@ def main(argv: list[str] | None = None) -> None:
                         "bus": p.bus,
                         "switches": p.switches,
                         "description": p.description,
-                        "meters": p.meters,
+                        "plug": p.plug,
+                        "meter": p.meter,
                     }
                     for p in socket_ports
                 ],

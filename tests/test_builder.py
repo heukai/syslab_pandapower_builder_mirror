@@ -382,7 +382,7 @@ class TestCreateSyslabModel:
         assert isinstance(self.net, pp.pandapowerNet)
 
     def test_bus_count(self):
-        assert len(self.net.bus) == 183
+        assert len(self.net.bus) == 185  # CEEx2 bays: one bus per plug
 
     def test_switch_count(self):
         assert len(self.net.switch) == 297

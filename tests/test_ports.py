@@ -13,7 +13,7 @@ from syslab_pandapower_builder.builder import (
     load_equipment_catalog,
     portable_source_path,
 )
-from syslab_pandapower_builder.hardware_parser import BayDef, BreakerDef, SwitchboardDef
+from syslab_pandapower_builder.hardware_parser import BayDef, BreakerDef, InterlockDef, SwitchboardDef
 
 _CONF_DIR = Path(__file__).resolve().parents[2] / "syslab-master-conf" / "conf"
 
@@ -22,27 +22,36 @@ def _sb(name: str, bays: list[BayDef]) -> SwitchboardDef:
     return SwitchboardDef(name=name, busbars=["Busbar_A", "Busbar_B"], bays=bays)
 
 
-def _bay(name: str, with_breakers: bool = True) -> BayDef:
+def _bay(name: str, with_breakers: bool = True, interlock: bool = True) -> BayDef:
     brks = (
         [BreakerDef(f"{name}-A", "Busbar_A", name), BreakerDef(f"{name}-B", "Busbar_B", name)]
         if with_breakers else []
     )
-    return BayDef(name=name, breakers=brks)
+    ils = [InterlockDef(f"{name}-IL", f"{name}-A", f"{name}-B")] if brks and interlock else []
+    return BayDef(name=name, breakers=brks, interlocks=ils)
 
 
 class TestDeriveSocketPorts:
     def test_only_cee_bays_with_breakers(self):
-        sbs = {"319-2": _sb("319-2", [_bay("CEE"), _bay("CEEx2"), _bay("PV"), _bay("CEE_3", False)])}
+        sbs = {"319-2": _sb("319-2", [_bay("CEE"), _bay("CEEx1"), _bay("PV"), _bay("CEE_3", False)])}
         ports = derive_socket_ports(sbs)
-        assert [p.name for p in ports] == ["319-2 CEE", "319-2 CEEx2"]
+        assert [p.name for p in ports] == ["319-2 CEE", "319-2 CEEx1"]
 
     def test_fields_and_brk_names(self):
-        (p,) = derive_socket_ports({"319-2": _sb("319-2", [_bay("CEEx2")])})
+        (p,) = derive_socket_ports({"319-2": _sb("319-2", [_bay("CEE")])})
         assert isinstance(p, SocketPortDef)
         assert p.switchboard == "319-2"
-        assert p.bay == "CEEx2"
-        assert p.bus == "319-2_CEEx2"
-        assert p.switches == ["319_2_BRK_CEEx2_Busbar_A", "319_2_BRK_CEEx2_Busbar_B"]
+        assert p.bay == "CEE"
+        assert p.bus == "319-2_CEE"
+        assert p.plug == ""
+        assert p.switches == ["319_2_BRK_CEE_Busbar_A", "319_2_BRK_CEE_Busbar_B"]
+
+    def test_bay_without_interlock_has_one_plug_per_busbar(self):
+        a, b = derive_socket_ports({"319-2": _sb("319-2", [_bay("CEEx2", interlock=False)])})
+        assert (a.name, a.plug, a.bus) == ("319-2 CEEx2.A", "A", "319-2_CEEx2.A")
+        assert (b.name, b.plug, b.bus) == ("319-2 CEEx2.B", "B", "319-2_CEEx2.B")
+        assert a.switches == ["319_2_BRK_CEEx2_Busbar_A"]
+        assert b.switches == ["319_2_BRK_CEEx2_Busbar_B"]
 
     def test_sorted_by_switchboard_then_bay(self):
         sbs = {
@@ -65,8 +74,8 @@ class TestSocketPortsAgainstModel:
 
     def test_all_cee_bays_found(self, model):
         _, _, ports = model
-        assert {p.name for p in ports} >= {"319-2 CEE", "319-2 CEEx2"}
-        assert len(ports) == 8
+        assert {p.name for p in ports} >= {"319-2 CEE", "319-2 CEEx2.A", "319-2 CEEx2.B"}
+        assert len(ports) == 10
 
     def test_bus_exists_in_network(self, model):
         net, _, ports = model
@@ -77,7 +86,7 @@ class TestSocketPortsAgainstModel:
     def test_switches_in_switch_map(self, model):
         _, switch_map, ports = model
         for p in ports:
-            assert len(p.switches) == 2
+            assert len(p.switches) == (1 if p.plug else 2), p.name
             for s in p.switches:
                 assert s in switch_map, f"{s} ({p.name})"
 
@@ -140,29 +149,29 @@ class TestSocketMeters:
             for p in derive_socket_ports(load_grid_switchboards(_CONF_DIR), load_socket_meters())
         }
 
-    def test_every_port_has_meters(self, ports):
-        assert len(ports) == 8
-        assert all(p.meters for p in ports.values())
+    def test_every_port_has_a_meter(self, ports):
+        assert len(ports) == 10
+        assert all(p.meter for p in ports.values())
 
-    def test_per_busbar_meters_on_the_two_ceex2(self, ports):
-        assert ports["319-2 CEEx2"].meters == {"A": "CEEx2.A", "B": "CEEx2.B"}
-        assert ports["117-2 CEEx2"].meters == {"A": "CEEx2_1", "B": "CEEx2_2"}
+    def test_ceex2_has_two_plugs_each_tied_to_a_busbar(self, ports):
+        assert (ports["319-2 CEEx2.A"].plug, ports["319-2 CEEx2.A"].meter) == ("A", "CEEx2.A")
+        assert (ports["319-2 CEEx2.B"].plug, ports["319-2 CEEx2.B"].meter) == ("B", "CEEx2.B")
+        assert ports["117-2 CEEx2.A"].meter == "CEEx2_1"
+        assert ports["117-2 CEEx2.B"].meter == "CEEx2_2"
 
-    def test_other_sockets_have_one_meter(self, ports):
+    def test_interlocked_bays_have_one_plug_on_either_busbar(self, ports):
         for name, p in ports.items():
-            if name not in ("319-2 CEEx2", "117-2 CEEx2"):
-                assert list(p.meters) == ["*"], name
+            if "CEEx2" not in name:
+                assert p.plug == "" and len(p.switches) == 2, name
 
-    def test_busbar_letters_must_match_breakers(self):
+    def test_independent_plugs_are_separate_buses_with_one_switch(self):
+        net, switch_map, _ = create_syslab_model(_CONF_DIR)
+        names = set(net.bus["name"])
+        assert {"319-2_CEEx2.A", "319-2_CEEx2.B"} <= names
+        assert "319-2_CEEx2" not in names
+        assert "319_2_BRK_CEEx2_Busbar_A" in switch_map
+
+    def test_meter_for_unknown_port_is_rejected(self):
         from syslab_pandapower_builder.hardware_parser import load_grid_switchboards
-        with pytest.raises(ValueError, match="busbar"):
-            derive_socket_ports(
-                load_grid_switchboards(_CONF_DIR), {"319-2 CEEx2": {"C": "CEEx2.C"}}
-            )
-
-    def test_meter_and_meters_are_exclusive(self, tmp_path):
-        from syslab_pandapower_builder.builder import load_socket_meters
-        f = tmp_path / "m.yaml"
-        f.write_text("sockets:\n  - {port: x, meter: a, meters: {A: a}}\n")
-        with pytest.raises(ValueError, match="either"):
-            load_socket_meters(f)
+        with pytest.raises(ValueError, match="unknown ports"):
+            derive_socket_ports(load_grid_switchboards(_CONF_DIR), {"319-2 CEEx2": "x"})

@@ -1,27 +1,30 @@
 # Meters of the CEE socket ports, declared by the maintainer (2026-10-20).
 #
-# In a CEE bay each meter belongs to a separate plug, i.e. a separate mobile
-# device (the plug is where the mobile device is connected): the meters of a
-# CEE bay are separate plugs in the same way as the meters in the cable bays
-# are separate parallel cables (mobile device = plug). A bay with a single meter has
-# one plug (310-2, 117-5, 716-2: one plug, two breakers, one per busbar); the
-# CEEx2 bays of 319-2 and 117-2 have two plugs, one per busbar, each with its
-# own meter (.A/.B, _1/_2).
-# hardware.xml defines neither the plugs nor their busbar, and the model has
-# one bus per socket (see derive_socket_ports): this file only says which
-# measurement belongs to which plug.
-#   meters: {A: <name>, B: <name>}   one meter = one plug per busbar (CEEx2)
-#   meter: <name>                    one meter (plug) for the bay
-# Names are the data's measurement names without type prefix and unit
-# (P_CEEx2.B[kW] -> CEEx2.B).
+# A CEE bay with an interlocked breaker pair has ONE plug that can be fed from
+# either busbar (310-2, 117-5, 716-2, 319-2 CEE ...): one meter, one port.
+# A CEEx2 bay (319-2, 117-2) has NO interlock: it has TWO plugs, each tied to
+# one busbar and metered separately, so each plug is a port of its own
+# ("319-2 CEEx2.A" on Busbar_A, "319-2 CEEx2.B" on Busbar_B; see
+# derive_socket_ports). In a CEE bay each meter belongs to a separate plug, i.e.
+# a separate mobile device, like the meters in the cable bays belong to separate
+# parallel cables (mobile device = plug).
+# hardware.xml defines neither the plugs nor their meters' busbars; this file
+# says which measurement belongs to which port. The name is the data's
+# measurement name without type prefix and unit (P_CEEx2.B[kW] -> CEEx2.B).
 
 sockets:
-  - port: "319-2 CEEx2"
-    meters: {A: "CEEx2.A", B: "CEEx2.B"}
+  - port: "319-2 CEEx2.A"
+    meter: "CEEx2.A"
     source: "declared by the maintainer; hardware.xml lists a single instrument CEEx2, the data header has .A/.B"
-  - port: "117-2 CEEx2"
-    meters: {A: "CEEx2_1", B: "CEEx2_2"}
-    source: "declared by the maintainer (_1 = Busbar A, _2 = Busbar B); hardware.xml lists both instruments without a busbar"
+  - port: "319-2 CEEx2.B"
+    meter: "CEEx2.B"
+    source: "declared by the maintainer; see 319-2 CEEx2.A"
+  - port: "117-2 CEEx2.A"
+    meter: "CEEx2_1"
+    source: "declared by the maintainer (_1 = Busbar A); hardware.xml lists both instruments without a busbar"
+  - port: "117-2 CEEx2.B"
+    meter: "CEEx2_2"
+    source: "declared by the maintainer (_2 = Busbar B)"
   - {port: "319-2 CEE", meter: "CEE", source: "hardware.xml instrument"}
   - {port: "117-5 CEEx1_1", meter: "CEEx1_1", source: "hardware.xml instrument"}
   - {port: "117-5 CEEx1_2", meter: "CEEx1_2", source: "hardware.xml instrument"}

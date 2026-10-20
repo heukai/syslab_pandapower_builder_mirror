@@ -108,7 +108,6 @@ breaker_groups:
     interlocks:
       - {group: "Diesel", max_closed: 1, members: ["319_2_BRK_Diesel_Busbar_A", "319_2_BRK_Diesel_Busbar_B"]}
       - {group: "Dumpload", max_closed: 1, members: ["319_2_BRK_Dumpload_Busbar_A", "319_2_BRK_Dumpload_Busbar_B"]}
-      - {group: "CEEx2", max_closed: 1, members: ["319_2_BRK_CEEx2_Busbar_A", "319_2_BRK_CEEx2_Busbar_B"]}
       - {group: "CEE", max_closed: 1, members: ["319_2_BRK_CEE_Busbar_A", "319_2_BRK_CEE_Busbar_B"]}
       - {group: "Aircon", max_closed: 1, members: ["319_2_BRK_Aircon_Busbar_A", "319_2_BRK_Aircon_Busbar_B"]}
       - {group: "Cable_A1A", max_closed: 1, members: ["319_2_BRK_Cable_A1A_Busbar_A", "319_2_BRK_Cable_A1A_Busbar_B"]}
@@ -319,7 +318,6 @@ breaker_groups:
     interlocks:
       - {group: "Grid_2_AB", max_closed: 1, members: ["117_2_BRK_Grid_2_Busbar_A", "117_2_BRK_Grid_2_Busbar_B"]}
       - {group: "Battery", max_closed: 1, members: ["117_2_BRK_Battery_Busbar_A", "117_2_BRK_Battery_Busbar_B"]}
-      - {group: "CEEx2", max_closed: 1, members: ["117_2_BRK_CEEx2_Busbar_A", "117_2_BRK_CEEx2_Busbar_B"]}
       - {group: "Cable_C1A", max_closed: 1, members: ["117_2_BRK_Cable_C1A_Busbar_A", "117_2_BRK_Cable_C1A_Busbar_B"]}
       - {group: "Cable_C1B", max_closed: 1, members: ["117_2_BRK_Cable_C1B_Busbar_A", "117_2_BRK_Cable_C1B_Busbar_B"]}
       - {group: "Cable_C2A", max_closed: 1, members: ["117_2_BRK_Cable_C2A_Busbar_A", "117_2_BRK_Cable_C2A_Busbar_B"]}
