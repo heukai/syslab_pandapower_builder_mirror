@@ -40,13 +40,15 @@ Settled while charting (maintainer, 2026-10-20):
   permission.
 - **Future need this map must leave room for:** a user mode in `syslab_data` that shows the era's figure and lets the user change
   breakers in an existing data set by clicking. It needs the figure and label map per model version.
-- Version 7 of the SVG shows switchboards 316-2 and 119-10 and Cable Q1, which exist but are in neither `hardware.xml` nor the
-  model: the current era's model is already behind its sources.
+- The current era's model is behind its sources: 119-10 (`syslab-44`) and Cable Q1 are in `hardware.xml` since 2026-10-05 and
+  the Boiler bay since 2026-08-13, but not in the model; 316-2, PTX, P2XA/B and Cable M1 exist only in figure v7 (no
+  `hardware.xml`, no Java mapping). The builder reads `syslab/conf`, not the stale `syslab-master-conf/` copy.
 
 ## Decisions so far
 
 - [Access to the figure repository and the hardware.xml history](issues/01-access-to-figure-repo-and-hardware-history.md): both lab repos are in the workspace, read-only (never push): `syslab/conf` has `hardware.xml` history from 2015, `syslab-userspace` has figures v4 to v7 and the Java label mappings; the `syslab-master-conf` copy is stale.
 - [What in the switchboard overview figure is private or operator-only?](issues/12-what-in-the-figure-is-private.md): nothing private in the committed figures except a personal export path in v4; strip editor metadata and the runtime layers (login, out of service, emergency stop) by name, keep element ids; the Java displet already holds an element-id -> (switchboard, busbar, bay) table that maps 277 of 290 breakers straight to model names, so the label map comes from the Java code, not geometry.
+- [What does each source say, and since when?](issues/02-what-each-source-says-and-since-when.md): `syslab/conf` dates configuration changes best (figure and Java change the same day, headers follow months later); dated changes since 2015; AirCon was never on 715-2 since 2015 (registry claim contradicted); the 319_2 Grid-busbar alias is swapped; 316-2 exists only in figure v7.
 
 ## Not yet specified
 

@@ -35,3 +35,8 @@ rule (workspace `AGENTS.md`, this map's Notes).
 
 Consequences: the second passes of the source inventory and of the figure-privacy research can run; the safe-pipe ticket and
 the first-new-reference-era ticket lose this blocker.
+
+## Comments
+
+**Correction (2026-10-21, from the source inventory):** `syslab-32` is a booster-heater load, not a switchboard; 119-10 is
+`syslab-44` (added 2026-10-05). Eight nodes exist only in the repo, not only `syslab-32`.
