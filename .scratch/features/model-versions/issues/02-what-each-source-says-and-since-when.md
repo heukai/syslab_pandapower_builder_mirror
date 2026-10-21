@@ -70,3 +70,17 @@ bay) all three 2026-08-13; 119-10 and Cable Q1 all three 2026-10-05.
 **Open gaps:** AirCon before 2015; whether 316-2 is planned or not yet polled; the 330-13 end of Cable Q1 (config `EVSE_12`, Java
 `Cable_Q1`); whether the rock store is still connected; 330-12 `Spare_6/7` (dropped from logging 2026-04-19, still in config);
 configs before 2015 not examined.
+
+**Third pass (2026-10-21, main session): the v6 -> v7 era change across the three lab sources** (script
+`C:\Users\kheu\AppData\Local\Temp\v6v7\compare.py`; v6 end = conf `7c4a820a2^`, Java `5c6ee92`, figure `9c29ae3`, all
+2026-08-13; v7 = conf `aeecde1bc`, Java `d407f7f`, figure `7979a0f`, all 2026-10-05):
+
+- `hardware.xml`: one new grid node `syslab-44` (119-10) with 7 bays on one busbar (Battery_1..5, Cable_Q1, EVSE_12); nothing
+  removed elsewhere; no interlock change. The 330-13 end keeps `EVSE_12`.
+- Java: the same 7 breakers of 119-10 added; 330-13 `EVSE_12` A/B relabelled `Cable_Q1` A/B (same element ids); no element id
+  changed; the figure loaded switches from v6 to v7.
+- Figure: labels added 119-10, Battery 1-5, Fast charger site, Cable Q1, and the planned (greyed) 316-2, Building 316, P2XA/B,
+  PTX, M1; Ext. 117-2/117-5 become Cable X1/X2; Rock store and P2X dropped; legend text changes.
+- Not in any lab source: the cable Q1 itself (which bays it joins, type, length) is curated data for the builder.
+- Within the v6 era, one earlier change on one day in all three sources: 310-2 `Spare_1` -> `Boiler` (2026-08-13).
+- Builder side: its grid node list (`GRID_NODES`) lacks `syslab-44`, so a new node is itself part of a configuration change.

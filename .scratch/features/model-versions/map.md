@@ -29,6 +29,26 @@ Settled while charting (maintainer, 2026-10-20):
   first conversation with them.
 - **NEVER PUSH, NEVER COMMIT to the lab repositories `syslab/` and `syslab-userspace/`** (read-only sources in the
   workspace; see the workspace `AGENTS.md`). Tell every subagent.
+- **Maintainer clarifications (2026-10-21):**
+  - **Trust the sources, not our notes.** Where they disagree, `hardware.xml` is authoritative; its labels name bays and
+    breakers (they also drive the logging). Every contradiction is reported with its origin (FTP data, lab source, or our own
+    notes and model). Two traced so far, both from our side, not from the data: the AirCon move (from the registry text of
+    commit `3f6c51a` and US-50, a guess; probably the Gaia move was meant; a turbine's physical location can change without its
+    grid connection changing) and the `319_2.json` alias (the FTP headers of 2021-2023 say `Grid`/`Local`; our hand-written
+    alias of commit `a9d3a5c` sends `Grid` to `Busbar_A`, `hardware.xml` puts the Grid busbar on B).
+  - **Figure versions are configuration eras.** v7 is simply the next era after v6, not a contradiction: era changes are
+    found by comparing the v6 figure and the matching older Java and `hardware.xml` versions with the v7 ones.
+  - **Planned elements:** 316-2 (PTX, P2XA/B, Cable M1) is only planned and drawn greyed out; not part of a configuration
+    era until it appears in `hardware.xml`.
+  - **Cable Q1** (330-13 to 119-10, the Kempower fast charger) belongs to the new era; the 330-13 end keeps the
+    `hardware.xml` label `EVSE_12` until the lab renames it.
+  - **Lag and branches are flagged, not corrected:** a node reads `hardware.xml` only at restart, so logging can lag the
+    config; a node may run a feature-branch config for a while. Such periods are flagged as uncertain, not reconstructed.
+  - **Label mix-ups are uncertainty:** cables E1/E2 (and maybe others) went through transition periods with not fully correct
+    graphics or labels; no consistent ground truth exists for those periods, so they are flagged, not corrected.
+  - The rock store is cancelled; spares can disappear when they are allocated to a named unit.
+- **Branches:** fixes to the current model may be pushed as usual; the major overhaul (versioning mechanism, dated model
+  versions) is developed on a branch until complete.
 - **Rules that hold:** a declared configuration is applied as given; Q is not evidence; zero voltage means an open breaker.
 - **Repos:** builder (`kheu-home`, private), `syslab_pandapower` (public, `dev` only: no private data or paths), `syslab_data`
   (`kheu-personal`). Skills: grilling and domain-modeling for grilling tickets; prototype; research.
@@ -52,6 +72,7 @@ Settled while charting (maintainer, 2026-10-20):
 
 ## Not yet specified
 
+- **Configurations before 2015:** whether eras before the first `hardware.xml` (2015-08-03) are addressed at all.
 - **Verification per era:** how each era's model is checked against a baseline period of measured data (US-28), and how an
   unverified era is marked.
 - **Era boundaries from the data:** how the topology state index (US-49) and the header eras (US-23) feed or confirm era
