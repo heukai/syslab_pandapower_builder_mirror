@@ -1,7 +1,7 @@
 # Hypotheses for what one configuration change is
 
 Type: prototype
-Status: claimed
+Status: resolved
 Blocked by: 02
 
 ## Question
@@ -50,3 +50,33 @@ version, never edited by hand.
 
 Still open for the decision: the era start rule (first operational evidence, `hardware.xml` only, or any evidence), the
 naming scheme for scenario models (`7.1/summer-2027`), and whether 330-12 / 330-13 (2023) opened eras inside E6.
+
+## Answer
+
+Settled with the maintainer, 2026-10-22, over three prototype rounds (branch `prototype/configuration-change`: `b9b48d8`,
+`91edc49`, `cc4526f`; `.scratch/features/model-versions/prototype/configuration-change.html` and `CHANGELOG-proposal.md`).
+
+- **Two levels, not one record.** H1 (element edits) are the log lines; H3 (snapshots) describes an era; H2 (change events) was
+  unclear and is dropped.
+- **Configuration era = a time period marked by a major configuration change** (typically a new switchboard, or another major
+  reorganization; also planned equipment becoming built). Minor changes are logged inside the era. The major change is
+  announced by a new figure, evidenced by new data headers (often from a feature-branch config, well before master) and
+  materialized by `hardware.xml` in master; all of that belongs to the same era.
+- **Era start = first operational evidence** (headers or `hardware.xml`, whichever comes first); a figure alone only announces.
+- **Naming:** eras after the figure (E6, E7; E7b for a further era under the same figure); model versions per era (7.1, 7.2);
+  scenario models derived from a base version (`7.1/summer-2027`). Accepted.
+- **One base model per era**, improved over the era's life (calibrated at lab events such as yearly experiments), applying
+  anywhere in the era with fewer guarantees outside its validations; each model version records accommodated changes,
+  validation instances and optional validity periods; a model belongs to the era it models, not the one it was published in.
+  A date selects its era, then a model validated on it, else one whose validity covers it, else the latest base version.
+- **The 2023 rebuild is one era (E6) with a commissioning period** divided into **operational periods**, since experiments
+  ran during commissioning. From `syslab/conf` (master): 319-3 on `syslab-52` 2023-06-23 (rebuild; figure v6 and Java the
+  same day), 319-4 2023-07-02, 330-12 and 330-13 2023-10-06, 310-2 2023-10-19; figure v6 updated step by step (2023-10-05
+  as-built 330-12/330-13, 2023-10-19 final 310-2). Headers came later (319_4 2023-12-01, 330_13 2023-12-19, 330_12
+  2024-06-10, 310_2 2025-02-24). 776-1 left the config on 2024-05-23 (not a grid node of the model). Only other major change
+  since: 119-10 on 2026-10-05 (E7).
+- Glossary (`syslab_data/CONTEXT.md`): Major Configuration Change, Configuration Era, Commissioning Period, Operational
+  Period, Base Model, Model Version.
+
+For the decision ticket "What is one configuration change?": the record's fields, storage and format, how operational periods
+are recorded inside a commissioning period, and whether a model version can be validated per operational period.
