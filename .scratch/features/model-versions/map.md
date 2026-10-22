@@ -70,6 +70,7 @@ Settled while charting (maintainer, 2026-10-20):
 - [What in the switchboard overview figure is private or operator-only?](issues/12-what-in-the-figure-is-private.md): nothing private in the committed figures except a personal export path in v4; strip editor metadata and the runtime layers (login, out of service, emergency stop) by name, keep element ids; the Java displet already holds an element-id -> (switchboard, busbar, bay) table that maps 277 of 290 breakers straight to model names, so the label map comes from the Java code, not geometry.
 - [What does each source say, and since when?](issues/02-what-each-source-says-and-since-when.md): `syslab/conf` dates configuration changes best (figure and Java change the same day, headers follow months later); dated changes since 2015; AirCon was never on 715-2 since 2015 (registry claim contradicted); the 319_2 Grid-busbar alias is swapped; 316-2 exists only in figure v7.
 - [Hypotheses for what one configuration change is](issues/05-hypotheses-for-a-configuration-change.md): an era is a time period marked by a major configuration change (typically a new switchboard), announced by a figure, evidenced by headers, materialized by hardware.xml, starting at the first operational evidence; eras named after the figure (E6, E7, E7b); one base model per era improved as versions 7.1, 7.2, scenario models 7.1/x; the 2023 rebuild is one era with a commissioning period in operational periods.
+- [What is one configuration change?](issues/06-what-is-one-configuration-change.md): one YAML file per era in the builder (major change with evidence per step, operational periods, minor changes); one change line per change (id `E7-001`, date or window, bay-level element by hardware.xml names incl. asset links, change, evidence with role, origin, certainty, in force, proposed/confirmed); the builder proposes, a person confirms; each model version has a public manifest; human-facing parts are proposals to validate with the staff.
 
 ## Not yet specified
 
@@ -78,7 +79,6 @@ Settled while charting (maintainer, 2026-10-20):
   unverified era is marked.
 - **Era boundaries from the data:** how the topology state index (US-49) and the header eras (US-23) feed or confirm era
   boundaries.
-- **Asset links:** whether the device registry's dated asset links (US-48) become configuration changes in the same record.
 - **CI/CD pipeline (the goal, its own epic):** a change to `hardware.xml` triggers a builder update, which triggers an update of
   the `syslab_pandapower` model. This map only has to leave the forward build ready to be triggered that way; the pipeline
   itself is charted as a separate effort.
