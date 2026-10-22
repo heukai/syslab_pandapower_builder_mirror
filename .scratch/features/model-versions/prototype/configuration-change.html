@@ -3,44 +3,52 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Configuration Change Prototype</title>
+<title>Eras and Model Versions</title>
 <style>
   :root { --fg:#1d2433; --muted:#5b6475; --line:#d9dee7; --bg:#ffffff; --panel:#f6f8fb; --accent:#1f6feb; --warn:#9a6700; --bad:#b42318; --ok:#1a7f37; }
   @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --fg:#e6e9ef; --muted:#9aa3b2; --line:#30363d; --bg:#0d1117; --panel:#161b22; --accent:#58a6ff; --warn:#d29922; --bad:#f85149; --ok:#3fb950; } }
   :root[data-theme="dark"] { --fg:#e6e9ef; --muted:#9aa3b2; --line:#30363d; --bg:#0d1117; --panel:#161b22; --accent:#58a6ff; --warn:#d29922; --bad:#f85149; --ok:#3fb950; }
   body { margin:0; background:var(--bg); color:var(--fg); font:15px/1.5 system-ui, -apple-system, Segoe UI, sans-serif; }
   main { max-width:1150px; margin:0 auto; padding:24px 16px 64px; }
-  h1 { font-size:22px; margin:0 0 4px; } h2 { font-size:17px; margin:28px 0 8px; } h3 { font-size:15px; margin:16px 0 6px; }
+  h1 { font-size:22px; margin:0 0 4px; } h2 { font-size:17px; margin:28px 0 8px; } h3 { font-size:15px; margin:12px 0 6px; }
   .muted { color:var(--muted); } .tag { display:inline-block; border:1px solid var(--line); border-radius:999px; padding:0 8px; font-size:12px; margin-right:4px; }
   .warn { color:var(--warn); } .bad { color:var(--bad); } .ok { color:var(--ok); }
   .intro { background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:12px 16px; }
   button { font:inherit; border:1px solid var(--line); background:var(--bg); color:var(--fg); border-radius:6px; padding:6px 10px; margin:3px 4px 3px 0; cursor:pointer; text-align:left; }
   button:hover { border-color:var(--accent); } button.done { opacity:.45; } button.next { border-color:var(--accent); box-shadow:0 0 0 1px var(--accent) inset; }
   .tabs button.active { background:var(--accent); color:#fff; border-color:var(--accent); }
-  .grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(320px, 1fr)); gap:12px; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(330px, 1fr)); gap:12px; }
   .card { border:1px solid var(--line); border-radius:8px; padding:10px 14px; background:var(--bg); overflow-x:auto; }
+  .era { border-left:3px solid var(--accent); padding-left:10px; margin:10px 0; }
   table { border-collapse:collapse; width:100%; font-size:13px; } td, th { border-bottom:1px solid var(--line); padding:4px 6px; text-align:left; vertical-align:top; }
   pre { white-space:pre-wrap; font:13px/1.45 ui-monospace, Consolas, monospace; margin:0; }
   .changed { background:color-mix(in srgb, var(--accent) 12%, transparent); }
-  label { margin-right:14px; }
+  label { margin-right:14px; } input[type=date] { font:inherit; padding:3px 6px; }
+  details summary { cursor:pointer; color:var(--muted); }
 </style>
 </head>
 <body>
 <main>
-<h1>What is one configuration change? <span class="tag">PROTOTYPE, throwaway</span></h1>
-<p class="muted">Ticket "Hypotheses for what one configuration change is" (builder, map "dated model versions"). Real data: the v6 &rarr; v7 era change of 2026-10-05 and the Boiler rename of 2026-08-13, as seen in <code>syslab/conf</code> (hardware.xml), the Java displet, the overview figure, the FTP headers and our curated data.</p>
+<h1>Configuration eras and model versions <span class="tag">PROTOTYPE, throwaway</span></h1>
+<p class="muted">Tickets "Hypotheses for what one configuration change is" and "What should a human-readable change log look like". Round 2, after the maintainer's reaction of 2026-10-22. Real data: the Boiler rename (2026-08-13) and the v6 &rarr; v7 change (2026-10-05) as seen in <code>syslab/conf</code>, the Java displet, the overview figure, the FTP headers and our curated data; future steps and model numbers are illustrative.</p>
 <div class="intro">
-<b>The question.</b> The lab sources report changes separately and on different days. Which <b>record</b> should hold a configuration change, so that (a) configuration eras and dated model versions follow from it, (b) every claim keeps its source and date, (c) disagreements, lag and planned equipment stay visible, and (d) the technical staff can read and correct it?
-Below, the <b>same observations</b> are written down under three hypotheses side by side. Press the observation buttons (free play) or follow a scenario tab, and compare the records, the eras and the generated change log.
-<br><br><b>Rules applied</b> (maintainer): <code>hardware.xml</code> is authoritative for switchboards, bays and breakers; curated or declared data for cables; Java and figure are evidence; figure-only equipment is <i>planned</i>; logging lag and label mix-ups are flagged, never corrected.
+<b>The question.</b> Is this the right two-level structure for talking about the grid over time?
+<ol>
+<li><b>Configuration era</b> (from H3): a snapshot of the grid. A new era opens <b>only</b> when <code>hardware.xml</code> brings a new switchboard (a new node), or when planned equipment becomes built. Everything else (renames, bay edits, a new cable) is an <b>element edit</b> logged inside the era. A new <b>figure version</b> is logged as an indicator; it names the era but does not open one on its own.</li>
+<li><b>Model version</b>: many per era (improvements, scenarios), numbered inside their era (<code>7.1</code>, <code>7.2</code>). Each carries the changes it accommodates, the instances it was <b>validated</b> on, and optional <b>validity periods</b> inside its era. Models change at lab events (yearly experiments), not continuously.</li>
+</ol>
+<b>Era names</b> follow the figure: the era in force with figure v7 is <code>E7</code>; a further era while the figure is still v7 is <code>E7b</code>. <b>Rules applied</b>: <code>hardware.xml</code> is authoritative for switchboards, bays and breakers; curated or declared data for cables; Java and figure are evidence; figure-only equipment is planned; lag and label mix-ups are flagged, not corrected.
 </div>
 
 <h2>Settings</h2>
-<label><input type="checkbox" id="renameEra"> A rename (no topology change) opens a new era</label>
-<label><input type="checkbox" id="showJson"> Show raw records</label>
+<label><input type="checkbox" id="bayEra"> A new bay or cable on an existing switchboard also opens an era</label>
 
-<h2>Free play: what the sources report</h2>
+<h2>Free play</h2>
+<h3>What the sources report</h3>
 <div id="free"></div>
+<h3>What the modellers do</h3>
+<div id="freeModels"></div>
+<p><button onclick="resetAll();render()">Reset everything</button></p>
 
 <h2>Scenarios</h2>
 <div class="tabs" id="tabs"></div>
@@ -50,203 +58,237 @@ Below, the <b>same observations</b> are written down under three hypotheses side
 <p id="justChanged" class="muted"></p>
 <div class="grid" id="results"></div>
 
+<h2>Which model for a date?</h2>
+<div class="card"><input type="date" id="qdate" value="2026-06-25"> <span id="answer"></span></div>
+
 <h2>Generated change log (for the lab staff)</h2>
-<div class="grid" id="logs"></div>
+<div class="card"><pre id="log"></pre></div>
 </main>
 
 <script>
-/* ===== Pure module: lifts into the builder later. No DOM below this line until "Page". ===== */
-const ConfigChange = (() => {
-  const AUTH = { switchboard: "hardware.xml", bay: "hardware.xml", breaker: "hardware.xml", node: "hardware.xml", cable: "curated" };
-  const EVIDENCE = new Set(["java", "figure", "header"]);
+/* ===== Pure module: lifts into the builder later. No DOM in here. ===== */
+const Versioning = (() => {
+  const AUTH = { switchboard: "hardware.xml", node: "hardware.xml", bay: "hardware.xml", breaker: "hardware.xml", cable: "curated" };
 
-  // Observations: what one source reported in one commit/file. Real refs.
   const OBS = {
     boiler_conf:  { date:"2026-08-13", source:"hardware.xml", ref:"syslab 627b0011c", text:"310-2: bay Spare_1 renamed Boiler",
                     edits:[{op:"rename", kind:"bay", sw:"310-2", name:"Spare_1", to:"Boiler"}] },
     boiler_java:  { date:"2026-08-13", source:"java", ref:"syslab-userspace 5c6ee92", text:"displet: 310-2 Spare_1 -> Boiler",
                     edits:[{op:"rename", kind:"bay", sw:"310-2", name:"Spare_1", to:"Boiler"}] },
-    boiler_fig:   { date:"2026-08-13", source:"figure", ref:"overview v6 @ 9c29ae3", text:"figure v6: label Spare 1 -> Boiler",
+    boiler_fig:   { date:"2026-08-13", source:"figure", figure:"6", ref:"overview v6 @ 9c29ae3", text:"figure v6 (updated): label Spare 1 -> Boiler",
                     edits:[{op:"rename", kind:"bay", sw:"310-2", name:"Spare_1", to:"Boiler"}] },
-    q_conf:       { date:"2026-10-05", source:"hardware.xml", ref:"syslab 7c4a820a2", text:"new node syslab-44: switchboard 119-10 with 7 bays on busbar A",
+    q_conf:       { date:"2026-10-05", source:"hardware.xml", ref:"syslab 7c4a820a2", text:"new node syslab-44: switchboard 119-10 with 7 bays",
                     edits:[{op:"add", kind:"node", sw:"119-10", name:"syslab-44"}, {op:"add", kind:"switchboard", sw:"119-10", name:"119-10"},
                       ...["Battery_1","Battery_2","Battery_3","Battery_4","Battery_5","EVSE_12","Cable_Q1"].map(b => ({op:"add", kind:"bay", sw:"119-10", name:b}))] },
-    q_fig:        { date:"2026-10-05", source:"figure", ref:"overview v7 @ 910fb87", text:"figure v7: draws 119-10, Cable Q1; 316-2 (PTX, P2XA/B, M1) greyed out",
+    q_fig:        { date:"2026-10-05", source:"figure", figure:"7", ref:"overview v7 @ 910fb87", text:"NEW figure v7: draws 119-10, Cable Q1; 316-2 greyed out (planned)",
                     edits:[{op:"add", kind:"switchboard", sw:"119-10", name:"119-10"}, {op:"add", kind:"cable", sw:"*", name:"Q1"},
                       {op:"add", kind:"switchboard", sw:"316-2", name:"316-2", planned:true}, {op:"add", kind:"cable", sw:"*", name:"M1", planned:true}] },
     q_java:       { date:"2026-10-05", source:"java", ref:"syslab-userspace c32720d, d407f7f", text:"displet: 119-10 breakers; 330-13 EVSE_12 shown as Cable_Q1",
-                    edits:[{op:"add", kind:"switchboard", sw:"119-10", name:"119-10"},
-                      {op:"rename", kind:"bay", sw:"330-13", name:"EVSE_12", to:"Cable_Q1"}] },
+                    edits:[{op:"add", kind:"switchboard", sw:"119-10", name:"119-10"}, {op:"rename", kind:"bay", sw:"330-13", name:"EVSE_12", to:"Cable_Q1"}] },
     q_cable:      { date:"2026-10-05", source:"curated", ref:"builder cables.yaml (declared by maintainer)", text:"Cable Q1 joins 330-13 bay EVSE_12 to 119-10 bay Cable_Q1",
-                    edits:[{op:"add", kind:"cable", sw:"*", name:"Q1", ends:"330-13:EVSE_12 - 119-10:Cable_Q1"}] },
-    q_header:     { date:"2026-10-20", source:"header", ref:"column archive 119_10 (hypothetical date)", text:"first FTP day file of 119-10 seen (node restarted)",
+                    edits:[{op:"add", kind:"cable", sw:"*", name:"Q1"}] },
+    q_header:     { date:"2026-10-20", source:"header", ref:"column archive 119_10 (illustrative date)", text:"first FTP day file of 119-10 (node restarted)",
                     edits:[{op:"add", kind:"switchboard", sw:"119-10", name:"119-10"}] },
-    future_rename:{ date:"2026-12-01", source:"hardware.xml", ref:"(future, hypothetical)", text:"lab renames 330-13 EVSE_12 -> Cable_Q1 in hardware.xml",
+    future_rename:{ date:"2026-12-01", source:"hardware.xml", ref:"(future, illustrative)", text:"lab renames 330-13 EVSE_12 -> Cable_Q1 in hardware.xml",
                     edits:[{op:"rename", kind:"bay", sw:"330-13", name:"EVSE_12", to:"Cable_Q1"}] },
-    future_316:   { date:"2027-03-01", source:"hardware.xml", ref:"(future, hypothetical)", text:"316-2 appears in hardware.xml (built)",
+    future_316:   { date:"2027-03-01", source:"hardware.xml", ref:"(future, illustrative)", text:"316-2 appears in hardware.xml: planned becomes built",
+                    edits:[{op:"add", kind:"node", sw:"316-2", name:"syslab-xx"}, {op:"add", kind:"switchboard", sw:"316-2", name:"316-2"}, {op:"add", kind:"cable", sw:"*", name:"M1"}] },
+    future_fig8:  { date:"2027-03-01", source:"figure", figure:"8", ref:"(future, illustrative)", text:"NEW figure v8: 316-2 drawn as built",
                     edits:[{op:"add", kind:"switchboard", sw:"316-2", name:"316-2"}] },
   };
 
-  const BASELINE = [ // a small slice of the v6-era configuration that the examples touch
-    {kind:"switchboard", sw:"310-2", name:"310-2"}, {kind:"bay", sw:"310-2", name:"Spare_1"},
-    {kind:"switchboard", sw:"330-13", name:"330-13"}, {kind:"bay", sw:"330-13", name:"EVSE_12"},
-  ];
+  const BASE = { name:"E6", from:"2023-06-23", figure:"6", opened:"2023 rebuild (figure v6, Busbar A/B, PV)",
+    elements:["switchboard 310-2", "310-2 bay Spare_1", "switchboard 330-13", "330-13 bay EVSE_12", "(… the rest of the 2023 grid)"] };
 
-  const key = e => `${e.kind}|${e.sw}|${e.name}|${e.op}|${e.to||""}`;
-  const label = e => {
-    const where = e.sw === "*" ? "" : `${e.sw} `;
-    if (e.op === "rename") return `${e.kind} ${where}${e.name} → ${e.to}`;
-    if (e.kind === "node") return `${e.op} node ${e.name} (runs ${e.sw})`;
-    return `${e.op} ${e.kind} ${where}${e.kind === "switchboard" || e.kind === "node" ? (e.kind === "node" ? e.name : "") : e.name}`.replace(/\s+/g, " ").trim();
+  // Modeller actions: publish a model in the era in force at its date; validate on an instance; set a validity period.
+  const ACT = {
+    // "models" = a date inside the era the model represents; "date" = when it was published (can be later, even after the era ended).
+    m61:   { kind:"publish", date:"2026-10-13", models:"2026-06-25", purpose:"current published model: socket ports, equipment catalog", changes:["socket ports (CEE bays)", "equipment catalog"] },
+    v61:   { kind:"validate", model:"6.1", instance:{ name:"J1A inline converter test case", from:"2025-06-25", to:"2025-06-25" } },
+    m62:   { kind:"publish", date:"2026-10-20", models:"2026-06-25", purpose:"CEEx2 bays as two sockets, one per busbar (US-53 B)", changes:["319-2/117-2 CEEx2: one bus and port per socket"] },
+    v62:   { kind:"validate", model:"6.2", instance:{ name:"2026 J1A experiment (310-2 island 0.01 kW)", from:"2026-06-25", to:"2026-06-25" } },
+    p62:   { kind:"validity", model:"6.2", from:"2026-06-15", to:null, why:"second CEEx2 meter on 319-2 from 2026-06-15" },
+    m71:   { kind:"publish", date:"2026-10-25", models:"2026-10-05", purpose:"era 7 baseline: 119-10 and Cable Q1", changes:["new switchboard 119-10 (7 bays)", "cable Q1 (declared)"] },
+    m72:   { kind:"publish", date:"2027-06-30", models:"2027-06-20", scenario:true, purpose:"scenario: summer experiment set-up", changes:["port assignments of the experiment"] },
+    v72:   { kind:"validate", model:"7.2", instance:{ name:"summer 2027 experiment", from:"2027-06-20", to:"2027-06-24" } },
   };
 
-  // Gather evidence per element edit across all observations.
+  const keyOf = e => `${e.kind}|${e.sw}|${e.name}|${e.op}|${e.to||""}`;
+  const labelOf = e => e.op === "rename" ? `${e.sw} ${e.kind} ${e.name} → ${e.to}`
+    : e.kind === "node" ? `new node ${e.name} (runs ${e.sw})`
+    : e.kind === "switchboard" ? `new switchboard ${e.sw}`
+    : e.kind === "cable" ? `new cable ${e.name}` : `${e.sw} new ${e.kind} ${e.name}`;
+
+  // Element edits (the log lines): one per edit, dated by its authoritative source; others are evidence.
   function edits(obsIds) {
     const m = new Map();
     for (const id of obsIds) {
       const o = OBS[id];
       for (const e of o.edits) {
-        const k = key(e);
+        const k = keyOf(e);
         if (!m.has(k)) m.set(k, { edit:e, evidence:[] });
-        m.get(k).evidence.push({ source:o.source, date:o.date, ref:o.ref, planned:!!e.planned });
+        m.get(k).evidence.push({ source:o.source, date:o.date, planned:!!e.planned, figure:o.figure });
       }
     }
-    return [...m.values()];
-  }
-
-  // H1: one record per element edit, dated by its authoritative source.
-  function h1(obsIds) {
-    return edits(obsIds).map(({edit, evidence}) => {
-      const auth = evidence.find(v => v.source === AUTH[edit.kind] || (edit.kind === "cable" && v.source === "declared"));
+    return [...m.values()].map(({edit, evidence}) => {
+      const auth = evidence.filter(v => v.source === AUTH[edit.kind]).sort((a, b) => a.date.localeCompare(b.date))[0];
+      const wasPlanned = evidence.some(v => v.planned && (!auth || v.date <= auth.date));
+      const status = auth ? "in force" : evidence.every(v => v.planned) ? "planned" : "evidence only";
       const flags = [];
-      let status;
-      if (auth) status = "in force";
-      else if (evidence.every(v => v.planned)) status = "planned";
-      else status = "evidence only";
-      if (!auth && status === "evidence only") flags.push(`not in ${AUTH[edit.kind]}: ${edit.kind === "bay" ? "keep the hardware.xml name" : "await the authoritative source"}`);
+      if (!auth && status === "evidence only") flags.push(`not in ${AUTH[edit.kind]}: the model keeps the hardware.xml name`);
       const hdr = evidence.find(v => v.source === "header");
       if (auth && hdr && hdr.date > auth.date) flags.push(`logging lags config: ${auth.date} → ${hdr.date}`);
-      return { element: label(edit), edit, date: auth ? auth.date : null, origin: auth ? (auth.source === "curated" ? "declared" : "built") : "-", status, evidence, flags };
+      return { label:labelOf(edit), edit, date: auth ? auth.date : null, status, wasPlanned, evidence, flags };
     }).sort((a, b) => (a.date || "9999").localeCompare(b.date || "9999"));
   }
 
-  const isTopology = r => r.edit.op !== "rename";
+  const opensEra = (r, bayEra) => r.status === "in force" &&
+    ((r.edit.op === "add" && (r.edit.kind === "switchboard" || r.edit.kind === "node")) || r.wasPlanned ||
+     (bayEra && r.edit.op === "add" && (r.edit.kind === "bay" || r.edit.kind === "cable")));
 
-  // H2: one record per change set: in-force element records sharing a date form one event.
-  function h2(obsIds, renameOpensEra) {
-    const recs = h1(obsIds);
-    const sets = new Map();
-    for (const r of recs.filter(r => r.status === "in force")) {
-      if (!sets.has(r.date)) sets.set(r.date, { date:r.date, title:"", elements:[], sources:new Set(), flags:[] });
-      const s = sets.get(r.date); s.elements.push(r.element); r.evidence.forEach(v => s.sources.add(v.source)); s.flags.push(...r.flags);
-      s.opensEra = (s.opensEra || false) || isTopology(r) || renameOpensEra;
+  // Eras: snapshots; opened by era-opening edits; named after the figure version in force at that date.
+  function eras(obsIds, bayEra) {
+    const recs = edits(obsIds);
+    const figs = obsIds.map(id => OBS[id]).filter(o => o.figure && o.edits.length && o.text.startsWith("NEW figure")).map(o => ({ date:o.date, figure:o.figure }));
+    const figAt = d => [{date:BASE.from, figure:BASE.figure}, ...figs].filter(f => f.date <= d).sort((a, b) => a.date.localeCompare(b.date)).pop().figure;
+    const openDates = [...new Set(recs.filter(r => opensEra(r, bayEra)).map(r => r.date))].sort();
+    const list = [{ ...BASE, edits:[], indicators:[], to:null }];
+    const used = { [BASE.figure]: 1 };
+    for (const d of openDates) {
+      const f = figAt(d);
+      used[f] = (used[f] || 0) + 1;
+      const name = "E" + f + (used[f] > 1 ? String.fromCharCode(96 + used[f]) : "");
+      const why = recs.filter(r => r.date === d && opensEra(r, bayEra)).map(r => r.label + (r.wasPlanned ? " (was planned)" : ""));
+      list[list.length - 1].to = d;
+      list.push({ name, from:d, figure:f, opened:why.join("; "), edits:[], indicators:[], to:null });
     }
+    const eraAt = d => list.filter(e => e.from <= d).pop() || list[0];
+    for (const r of recs.filter(r => r.status === "in force")) eraAt(r.date).edits.push(r);
+    for (const f of figs) eraAt(f.date).indicators.push(`figure v${f.figure} appears ${f.date}`);
     const pending = recs.filter(r => r.status !== "in force");
-    for (const s of sets.values()) s.title = autoTitle(s.elements);
-    return { sets:[...sets.values()].map(s => ({...s, sources:[...s.sources]})), pending };
+    return { list, pending, eraAt };
   }
 
-  function autoTitle(els) {
-    const sw = els.filter(e => e.startsWith("add switchboard")).map(e => e.split(" ").pop());
-    const cab = els.filter(e => e.startsWith("add cable")).map(e => "cable " + e.split(" ").pop());
-    const ren = els.filter(e => e.includes("→"));
-    return [...sw.map(s => `new switchboard ${s}`), ...cab, ...ren.map(r => "rename " + r.replace(/^bay /, ""))].join("; ") || "changes";
-  }
-
-  // H3: one record per era = a full snapshot; changes are the diff between snapshots.
-  function h3(obsIds, renameOpensEra) {
-    const recs = h1(obsIds).filter(r => r.status === "in force");
-    const dates = [...new Set(recs.filter(r => isTopology(r) || renameOpensEra).map(r => r.date))].sort();
-    let state = BASELINE.map(e => ({...e}));
-    const snaps = [{ from:"(v6 baseline)", elements: state.map(fmt) }];
-    const applyRec = r => {
-      const e = r.edit;
-      if (e.op === "add" && !state.some(x => x.kind === e.kind && x.sw === e.sw && x.name === e.name)) state.push({kind:e.kind, sw:e.sw, name:e.name});
-      if (e.op === "rename") state = state.map(x => (x.kind === e.kind && x.sw === e.sw && x.name === e.name) ? {...x, name:e.to} : x);
-    };
-    const sorted = [...recs].sort((a, b) => a.date.localeCompare(b.date));
-    for (const d of dates) {
-      for (const r of sorted.filter(r => r.date <= d)) applyRec(r);
-      const prev = new Set(snaps[snaps.length - 1].elements);
-      const now = state.map(fmt);
-      snaps.push({ from:d, elements:now, added:now.filter(x => !prev.has(x)), removed:[...prev].filter(x => !now.includes(x)) });
+  // Model versions: numbered inside their era.
+  function models(obsIds, actIds, bayEra) {
+    const { list, eraAt } = eras(obsIds, bayEra);
+    const ms = [];
+    for (const id of actIds) {
+      const a = ACT[id];
+      if (a.kind === "publish") {
+        const era = eraAt(a.models);
+        const n = ms.filter(m => m.era === era.name).length + 1;
+        const num = era.name.replace(/^E/, "");
+        ms.push({ id:`${num}.${n}`, actId:id, era:era.name, eraFrom:era.from, eraTo:era.to, date:a.date, purpose:a.purpose, changes:a.changes, scenario:!!a.scenario, validated:[], validity:[] });
+      } else {
+        const m = ms.find(x => x.actId === "m" + a.model.replace(".", "")) || ms.find(x => x.id === a.model);
+        if (!m) continue;
+        if (a.kind === "validate") m.validated.push(a.instance);
+        if (a.kind === "validity") m.validity.push({ from:a.from, to:a.to, why:a.why });
+      }
     }
-    // renames that did not open an era still apply in place (alias within the era)
-    return snaps;
+    return { ms, list };
   }
-  const fmt = e => e.kind === "cable" ? `cable ${e.name}` : e.kind === "switchboard" ? `switchboard ${e.sw}` : e.kind === "node" ? `node ${e.name}` : `${e.sw} ${e.kind} ${e.name}`;
 
-  // Change log for the staff: generated from the H2 change sets plus pending evidence.
-  function changelog(obsIds, renameOpensEra) {
-    const { sets, pending } = h2(obsIds, renameOpensEra);
+  // Which model applies to a date: validated on it > valid period covers it > relevant for its era > none.
+  function select(date, obsIds, actIds, bayEra) {
+    const { ms, list } = models(obsIds, actIds, bayEra);
+    const era = list.filter(e => e.from <= date).pop();
+    if (!era) return { era:null, answer:"before the first recorded era" };
+    const inEra = ms.filter(m => m.era === era.name);
+    const val = inEra.filter(m => m.validated.some(i => i.from <= date && date <= i.to));
+    if (val.length) return { era:era.name, model:val[val.length - 1].id, level:"validated on this date", others:inEra.map(m => m.id) };
+    const per = inEra.filter(m => m.validity.some(p => p.from <= date && (!p.to || date <= p.to)));
+    if (per.length) return { era:era.name, model:per[per.length - 1].id, level:"valid by its validity period (not validated on this date)", others:inEra.map(m => m.id) };
+    // Fallback: the latest general model of the era whose validity periods (if any) do not exclude the date; scenario models never.
+    const general = inEra.filter(m => !m.scenario && (!m.validity.length || m.validity.some(p => p.from <= date && (!p.to || date <= p.to))));
+    if (general.length) return { era:era.name, model:general[general.length - 1].id, level:"relevant for the era only (no validation covers this date)", others:inEra.map(m => m.id) };
+    return { era:era.name, model:null, level:"no model published for this era yet", others:[] };
+  }
+
+  function changelog(obsIds, actIds, bayEra) {
+    const { list, pending } = eras(obsIds, bayEra);
+    const { ms } = models(obsIds, actIds, bayEra);
     const out = [];
-    for (const s of [...sets].reverse()) {
-      out.push(`${s.opensEra ? "NEW ERA from" : "Within the era, on"} ${s.date}: ${s.title}`);
-      for (const e of s.elements) out.push(`  - ${e}`);
-      out.push(`  Sources: ${s.sources.join(", ")}`);
-      for (const f of new Set(s.flags)) out.push(`  ! ${f}`);
+    for (const e of [...list].reverse()) {
+      out.push(`ERA ${e.name}  ${e.from} – ${e.to || "now"}   (overview figure v${e.figure})`);
+      out.push(`  Opened by: ${e.opened}`);
+      for (const i of e.indicators) out.push(`  Indicator: ${i}`);
+      if (e.edits.length) out.push("  Changes in this era:");
+      for (const r of e.edits) { out.push(`    ${r.date}  ${r.label}   [${[...new Set(r.evidence.map(v => v.source))].join(", ")}]`); r.flags.forEach(f => out.push(`               ! ${f}`)); }
+      const em = ms.filter(m => m.era === e.name);
+      if (em.length) out.push("  Model versions:");
+      for (const m of em) {
+        out.push(`    ${m.id}  (${m.date})  ${m.purpose}`);
+        m.changes.forEach(c => out.push(`         accommodates: ${c}`));
+        m.validated.forEach(i => out.push(`         validated on: ${i.name} (${i.from}${i.to !== i.from ? " – " + i.to : ""})`));
+        m.validity.forEach(p => out.push(`         valid: ${p.from} – ${p.to || "end of era"}  (${p.why})`));
+        if (!m.validated.length) out.push("         not validated yet");
+      }
       out.push("");
     }
-    const planned = pending.filter(p => p.status === "planned");
-    const ev = pending.filter(p => p.status === "evidence only");
-    if (ev.length) { out.push("Seen in the figure or display, not in hardware.xml (the model keeps the hardware.xml names):"); ev.forEach(p => out.push(`  - ${p.element} (${p.evidence.map(v => v.source + " " + v.date).join(", ")})`)); out.push(""); }
-    if (planned.length) { out.push("Planned, drawn greyed out, not built:"); planned.forEach(p => out.push(`  - ${p.element}`)); }
-    return out.join("\n") || "(nothing reported yet)";
+    const ev = pending.filter(p => p.status === "evidence only"), pl = pending.filter(p => p.status === "planned");
+    if (ev.length) { out.push("Seen in the figure or display only (the model keeps the hardware.xml names):"); ev.forEach(p => out.push(`  - ${p.label}`)); out.push(""); }
+    if (pl.length) { out.push("Planned, drawn greyed out, not built:"); pl.forEach(p => out.push(`  - ${p.label}`)); }
+    return out.join("\n");
   }
 
-  return { OBS, h1, h2, h3, changelog };
+  return { OBS, ACT, edits, eras, models, select, changelog };
 })();
 
 /* ===== Page: thin shell over the module ===== */
-const S = { seen: [], last: null };
+const S = { obs: [], act: [], last: null };
 const SCEN = [
-  { name:"Boiler rename", text:"All three lab sources rename the same bay on the same day. Is a rename a new era? Toggle the setting and watch the eras.",
-    steps:["boiler_conf","boiler_java","boiler_fig"] },
-  { name:"v6 → v7 (real)", text:"The fast charger 119-10 arrives on 2026-10-05. hardware.xml adds the switchboard; the figure adds it and draws the planned 316-2; the display relabels the 330-13 bay as Cable_Q1 although hardware.xml still says EVSE_12; the cable itself exists only in our curated data. Watch which claims are in force, which are only evidence, and what is planned.",
-    steps:["q_conf","q_fig","q_java","q_cable"] },
-  { name:"Logging lags", text:"The 119-10 node writes its first FTP file two weeks after the config commit (a node reads hardware.xml only at restart). The era starts at the config date; the lag is flagged.",
-    steps:["q_conf","q_cable","q_header"] },
-  { name:"Display first, config later", text:"The display calls the 330-13 bay Cable_Q1 from 2026-10-05; hardware.xml follows on (hypothetical) 2026-12-01. The rename becomes in force only then.",
-    steps:["q_conf","q_java","q_cable","future_rename"] },
-  { name:"Planned becomes built", text:"316-2 is only drawn (greyed) in v7. When it appears in hardware.xml (hypothetical), it moves from planned to in force and opens an era.",
-    steps:["q_fig","q_conf","q_cable","future_316"] },
+  { name:"Rename inside an era", text:"All three lab sources rename the 310-2 bay on one day. It is an element edit in era E6, not a new era.",
+    steps:[["o","boiler_conf"],["o","boiler_java"],["o","boiler_fig"]] },
+  { name:"v6 → v7 (real)", text:"hardware.xml adds the switchboard 119-10 (new node): era E7 opens, named after the new figure v7. The figure's greyed 316-2 stays planned; the display's relabel of the 330-13 bay is evidence only; the cable comes from curated data.",
+    steps:[["o","q_conf"],["o","q_fig"],["o","q_java"],["o","q_cable"]] },
+  { name:"Planned becomes built", text:"316-2 enters hardware.xml while the figure is still v7: a further era E7b. Then press the optional new figure v8 on the same day to see the era named E8 instead.",
+    steps:[["o","q_conf"],["o","q_fig"],["o","q_cable"],["o","future_316"],["o","future_fig8"]] },
+  { name:"Many models per era", text:"Era E6 gets model 6.1 (validated on the 2025 J1A test case) and 6.2 (two CEEx2 sockets, validated on the 2026 experiment, valid from the second meter). Era E7 starts with 7.1, then a scenario model 7.2 for a summer experiment. Then ask the date box: 2026-06-25, 2024-03-01, 2026-11-01, 2027-06-22.",
+    steps:[["o","q_conf"],["o","q_fig"],["o","q_cable"],["a","m61"],["a","v61"],["a","m62"],["a","v62"],["a","p62"],["a","m71"],["a","m72"],["a","v72"]] },
+  { name:"Logging lags", text:"The 119-10 node writes its first data file two weeks after its config commit (read at restart). The era starts at the config date; the lag is flagged.",
+    steps:[["o","q_conf"],["o","q_cable"],["o","q_header"]] },
 ];
 let tab = 0, stepIdx = 0;
-
-function dispatch(id) { if (!S.seen.includes(id)) S.seen.push(id); S.last = id; render(); }
-function reset() { S.seen = []; S.last = null; }
+function resetAll() { S.obs = []; S.act = []; S.last = null; }
+function doObs(id) { if (!S.obs.includes(id)) S.obs.push(id); S.last = ["o", id]; render(); }
+function doAct(id) { if (!S.act.includes(id)) S.act.push(id); S.last = ["a", id]; render(); }
 
 function render() {
-  const renameEra = document.getElementById("renameEra").checked;
-  const raw = document.getElementById("showJson").checked;
-  const O = ConfigChange.OBS;
+  const bayEra = document.getElementById("bayEra").checked;
+  const O = Versioning.OBS, A = Versioning.ACT;
   document.getElementById("free").innerHTML = Object.entries(O).map(([id, o]) =>
-    `<button class="${S.seen.includes(id) ? "done" : ""}" onclick="dispatch('${id}')"><b>${o.date}</b> · ${o.source}: ${o.text}<br><span class="muted">${o.ref}</span></button>`).join("") +
-    `<br><button onclick="reset();render()">Reset</button>`;
-  document.getElementById("tabs").innerHTML = SCEN.map((s, i) => `<button class="${i === tab ? "active" : ""}" onclick="tab=${i};stepIdx=0;reset();render()">${s.name}</button>`).join("");
+    `<button class="${S.obs.includes(id) ? "done" : ""}" onclick="doObs('${id}')"><b>${o.date}</b> · ${o.source}: ${o.text}<br><span class="muted">${o.ref}</span></button>`).join("");
+  const actText = a => a.kind === "publish" ? `publish a model on ${a.date} for the grid of ${a.models}: ${a.purpose}` : a.kind === "validate" ? `validate model ${a.model} on ${a.instance.name}` : `give model ${a.model} a validity period from ${a.from}`;
+  document.getElementById("freeModels").innerHTML = Object.entries(A).map(([id, a]) =>
+    `<button class="${S.act.includes(id) ? "done" : ""}" onclick="doAct('${id}')">${actText(a)}</button>`).join("");
+  document.getElementById("tabs").innerHTML = SCEN.map((s, i) => `<button class="${i === tab ? "active" : ""}" onclick="tab=${i};stepIdx=0;resetAll();render()">${s.name}</button>`).join("");
   const sc = SCEN[tab];
-  document.getElementById("scenario").innerHTML = `<p>${sc.text}</p>` + sc.steps.map((id, i) =>
-    `<button class="${i < stepIdx ? "done" : i === stepIdx ? "next" : ""}" onclick="stepIdx=${i + 1};dispatch('${id}')">${i + 1}. ${O[id].source}: ${O[id].text}</button>`).join("<br>");
-  document.getElementById("justChanged").textContent = S.last ? `Just added: ${O[S.last].source} on ${O[S.last].date} — ${O[S.last].text}` : "No observation yet: press a button.";
+  document.getElementById("scenario").innerHTML = `<p>${sc.text}</p>` + sc.steps.map(([t, id], i) =>
+    `<button class="${i < stepIdx ? "done" : i === stepIdx ? "next" : ""}" onclick="stepIdx=${i + 1};${t === "o" ? "doObs" : "doAct"}('${id}')">${i + 1}. ${t === "o" ? O[id].source + ": " + O[id].text : actText(A[id])}</button>`).join("<br>");
+  document.getElementById("justChanged").textContent = !S.last ? "Nothing yet: press a button." :
+    S.last[0] === "o" ? `Just added: ${O[S.last[1]].source} on ${O[S.last[1]].date} — ${O[S.last[1]].text}` : `Just done: ${actText(A[S.last[1]])}`;
 
-  const h1 = ConfigChange.h1(S.seen), h2 = ConfigChange.h2(S.seen, renameEra), h3 = ConfigChange.h3(S.seen, renameEra);
-  const lastRef = S.last ? O[S.last].ref : null;
-  const ev = r => r.evidence.map(v => `${v.source} ${v.date}`).join("<br>");
-  const card1 = `<div class="card"><h3>H1 · one record per element edit</h3><p class="muted">A record is "bay X added / renamed", dated by its authoritative source; every source that saw it is evidence. Eras = distinct dates.</p>
-    <table><tr><th>Element</th><th>Status</th><th>Date</th><th>Evidence</th></tr>${h1.map(r => `<tr class="${r.evidence.some(v => v.ref === lastRef) ? "changed" : ""}"><td>${r.element}${r.flags.map(f => `<div class="warn">! ${f}</div>`).join("")}</td><td class="${r.status === "in force" ? "ok" : r.status === "planned" ? "muted" : "warn"}">${r.status}</td><td>${r.date || "–"}</td><td>${ev(r)}</td></tr>`).join("")}</table>
-    ${raw ? `<pre>${JSON.stringify(h1, null, 1)}</pre>` : ""}</div>`;
-  const card2 = `<div class="card"><h3>H2 · one record per change event</h3><p class="muted">A record is one real-world event ("119-10 connected"), holding its element edits and sources; it opens an era unless it is only a rename (setting).</p>
-    ${h2.sets.map(s => `<p><b>${s.date}</b> ${s.opensEra ? '<span class="tag">opens era</span>' : '<span class="tag">within era</span>'}<br>${s.title}<br><span class="muted">${s.elements.length} element edits · sources: ${s.sources.join(", ")}</span>${[...new Set(s.flags)].map(f => `<div class="warn">! ${f}</div>`).join("")}</p>`).join("") || '<p class="muted">no event in force yet</p>'}
-    ${h2.pending.length ? `<p class="muted">Not in force: ${h2.pending.map(p => `${p.element} (${p.status})`).join("; ")}</p>` : ""}
-    ${raw ? `<pre>${JSON.stringify(h2, null, 1)}</pre>` : ""}</div>`;
-  const card3 = `<div class="card"><h3>H3 · one record per era (snapshot)</h3><p class="muted">A record is the whole configuration of an era; a change is the diff between two snapshots, computed, then annotated with sources.</p>
-    ${h3.map((s, i) => `<p><b>${i === 0 ? "baseline" : "era from " + s.from}</b> · ${s.elements.length} elements${s.added && s.added.length ? `<br><span class="ok">+ ${s.added.join(", ")}</span>` : ""}${s.removed && s.removed.length ? `<br><span class="bad">− ${s.removed.join(", ")}</span>` : ""}</p>`).join("")}
-    ${raw ? `<pre>${JSON.stringify(h3, null, 1)}</pre>` : ""}</div>`;
-  document.getElementById("results").innerHTML = card1 + card2 + card3;
-  document.getElementById("logs").innerHTML = `<div class="card"><pre>${ConfigChange.changelog(S.seen, renameEra)}</pre></div>`;
+  const { list, pending } = Versioning.eras(S.obs, bayEra);
+  const { ms } = Versioning.models(S.obs, S.act, bayEra);
+  const recs = Versioning.edits(S.obs);
+  const eraCard = `<div class="card"><h3>Configuration eras</h3>${list.map(e => `<div class="era"><b>${e.name}</b> <span class="muted">${e.from} – ${e.to || "now"} · figure v${e.figure}</span><br>Opened by: ${e.opened}${e.indicators.map(i => `<br><span class="muted">indicator: ${i}</span>`).join("")}<br><span class="muted">${e.edits.length} element edits · ${ms.filter(m => m.era === e.name).length} model versions</span></div>`).join("")}
+    ${pending.length ? `<p class="muted">Not in force: ${pending.map(p => `${p.label} (${p.status})`).join("; ")}</p>` : ""}</div>`;
+  const editCard = `<div class="card"><h3>Element edits (log lines)</h3><table><tr><th>Edit</th><th>Status</th><th>Date</th><th>Seen by</th></tr>${recs.map(r => `<tr><td>${r.label}${r.flags.map(f => `<div class="warn">! ${f}</div>`).join("")}</td><td class="${r.status === "in force" ? "ok" : r.status === "planned" ? "muted" : "warn"}">${r.status}${r.wasPlanned && r.status === "in force" ? " (was planned)" : ""}</td><td>${r.date || "–"}</td><td>${r.evidence.map(v => v.source + " " + v.date).join("<br>")}</td></tr>`).join("")}</table></div>`;
+  const modelCard = `<div class="card"><h3>Model versions</h3>${ms.length ? ms.map(m => `<p><b>${m.id}</b> <span class="tag">${m.era}</span> <span class="muted">${m.date}</span><br>${m.purpose}<br><span class="muted">accommodates: ${m.changes.join("; ")}</span><br>${m.validated.length ? m.validated.map(i => `<span class="ok">validated: ${i.name} (${i.from}${i.to !== i.from ? " – " + i.to : ""})</span>`).join("<br>") : '<span class="warn">not validated yet</span>'}${m.validity.map(p => `<br>valid ${p.from} – ${p.to || "end of era"} <span class="muted">(${p.why})</span>`).join("")}</p>`).join("") : '<p class="muted">No model published yet (use the modeller buttons).</p>'}</div>`;
+  document.getElementById("results").innerHTML = eraCard + modelCard + editCard;
+  document.getElementById("log").textContent = Versioning.changelog(S.obs, S.act, bayEra);
+  answer();
 }
-document.getElementById("renameEra").onchange = render;
-document.getElementById("showJson").onchange = render;
+function answer() {
+  const d = document.getElementById("qdate").value;
+  const r = Versioning.select(d, S.obs, S.act, document.getElementById("bayEra").checked);
+  document.getElementById("answer").innerHTML = !r.era ? r.answer :
+    `Era <b>${r.era}</b> · ${r.model ? `model <b>${r.model}</b>: ${r.level}` : r.level}${r.others && r.others.length > 1 ? ` <span class="muted">(models in this era: ${r.others.join(", ")})</span>` : ""}`;
+}
+document.getElementById("bayEra").onchange = render;
+document.getElementById("qdate").onchange = answer;
 render();
 </script>
 </body>

@@ -3,9 +3,13 @@
 > Throwaway proposal for the ticket "What should a human-readable change log look like for the lab staff?".
 > Built by hand from the research of 2026-10-20/21 (`research/source-inventory`, `research/figure-privacy`) and the
 > v6 -> v7 comparison. **Please correct anything that is wrong or missing**: write in the margin, strike out, add a line.
-> Newest first. One block per configuration era; inside it, one line per change.
+> Newest first. One block per configuration era (named after the overview figure: E7, E7b, E8 ...); inside it, the
+> changes of the era and the model versions published for it (7.1, 7.2 ...).
 
 **How to read it**
+
+- A **new era** opens only when `hardware.xml` brings a new switchboard (a new node), or when planned equipment becomes
+  built. Renames, new bays and cables are changes *inside* an era. A new figure version is noted; it names the era.
 
 - **Date** is the day the change entered `hardware.xml` (the lab's configuration), which is authoritative. Other sources
   (overview figure, display program, data files) are listed when they saw it, with their own date.
@@ -15,13 +19,19 @@
 
 ---
 
-## Planned, not built
+## Planned, not built (would open era E7b, or E8 with a new figure)
 
 | What | Seen in | Note |
 |---|---|---|
 | Switchboard **316-2** (bays PTX, P2XA, P2XB, Grid), **Cable M1** from 319-4 | figure v7 (greyed out), 2026-10-05 | Not in `hardware.xml`, not in the display program. |
 
-## Era from 2026-10-05: fast charger site 119-10 (overview figure v7)
+## Era E7, from 2026-10-05: fast charger site 119-10 (overview figure v7)
+
+Opened by: new switchboard 119-10 (node syslab-44) in `hardware.xml`.
+
+**Model versions:** 7.1 *(to be built)*: 119-10 and Cable Q1; not validated yet.
+
+**Changes:**
 
 | Date | Switchboard | Change | Sources | Certainty |
 |---|---|---|---|---|
@@ -31,7 +41,20 @@
 | 2026-10-05 | 117-2 / 117-5 | Figure labels "Ext. 117-2/117-5" now read "Cable X1/X2" (drawing only) | figure v7 | figure only |
 | *pending* | 119-10 | First data file from the new node not yet checked (a node reads its configuration at restart) | data files | open |
 
-## Era from 2023 rebuild to 2026-10-05 (overview figure v6)
+## Era E6, 2023-06-23 to 2026-10-05: after the 2023 rebuild (overview figure v6)
+
+Opened by: the 2023 rebuild (busbars A/B, PV), figure v6 and display program the same day.
+
+**Model versions** (numbers illustrative):
+
+| Model | Published | Accommodates | Validated on | Valid |
+|---|---|---|---|---|
+| 6.1 | 2026-10-13 | socket ports, equipment catalog | J1A inline converter test case, 2025-06-25 | the era |
+| 6.2 | 2026-10-20 | CEEx2 bays as two sockets, one per busbar | 2026 J1A experiment, 2026-06-25 (310-2 island closes) | from 2026-06-15 (second CEEx2 meter on 319-2) |
+
+Open in this era: the 319-3 island of 2026-06-25 does not close yet (being investigated).
+
+**Changes:**
 
 | Date | Switchboard | Change | Sources | Certainty |
 |---|---|---|---|---|
@@ -47,7 +70,9 @@
 | 2023-06-14 | 319-2 | 319-2 part of the rebuild | config | config only |
 | 2023-04-13 | 319-2 / 319-3 | CEEx2 bay on 319-2; 319-3 moves from node syslab-01 to its own node | config | config only |
 
-## Era 2018 to 2023 (overview figure v4)
+## Era E4, 2018 to 2023 (overview figure v4; figure v5 was never used)
+
+**Changes:**
 
 | Date | Switchboard | Change | Sources | Certainty |
 |---|---|---|---|---|
