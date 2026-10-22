@@ -1,7 +1,7 @@
 # What is one configuration change?
 
 Type: grilling
-Status: open
+Status: claimed
 Blocked by: 05
 
 ## Question
