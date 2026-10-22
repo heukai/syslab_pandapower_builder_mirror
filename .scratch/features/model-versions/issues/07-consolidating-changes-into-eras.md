@@ -1,7 +1,7 @@
 # How do changes from different sources consolidate into eras?
 
 Type: grilling
-Status: open
+Status: claimed
 Blocked by: 06
 
 ## Question
