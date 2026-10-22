@@ -32,3 +32,21 @@ and config later, planned becomes built.
 Agent's reading, for discussion (not a decision): H1 as the stored unit (small, one source line each, easy for staff to correct
 line by line), H2 as the human grouping that names an era and drives the change log, H3 derived by the builder for each model
 version, never edited by hand.
+
+**Maintainer's reactions (2026-10-22), reflected in prototype rounds 2-3 (`91edc49`, `cc4526f`):**
+
+- H2 (change events) was unclear and is dropped. The era is best described as in H3 (a snapshot) plus the change log;
+  H1 element edits stay as the log lines.
+- **Era = a time period marked by a major configuration change**, typically a new switchboard or another major
+  reorganization. "Major" resolves the conflict with "every change opens an era". The major change is announced by a new
+  figure, evidenced by new headers (the node often runs a feature-branch config well before master), and materialized by
+  `hardware.xml` in master; all of that belongs to the same era. Planned becoming built (316-2) is the important case.
+- Eras are named after the figure (E6, E7; E7b for a further era under the same figure).
+- **One base model per era**, improved over the era's life (calibrated at lab events such as yearly experiments), published
+  as model versions 7.1, 7.2, ...; scenario models derive from a base version. Each records accommodated changes,
+  validation instances and optional validity periods. The base model applies anywhere in its era, with fewer guarantees
+  outside its validations. A model belongs to the era it models, not the one it was published in.
+- Glossary updated in `syslab_data` (`45883a0`): Major Configuration Change, Configuration Era, Base Model, Model Version.
+
+Still open for the decision: the era start rule (first operational evidence, `hardware.xml` only, or any evidence), the
+naming scheme for scenario models (`7.1/summer-2027`), and whether 330-12 / 330-13 (2023) opened eras inside E6.
