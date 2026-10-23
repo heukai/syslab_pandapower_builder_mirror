@@ -44,3 +44,22 @@ and 330-13, so the island cannot be rebuilt here; the data work runs on the remo
 per time step against each bay's P (correlation, as the flow-partner tool does) to find the fluctuating part; only then the
 model side (lines and bays of 319-3/319-4). The result lands here; a model fix, if any, is pushed as a normal fix (not on the
 versioning branch).
+
+**Step 2 (2026-10-23): answers and tooling.** Maintainer: no known breaker issue; dig in together from the plots
+(topology, residuals, deviations), then compare with knowledge of the lab. Target confirmed: the island with the 319-3
+Grid slack, 06-18 UTC on 2026-06-25, re-run with today's model and library; cheap checks (time alignment, 1-min residual
+against each bay) first. The 330-13 rename and the 119-10 start date do not matter here (era 7 starts with figure v7's
+check-in, 2026-10-05, if a date is needed).
+
+New utility `syslab_data/utilities/island_residuals.py` (commit `9e12ced`): islands from the breaker states at `--at`,
+simulated with the current model at 1 min; writes `topology.png`, `residuals.csv`, `island_<n>.png` (measured vs simulated
+slack P/Q and the residual), `bays_<n>.csv`, `partners_<n>.csv` (P channels ranked by how their changes follow the
+residual, best lag), `breakers.csv`, `coverage.csv`.
+
+Local run on the five boards of the fixture (`outputs/island_residuals_20260625_local5boards/`, workspace, not versioned):
+incomplete by construction (117-x, 715-2, 716-2, 330-13 missing, their breakers count as open), but the island with the
+319-3 Grid slack already shows P residual mean 3.9 kW, RMSE 6.6 kW with Q matching closely, a measured slack P well below
+the simulation 08-13 UTC, and 319-3's C1A/C1B cable bays (towards 117-2) as top partners (corr 0.43, slope ~2).
+
+Next: remote task 5b in `syslab_data/docs/agents/remote-operations.md` runs it with all boards; the maintainer and the
+local session look at the output together.
