@@ -63,3 +63,19 @@ the simulation 08-13 UTC, and 319-3's C1A/C1B cable bays (towards 117-2) as top 
 
 Next: remote task 5b in `syslab_data/docs/agents/remote-operations.md` runs it with all boards; the maintainer and the
 local session look at the output together.
+
+**Step 3 (2026-10-24): full run on the data machine** (`outputs/island_residuals_20260625/`, workspace, not versioned; all
+twelve boards, today's model, no experiment setup):
+
+- **The 319-3 island closes now:** island0 (117-2, 319-2/3/4, 330-12, 715-2, 716-2; slack 319_3:Grid) P residual mean
+  -0.23 kW, RMSE 0.74 kW at 1 min, 30-min mean ~ -0.2 kW all day. The old ~5 kW (30 min) came before the two fixes (missing
+  measurement is NaN, not 0 / never another board's Grid bay; CEEx2 as two sockets).
+- **Remaining:** three spikes (~ -11 kW 13:55, -6 kW 15:15, -10 kW 16:00) and a ~ -0.7 kW step 14:00-16:30. Partners:
+  117_2 `P_CEEx2_2` (corr 0.98, slope 0.94) and cables C2A/C2B 117-2 Busbar A <-> 319-3 (corr 0.99, slope ±2: two parallel
+  cables). So a load metered as `CEEx2_2` flows through C2 into island0, which reaches 117-2 only via Busbar A, while
+  `CEEx2_2` was declared the **Busbar B** socket (open, socket B not in any island at 10:00). Hypotheses: the declared
+  117-2 meter mapping is reversed (`_2` = Busbar A), or the load moved sockets; to be decided by the maintainer.
+- 310-2: residual = `P_Cable_J1A` (slope 1.00): the 2026 mobile converter, not given to this run (no setup); with the
+  setup it closes (US-53 part A). 117-4/117-5: no residual because 117-4's Grid P is not in the data that day (shown as
+  missing, as intended). 117-6: no data that day.
+- Report fix: `bays_*.csv` now reads socket meters (it showed 117-2 CEEx2.A as unmeasured).
