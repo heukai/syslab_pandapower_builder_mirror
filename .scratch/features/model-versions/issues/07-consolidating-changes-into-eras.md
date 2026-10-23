@@ -18,7 +18,7 @@ evidence), not-in-force claims kept as lines, eras marked by a major change and 
 the 2023 rebuild as one era with a commissioning period. This ticket adds how a configuration is assembled per era:
 
 1. **`hardware.xml` of an operational period** = the last master commit inside that period (later commits in a period are
-   corrections); confirmed change lines override that revision where they say otherwise.
+   corrections); confirmed change entries override that revision where they say otherwise.
 2. **Curated data gets dates**: every entry of `cables.yaml`, `socket_meters.yaml`, breaker groups and inline ports carries
    `valid_from` / `valid_to`; the builder selects the entries in force for each operational period (Cable Q1 from 2026-10-05).
 3. **Headers ahead of master** (feature-branch configs): master's `hardware.xml` names win once master catches up; each
