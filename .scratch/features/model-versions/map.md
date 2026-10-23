@@ -48,7 +48,8 @@ Settled while charting (maintainer, 2026-10-20):
     graphics or labels; no consistent ground truth exists for those periods, so they are flagged, not corrected.
   - The rock store is cancelled; spares can disappear when they are allocated to a named unit.
 - **Branches:** fixes to the current model may be pushed as usual; the major overhaul (versioning mechanism, dated model
-  versions) is developed on a branch until complete.
+  versions) is developed on a branch until complete. The first era file on that branch is **E6** (maintainer, 2026-10-23):
+  the 319-3 breaker issue of 2026-06-25 sits in it, and its commissioning period exercises the operational periods.
 - **Rules that hold:** a declared configuration is applied as given; Q is not evidence; zero voltage means an open breaker.
 - **Repos:** builder (`kheu-home`, private), `syslab_pandapower` (public, `dev` only: no private data or paths), `syslab_data`
   (`kheu-personal`). Skills: grilling and domain-modeling for grilling tickets; prototype; research.
