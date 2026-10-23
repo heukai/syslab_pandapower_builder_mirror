@@ -73,7 +73,7 @@ Data files of the new switchboards start later: 319-4 2023-12-01, 330-13 2023-12
 | 6.0 | E6-001 ... | 2023-06-23 | The rebuild configuration (all switchboards above, by operational period) | configuration, figure v6, display | confirmed |
 | 6.1 | E6-020 | 2023-11-14 | 117-6: NEVIC bays renamed EVSE (data files use EVSE from 2025-02-14) | configuration; data | confirmed (logging lag) |
 | 6.2 | E6-021 | 2024-09-08 | 319-3: cables E1/E2 swapped in the configuration (as built differed from as planned; figure swapped C1/C2 and E1/E2 labels on 2024-06-19) | configuration, figure | **uncertain 2023-12-01 to 2024-09-07**: 319-3 E1/E2 breaker data may carry swapped names |
-| 6.3 | E6-022 | 2024-10-14 | 117-2: second CEEx2 meter (two sockets, one per busbar) | configuration; data from 2026-06-24 | confirmed (logging lag) |
+| 6.3 | E6-022 | 2024-10-14 | 117-2: second CEEx2 meter (two sockets, one per busbar; `CEEx2_2` on Busbar A, `CEEx2_1` on Busbar B, from the 2026-06-25 data) | configuration; data from 2026-06-24 | confirmed (logging lag) |
 | 6.4 | E6-023 | 2026-06-15 | 319-2: second CEEx2 meter (two sockets, one per busbar) | configuration; data from 2026-06-24 | confirmed |
 | 6.5 | E6-024 | 2026-08-13 | 310-2: bay Spare_1 renamed **Boiler** | configuration, figure v6, display (same day) | confirmed |
 
@@ -85,7 +85,8 @@ of the grid model); the rock store was cancelled.
 
 | Model | Published | Accommodates | Validated on | Note |
 |---|---|---|---|---|
-| 6.4.1 | 2026-10-20 | revisions up to 6.4 (CEEx2 as two sockets) | 2026 J1A experiment, 2026-06-25 (310-2 island closes) | **behind** from 2026-08-13 (Boiler, 6.5); the 319-3 island of 2026-06-25 does not close yet |
+| 6.4.1 | 2026-10-20 | revisions up to 6.4 (CEEx2 as two sockets) | 2026 J1A experiment, 2026-06-25 (310-2 island closes) | superseded by 6.4.2 |
+| 6.4.2 | 2026-10-24 | 6.4.1 + 117-2 CEEx2 meters corrected (`CEEx2_2` is the Busbar A socket, found in the data) | **2026-06-25, all islands close** (319-3 island RMSE 0.22 kW at 1 min; scenario 6.4.2/j1a-2026 for the converter) | **behind** from 2026-08-13 (Boiler, 6.5) |
 
 ---
 
@@ -112,4 +113,4 @@ Not examined (first `hardware.xml` in the lab repository: 2015-08-03).
 3. When was 119-10 first powered and logging (a feature-branch configuration before 2026-10-05)?
 4. 330-12 Spare_6/7: given to a named unit?
 5. 319-3 E1/E2 (and C1/C2): which labels were right between December 2023 and September 2024?
-6. 319-3: the breaker issue in the 2026-06-25 data (see the 319-3 island ticket).
+6. 117-2 CEEx2: is `CEEx2_2` the Busbar A socket, as the 2026-06-25 data shows?

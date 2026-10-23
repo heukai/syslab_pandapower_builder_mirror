@@ -1,7 +1,7 @@
 # Why does the 319_3 island not close on 2026-06-25?
 
 Type: task
-Status: claimed
+Status: resolved
 Blocked by: -
 
 ## Question
@@ -85,3 +85,24 @@ twelve boards, today's model, no experiment setup):
 `syslab_data` docs and tests aligned (`8c63b3b`). Confirmation run with the 2026 J1A set-up queued as remote task 5c
 (expected: 319-3 spikes gone, 310-2 island closed). If it confirms, this ticket resolves and the run is the first
 validation of the E6 model (6.4.1).
+
+## Answer
+
+Resolved with the maintainer, 2026-10-24.
+
+**What it was.** Not the model's lines or bays of 319-3/319-4. The old residual (RMSE ~5 kW at 30 min) predates two fixes:
+a missing Grid measurement counted as 0 and could be borrowed from another board (fixed in `syslab_pandapower`, 2026-10-19),
+and the CEEx2 bays modelled as one bus (US-53 part B). With those, the full run (all twelve boards, `island_residuals`)
+closed the island to RMSE 0.74 kW, and its remaining spikes pointed at the **117-2 CEEx2 meters, declared the wrong way
+round**: the load metered as `CEEx2_2` flows through cables C2A/C2B on 117-2 Busbar A while socket B is open. Swapped
+(builder `05a3884`, model `8376311`), confirmed by the maintainer.
+
+**Confirmation** (remote task 5c, 2026-06-25 06-18 UTC, all boards, 2026 J1A set-up; `outputs/island_residuals_20260625_v2/`,
+workspace, not versioned): every island closes. 319-3 island (117-2, 319-2/3/4, 330-12, 715-2, 716-2): P mean -0.16 kW,
+RMSE 0.22 kW at 1 min, no channel follows the residual any more (best partner corr 0.5, slope 0.06); 310-2: 0.01 / 0.06 kW;
+319-2 group 0.02 / 0.10 kW; 330-13 0.14 / 0.20 kW. A steady offset of ~ -0.16 kW remains in the 319-3 island (losses or
+meter offsets; below the level worth chasing now). 117-4/117-5 cannot be checked that day (117-4's Grid P is not in the data).
+
+**For the map.** This is the first validation of an era-6 model: the current published model with the meter fix, numbered
+**6.4.2** in the change-log draft (6.4.1 + the 117-2 meter correction), validated on the 2026 J1A experiment day
+(2026-06-25) with the J1A set-up as scenario `6.4.2/j1a-2026`. Tool for later validations: `syslab_data/utilities/island_residuals.py`.
