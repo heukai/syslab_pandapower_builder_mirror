@@ -1,0 +1,210 @@
+# Configuration era E6: after the 2023 rebuild (overview figure v6).
+#
+# One file per configuration era (map "dated model versions", builder .scratch/features/model-versions/).
+# A change entry is one configuration change; `status: confirmed` entries change model versions,
+# `proposed` ones wait for a person. Names are the hardware.xml names. Lab refs are commits of the
+# lab repositories (read-only; never pushed to); they stay in this private builder.
+# The form is a proposal to validate with the technical staff.
+
+era: E6
+title: After the 2023 rebuild
+figure: 6
+start: 2023-06-23
+end: 2026-10-05            # start of E7 (figure v7 check-in)
+
+major_change:
+  summary: >-
+    2023 rebuild: busbars renamed A/B, "Solar" bays renamed PV, 319-3 on its own node (syslab-52)
+    with the new switchboard driver; new switchboards commissioned in stages until 2023-10-19.
+  evidence:
+    - {role: materialized, source: hardware.xml, ref: "syslab 86f2e627d (319-2)", date: 2023-06-14}
+    - {role: materialized, source: hardware.xml, ref: "syslab ebb1fb939 (319-3 on syslab-52)", date: 2023-06-23}
+    - {role: announced, source: figure, ref: "syslab-userspace, display loads figure v6", date: 2023-06-23}
+    - {role: evidenced, source: header, ref: "column archive: header changes on five switchboards", date: 2023-07-01}
+
+# Commissioning period: switchboards in operation per period (grid nodes only; 776-1 is not a grid node).
+operational_periods:
+  - id: 6-a
+    from: 2023-06-23
+    switchboards: [117-2, 117-4, 117-5, 117-6, 319-2, 319-3, 715-2, 716-2]
+    note: rebuild; 319-3 left syslab-01 on 2023-04-13
+  - id: 6-b
+    from: 2023-07-02
+    switchboards: [117-2, 117-4, 117-5, 117-6, 319-2, 319-3, 319-4, 715-2, 716-2]
+  - id: 6-c
+    from: 2023-10-06
+    switchboards: [117-2, 117-4, 117-5, 117-6, 319-2, 319-3, 319-4, 330-12, 330-13, 715-2, 716-2]
+  - id: 6-d
+    from: 2023-10-19
+    switchboards: [117-2, 117-4, 117-5, 117-6, 310-2, 319-2, 319-3, 319-4, 330-12, 330-13, 715-2, 716-2]
+    note: end of commissioning (310-2 final configuration)
+
+changes:
+  - id: E6-001
+    date: 2023-06-23
+    element: {switchboard: 319-3}
+    change: moved
+    note: 319-3 to its own node syslab-52 (new switchboard driver)
+    evidence:
+      - {role: materialized, source: hardware.xml, ref: "syslab ebb1fb939"}
+    origin: discovered
+    certainty: confirmed
+    in_force: yes
+    status: confirmed
+  - id: E6-002
+    date: 2023-07-02
+    element: {switchboard: 319-4}
+    change: added
+    evidence:
+      - {role: materialized, source: hardware.xml, ref: "syslab e15deb9cc"}
+      - {role: evidenced, source: header, ref: "column archive 319_4", date: 2023-12-01}
+    origin: discovered
+    certainty: confirmed
+    in_force: yes
+    status: confirmed
+  - id: E6-003
+    date: 2023-10-06
+    element: {switchboard: 330-13}
+    change: added
+    evidence:
+      - {role: materialized, source: hardware.xml, ref: "syslab 317257c1e"}
+      - {role: announced, source: figure, ref: "figure v6 'as-built 330-12 and 330-13'", date: 2023-10-05}
+      - {role: evidenced, source: header, ref: "column archive 330_13", date: 2023-12-19}
+    origin: discovered
+    certainty: confirmed
+    in_force: yes
+    status: confirmed
+  - id: E6-004
+    date: 2023-10-06
+    element: {switchboard: 330-12}
+    change: added
+    evidence:
+      - {role: materialized, source: hardware.xml, ref: "syslab cf92b2f15"}
+      - {role: announced, source: figure, ref: "figure v6 'as-built 330-12 and 330-13'", date: 2023-10-05}
+      - {role: evidenced, source: header, ref: "column archive 330_12", date: 2024-06-10}
+    origin: discovered
+    certainty: confirmed
+    in_force: yes
+    status: confirmed
+  - id: E6-005
+    date: 2023-10-06
+    element: {asset: gaia1, switchboard: 330-12, bay: Gaia}
+    change: moved
+    note: Gaia wind turbine connected at 330-12 (left 715-2 in the rebuild); drawn 2023-06-23
+    evidence:
+      - {role: materialized, source: hardware.xml, ref: "syslab cf92b2f15"}
+      - {role: announced, source: figure, ref: "figure v6", date: 2023-06-23}
+      - {role: evidenced, source: header, ref: "column archive 330_12", date: 2024-06-10}
+    origin: discovered
+    certainty: confirmed
+    in_force: yes
+    status: proposed
+  - id: E6-006
+    date: 2023-10-19
+    element: {switchboard: 310-2}
+    change: added
+    evidence:
+      - {role: materialized, source: hardware.xml, ref: "syslab 92ce040cb, 523c680f0"}
+      - {role: announced, source: figure, ref: "figure v6 'final configuration of 310-2'", date: 2023-10-19}
+      - {role: evidenced, source: header, ref: "column archive 310_2", date: 2025-02-24}
+    origin: discovered
+    certainty: confirmed
+    in_force: yes
+    status: confirmed
+  - id: E6-007
+    date: 2023-11-14
+    element: {switchboard: 117-6, bay: "EVSE_01..EVSE_08"}
+    change: renamed
+    note: NEVIC bays renamed EVSE; data files use the new names from 2025-02-14
+    evidence:
+      - {role: materialized, source: hardware.xml, ref: "syslab a6107864b, d2aff19b5"}
+      - {role: evidenced, source: header, ref: "column archive 117_6", date: 2025-02-14}
+    origin: discovered
+    certainty: confirmed
+    flag: logging lags config (2023-11-14 to 2025-02-14)
+    in_force: yes
+    status: proposed
+  - id: E6-008
+    date: 2024-09-08
+    window: {from: 2023-12-01, to: 2024-09-08}
+    element: {switchboard: 319-3, bay: "Cable_E1A, Cable_E1B, Cable_E2A, Cable_E2B"}
+    change: renamed
+    note: E1/E2 swapped in the configuration (as built differed from as planned); figure swapped C1/C2 and E1/E2 labels 2024-06-19
+    evidence:
+      - {role: materialized, source: hardware.xml, ref: "syslab b736d2d87"}
+      - {role: displayed, source: figure, ref: "syslab-userspace 7c64e9a (label swap)", date: 2024-06-19}
+    origin: discovered
+    certainty: uncertain
+    flag: labels mixed up 2023-12-01 to 2024-09-07; 319-3 E1/E2 breaker data may carry swapped names; not corrected
+    in_force: yes
+    status: proposed
+  - id: E6-009
+    date: 2024-10-14
+    element: {switchboard: 117-2, bay: CEEx2}
+    change: retyped
+    note: second CEEx2 meter (two sockets, one per busbar); data files from 2026-06-24
+    evidence:
+      - {role: materialized, source: hardware.xml, ref: "syslab a96c88172, bc9af95d9"}
+      - {role: evidenced, source: header, ref: "column archive 117_2", date: 2026-06-24}
+    origin: discovered
+    certainty: confirmed
+    flag: logging lags config (2024-10-14 to 2026-06-24)
+    in_force: yes
+    status: confirmed
+  - id: E6-010
+    date: 2026-06-15
+    element: {switchboard: 319-2, bay: CEEx2}
+    change: retyped
+    note: second CEEx2 instrument in the configuration (two sockets, one per busbar)
+    evidence:
+      - {role: materialized, source: hardware.xml, ref: "syslab dfb7b96c1"}
+      - {role: evidenced, source: header, ref: "column archive 319_2", date: 2026-06-24}
+    origin: discovered
+    certainty: confirmed
+    in_force: yes
+    status: confirmed
+  - id: E6-011
+    date: 2026-08-13
+    element: {switchboard: 310-2, bay: Spare_1}
+    change: renamed
+    note: Spare_1 -> Boiler
+    evidence:
+      - {role: materialized, source: hardware.xml, ref: "syslab 627b0011c"}
+      - {role: displayed, source: java, ref: "syslab-userspace 5c6ee92"}
+      - {role: announced, source: figure, ref: "syslab-userspace 9c29ae3"}
+    origin: discovered
+    certainty: confirmed
+    in_force: yes
+    status: confirmed
+  - id: E6-012
+    date: 2024-10-14
+    element: {switchboard: 117-2, bay: CEEx2}
+    change: retyped
+    note: >-
+      meter-to-socket assignment: CEEx2_2 is the Busbar A socket, CEEx2_1 Busbar B (found in the 2026-06-25 data
+      with island_residuals; first declared the other way round; builder socket_meters.yaml 05a3884)
+    evidence:
+      - {role: declared, source: curated, ref: "builder data/socket_meters.yaml", date: 2026-10-24}
+    origin: declared
+    certainty: confirmed
+    in_force: yes
+    status: confirmed
+  - id: E6-013
+    date: 2026-04-19
+    element: {switchboard: 330-12, bay: "Spare_6, Spare_7"}
+    change: removed
+    note: no longer logged from 2026-04-19, still in hardware.xml; spare given to a named unit?
+    evidence:
+      - {role: evidenced, source: header, ref: "column archive 330_12", date: 2026-04-19}
+    origin: discovered
+    certainty: uncertain
+    in_force: "no: evidence only"
+    status: proposed
+
+configuration_revisions:
+  - {revision: "6.0", entries: [E6-001, E6-002, E6-003, E6-004, E6-005, E6-006]}
+  - {revision: "6.1", entries: [E6-007]}
+  - {revision: "6.2", entries: [E6-008]}
+  - {revision: "6.3", entries: [E6-009, E6-012]}
+  - {revision: "6.4", entries: [E6-010]}
+  - {revision: "6.5", entries: [E6-011]}

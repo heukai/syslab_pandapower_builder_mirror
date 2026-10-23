@@ -1,0 +1,86 @@
+# Configuration era E7: fast charger site 119-10 (overview figure v7). See E6.yaml for the form.
+
+era: E7
+title: Fast charger site 119-10
+figure: 7
+start: 2026-10-05          # figure v7 check-in (maintainer, 2026-10-23); earlier if 119-10 logged from a feature branch
+end: null
+
+major_change:
+  summary: new switchboard 119-10 (node syslab-44, Kempower fast charger) on Cable Q1 from 330-13
+  evidence:
+    - {role: announced, source: figure, ref: "syslab-userspace 910fb87 (figure v7)", date: 2026-10-05}
+    - {role: materialized, source: hardware.xml, ref: "syslab 7c4a820a2, aeecde1bc", date: 2026-10-05}
+    - {role: displayed, source: java, ref: "syslab-userspace c32720d, d407f7f", date: 2026-10-05}
+
+operational_periods:
+  - id: 7-a
+    from: 2026-10-05
+    switchboards: [117-2, 117-4, 117-5, 117-6, 119-10, 310-2, 319-2, 319-3, 319-4, 330-12, 330-13, 715-2, 716-2]
+
+changes:
+  - id: E7-001
+    date: 2026-10-05
+    element: {switchboard: 119-10}
+    change: added
+    note: node syslab-44, one busbar A
+    evidence:
+      - {role: materialized, source: hardware.xml, ref: "syslab 7c4a820a2"}
+      - {role: announced, source: figure, ref: "syslab-userspace 910fb87"}
+      - {role: displayed, source: java, ref: "syslab-userspace c32720d"}
+    origin: built
+    certainty: confirmed
+    in_force: yes
+    status: confirmed
+  - id: E7-002
+    date: 2026-10-05
+    element: {switchboard: 119-10, bay: "Battery_1..Battery_5, EVSE_12, Cable_Q1"}
+    change: added
+    evidence:
+      - {role: materialized, source: hardware.xml, ref: "syslab 7c4a820a2"}
+      - {role: displayed, source: java, ref: "syslab-userspace c32720d"}
+    origin: built
+    certainty: confirmed
+    in_force: yes
+    status: confirmed
+  - id: E7-003
+    date: 2026-10-05
+    element: {cable: Q1, ends: "330-13:EVSE_12 - 119-10:Cable_Q1"}
+    change: added
+    note: length and cable type unknown (inquiry to the staff)
+    evidence:
+      - {role: announced, source: figure, ref: "syslab-userspace 910fb87"}
+      - {role: declared, source: curated, ref: "maintainer, 2026-10-21"}
+    origin: declared
+    certainty: confirmed
+    in_force: yes
+    status: confirmed
+  - id: E7-004
+    date: 2026-10-05
+    element: {switchboard: 330-13, bay: EVSE_12}
+    change: renamed
+    note: shown as "Cable_Q1" by the display program and figure v7; hardware.xml keeps EVSE_12 (the model follows it)
+    evidence:
+      - {role: displayed, source: java, ref: "syslab-userspace d407f7f"}
+    origin: discovered
+    certainty: uncertain
+    in_force: "no: evidence only"
+    status: proposed
+  - id: E7-005
+    date: 2026-10-05
+    element: {switchboard: 316-2, bay: "PTX, P2XA, P2XB, Grid", cable: M1}
+    change: added
+    note: drawn greyed out in figure v7; not in hardware.xml or the display program
+    evidence:
+      - {role: announced, source: figure, ref: "syslab-userspace 910fb87"}
+    origin: discovered
+    certainty: confirmed
+    in_force: "no: planned"
+    status: proposed
+
+configuration_revisions:
+  - {revision: "7.0", entries: [E7-001, E7-002, E7-003]}
+
+inquiries:
+  - {id: E7-Q1, about: E7-003, question: "Cable Q1: length and cable type?", status: open}
+  - {id: E7-Q2, about: E7-002, question: "What is behind the 119-10 bays (charger and battery ratings)?", status: open}
