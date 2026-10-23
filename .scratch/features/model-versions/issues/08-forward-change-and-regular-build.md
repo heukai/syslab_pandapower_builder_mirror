@@ -1,7 +1,7 @@
 # How is a forward change found and built?
 
 Type: grilling
-Status: open
+Status: claimed
 Blocked by: 07
 
 ## Question
