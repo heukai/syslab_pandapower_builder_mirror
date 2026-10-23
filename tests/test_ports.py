@@ -156,8 +156,8 @@ class TestSocketMeters:
     def test_ceex2_has_two_sockets_each_tied_to_a_busbar(self, ports):
         assert (ports["319-2 CEEx2.A"].busbar, ports["319-2 CEEx2.A"].meter) == ("A", "CEEx2.A")
         assert (ports["319-2 CEEx2.B"].busbar, ports["319-2 CEEx2.B"].meter) == ("B", "CEEx2.B")
-        assert ports["117-2 CEEx2.A"].meter == "CEEx2_1"
-        assert ports["117-2 CEEx2.B"].meter == "CEEx2_2"
+        assert ports["117-2 CEEx2.A"].meter == "CEEx2_2"
+        assert ports["117-2 CEEx2.B"].meter == "CEEx2_1"
 
     def test_interlocked_bays_have_one_socket_on_either_busbar(self, ports):
         for name, p in ports.items():

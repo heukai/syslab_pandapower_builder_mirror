@@ -20,11 +20,11 @@ sockets:
     meter: "CEEx2.B"
     source: "declared by the maintainer; see 319-2 CEEx2.A"
   - port: "117-2 CEEx2.A"
-    meter: "CEEx2_1"
-    source: "declared by the maintainer (_1 = Busbar A); hardware.xml lists both instruments without a busbar"
-  - port: "117-2 CEEx2.B"
     meter: "CEEx2_2"
-    source: "declared by the maintainer (_2 = Busbar B)"
+    source: "found in the data, confirmed by the maintainer 2026-10-24: on 2026-06-25 the load metered as CEEx2_2 flows through cables C2A/C2B (117-2 Busbar A) while socket B is open (island_residuals); first declared the other way round; hardware.xml lists both instruments without a busbar"
+  - port: "117-2 CEEx2.B"
+    meter: "CEEx2_1"
+    source: "see 117-2 CEEx2.A"
   - {port: "319-2 CEE", meter: "CEE", source: "hardware.xml instrument"}
   - {port: "117-5 CEEx1_1", meter: "CEEx1_1", source: "hardware.xml instrument"}
   - {port: "117-5 CEEx1_2", meter: "CEEx1_2", source: "hardware.xml instrument"}
