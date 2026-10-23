@@ -79,3 +79,9 @@ twelve boards, today's model, no experiment setup):
   setup it closes (US-53 part A). 117-4/117-5: no residual because 117-4's Grid P is not in the data that day (shown as
   missing, as intended). 117-6: no data that day.
 - Report fix: `bays_*.csv` now reads socket meters (it showed 117-2 CEEx2.A as unmeasured).
+
+**Step 4 (2026-10-24): fix and confirmation.** Maintainer: the evidence is strong; swap. Done: builder `socket_meters.yaml`
+117-2 CEEx2.A <- `CEEx2_2`, CEEx2.B <- `CEEx2_1` (`05a3884`), model rebuilt on `syslab_pandapower` `dev` (`8376311`),
+`syslab_data` docs and tests aligned (`8c63b3b`). Confirmation run with the 2026 J1A set-up queued as remote task 5c
+(expected: 319-3 spikes gone, 310-2 island closed). If it confirms, this ticket resolves and the run is the first
+validation of the E6 model (6.4.1).
