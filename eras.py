@@ -24,6 +24,7 @@ ORIGINS = {"built", "discovered", "declared"}
 CERTAINTY = {"confirmed", "uncertain"}
 STATUS = {"proposed", "confirmed"}
 HEADER_KINDS = {"lag", "lead", "unmatched", "transition", "meter-lag"}
+BASES = {"configuration", "header-only"}
 
 
 @dataclass
@@ -41,6 +42,7 @@ class Era:
     configuration_revisions: list[dict] = field(default_factory=list)
     inquiries: list[dict] = field(default_factory=list)
     header_periods: list[dict] = field(default_factory=list)
+    basis: str = "configuration"   # header-only: no hardware.xml, models rebuilt from data headers (unverified)
     path: Path | None = None
 
     def entry(self, entry_id: str) -> dict:
@@ -68,7 +70,8 @@ def load_era(path: Path | str) -> Era:
         era=d["era"], title=d["title"], figure=int(d["figure"]), start=d["start"], end=d.get("end"),
         major_change=d["major_change"], operational_periods=d["operational_periods"],
         changes=d.get("changes") or [], configuration_revisions=d.get("configuration_revisions") or [],
-        inquiries=d.get("inquiries") or [], header_periods=d.get("header_periods") or [], path=Path(path),
+        inquiries=d.get("inquiries") or [], header_periods=d.get("header_periods") or [],
+        basis=d.get("basis", "configuration"), path=Path(path),
     )
 
 
@@ -77,9 +80,17 @@ def load_eras(folder: Path | str = ERAS_DIR) -> list[Era]:
     return sorted((load_era(p) for p in Path(folder).glob("E*.yaml")), key=lambda e: e.start)
 
 
+def era_at(eras: list[Era], day: dt.date) -> Era | None:
+    """The era in force on ``day`` (None before the first era)."""
+    found = [e for e in eras if e.start <= day and (e.end is None or day < e.end)]
+    return found[0] if found else None
+
+
 def check_era(era: Era) -> list[str]:
     """Problems in one era file, as messages naming the entry to fix (empty list: fine)."""
     msgs: list[str] = []
+    if era.basis not in BASES:
+        msgs.append(f"{era.era}: basis {era.basis!r} is not one of {sorted(BASES)}")
     ids = [c.get("id") for c in era.changes]
     for dup in sorted({i for i in ids if ids.count(i) > 1}):
         msgs.append(f"{era.era}: change entry id {dup} used twice")
@@ -107,6 +118,8 @@ def check_era(era: Era) -> list[str]:
                 msgs.append(f"{cid}: evidence without a ref")
         if c.get("certainty") == "uncertain" and not (c.get("flag") or c.get("note")):
             msgs.append(f"{cid}: uncertain entries need a flag or note saying why")
+        if era.basis == "header-only" and any(ev.get("source") == "hardware.xml" for ev in c.get("evidence") or []):
+            msgs.append(f"{cid}: hardware.xml evidence in a header-only era (set basis: configuration?)")
     starts = [p["from"] for p in era.operational_periods]
     if not starts or starts[0] != era.start:
         msgs.append(f"{era.era}: the first operational period must start on the era start {era.start}")

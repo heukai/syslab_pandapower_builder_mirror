@@ -1,0 +1,124 @@
+# Configuration era E2: switchboard 117-6 (NEVIC) and the Aircon turbine (overview figure v2).
+#
+# Drafted 2026-10-25 (see E4.yaml). No hardware.xml: known from the data files and the figures only (header-only,
+# unverified models). There is no era E1: figure v1 (swbdrawing-qmarks-20120101.svg, displayed from 2011-12-21)
+# was replaced on 2012-01-13 by v2, its wide-screen variant with NEVIC, before any change it shows reached the data.
+
+era: E2
+title: Switchboard 117-6 and the Aircon turbine
+figure: 2                  # syslab media/swbdrawing-qmarks-wide-20120101.svg, later switchboard_overview_2.svg
+start: 2012-02-18          # first operational evidence: 319-2 bay Aircon replaces Bonus
+end: 2013-07-31            # start of E3
+
+basis: header-only       # no hardware.xml: models of this era are reconstructed from data headers
+
+major_change:
+  summary: >-
+    New figure (v1, then its wide variant v2, both dated 2012-01-01) with switchboard 117-6 for the NEVIC charging
+    posts, the Aircon wind turbine in place of Bonus on 319-2, and the B2B converter as Ship/Shore.
+  evidence:
+    - {role: announced, source: figure, ref: "syslab 8f21bb064 (v1), displayed from 0c3a8b44d", date: 2011-12-21}
+    - {role: announced, source: figure, ref: "syslab 251dd9040 (v2, wide, with NEVIC)", date: 2012-01-13}
+    - {role: evidenced, source: header, ref: "column archive 319_2 (Aircon)", date: 2012-02-18}
+    - {role: evidenced, source: header, ref: "column archive 117_6", date: 2012-05-03}
+
+operational_periods:
+  - id: 2-a
+    from: 2012-02-18
+    switchboards: [117-2, 117-4, 117-5, 319-2, 715-2]
+    note: switchboards with data files; the 319-3 crossbar (Busbars A/B/C) is drawn since 2009 but not logged
+  - id: 2-b
+    from: 2012-05-03
+    switchboards: [117-2, 117-4, 117-5, 117-6, 319-2, 715-2]
+    note: 117-6 logs meters from 2012-05-03, breakers from 2012-06-27
+  - id: 2-c
+    from: 2013-05-19
+    switchboards: [117-2, 117-4, 117-5, 117-6, 319-2, 319-3, 715-2]
+    note: 319-3 logs from 2013-05-19
+
+changes:
+  - id: E2-001
+    date: 2012-02-18
+    element: {asset: aircon, switchboard: 319-2, bay: Aircon}
+    change: renamed
+    note: bay Bonus (wind turbine) becomes Aircon (wind turbine)
+    evidence:
+      - {role: evidenced, source: header, ref: "column archive 319_2", date: 2012-02-18}
+      - {role: announced, source: figure, ref: "syslab 8f21bb064", date: 2011-12-21}
+    origin: discovered
+    certainty: confirmed
+    in_force: yes
+    status: proposed
+  - id: E2-002
+    date: 2012-03-14
+    element: {switchboard: 117-2, bay: Solar}
+    change: added
+    evidence:
+      - {role: evidenced, source: header, ref: "column archive 117_2", date: 2012-03-14}
+    origin: discovered
+    certainty: confirmed
+    in_force: yes
+    status: proposed
+  - id: E2-003
+    date: 2012-04-03
+    element: {switchboard: 319-2, bay: Solar}
+    change: added
+    evidence:
+      - {role: evidenced, source: header, ref: "column archive 319_2", date: 2012-04-03}
+    origin: discovered
+    certainty: confirmed
+    in_force: yes
+    status: proposed
+  - id: E2-004
+    date: 2012-05-03
+    element: {switchboard: 117-6, bay: "NEVIC1..NEVIC8"}
+    change: added
+    note: NEVIC charging posts, busbars Grid/SYSLAB; breaker columns from 2012-06-27
+    evidence:
+      - {role: evidenced, source: header, ref: "column archive 117_6", date: 2012-05-03}
+      - {role: announced, source: figure, ref: "syslab 251dd9040", date: 2012-01-13}
+    origin: discovered
+    certainty: confirmed
+    in_force: yes
+    status: proposed
+  - id: E2-005
+    date: 2012-07-07
+    element: {switchboard: 117-4, bay: NEVIC}
+    change: added
+    note: breaker of the feeder to 117-6
+    evidence:
+      - {role: evidenced, source: header, ref: "column archive 117_4", date: 2012-07-07}
+    origin: discovered
+    certainty: confirmed
+    in_force: yes
+    status: proposed
+  - id: E2-006
+    date: 2013-01-30
+    element: {switchboard: 117-2, bay: Ext117-5}
+    change: removed
+    note: no longer logged on 117-2 (still drawn in figures v3 and v4, and logged on 117-5); meter removed?
+    evidence:
+      - {role: evidenced, source: header, ref: "column archive 117_2", date: 2013-01-30}
+    origin: discovered
+    certainty: uncertain
+    flag: data only; the cable stays in the figures
+    in_force: "no: evidence only"
+    status: proposed
+  - id: E2-007
+    date: 2013-05-19
+    element: {switchboard: 319-3, bay: "A1, A2 to 319-2; B1, B2 to 715-2; C1, C2 to 117-2; B2B-Ship; B2B-Shore"}
+    change: added
+    note: 319-3 logged from 2013-05-19; drawn as the crossbar switch since 2009, so in operation before
+    evidence:
+      - {role: evidenced, source: header, ref: "column archive 319_3", date: 2013-05-19}
+      - {role: announced, source: figure, ref: "syslab 53e433409 (crossbar switch, Busbar A/B/C)", date: 2009-11-01}
+    origin: discovered
+    certainty: confirmed
+    in_force: yes
+    status: proposed
+
+configuration_revisions:
+  - {revision: "2.0", entries: [E2-001]}
+  - {revision: "2.1", entries: [E2-002, E2-003]}
+  - {revision: "2.2", entries: [E2-004, E2-005]}
+  - {revision: "2.3", entries: [E2-007]}

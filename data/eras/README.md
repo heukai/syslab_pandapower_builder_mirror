@@ -7,6 +7,10 @@ The form is a proposal to validate with the technical staff.
 
 - **Era** (`E7`): a time period marked by a major configuration change (a new switchboard, or a new layout of
   the switchboard overview figure), named after the figure. It starts at the first operational evidence.
+- **Eras so far:** E0 (2009, unnumbered EDISON figure), E2 (2012), E3 (2013), E4 (2015), E6 (2023), E7 (2026). There
+  is no E1 (figure v1 was replaced by its wide variant v2 within three weeks) and no E5 (figure v5 was a draft of v6,
+  never displayed). E0, E2 and E3 have `basis: header-only`: no `hardware.xml` exists for them, so their models can only
+  be rebuilt from the data headers and the figures, and stay unverified until checked against measurements.
 - **Operational periods** (`6-a`, `6-b`, ...): the switchboards in operation, in stages while the era's major
   change is being commissioned.
 - **Change entries** (`E6-011`): one configuration change each, by `hardware.xml` names, with its evidence

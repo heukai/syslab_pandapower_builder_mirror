@@ -1,0 +1,65 @@
+# Configuration era E0: the EDISON switchboards (unnumbered overview figure of 2009).
+#
+# Drafted 2026-10-25 (see E4.yaml). The oldest data files of the column archive (2009-12-16). No hardware.xml:
+# known from the data files and the figure only (header-only, unverified models). Named E0 because its figure
+# (syslab media/swbdrawing-qmarks.svg) has no number; the figure before it (swbdrawing.svg, 2009-09-19) precedes
+# all data files.
+
+era: E0
+title: The EDISON switchboards
+figure: 0                  # syslab media/swbdrawing-qmarks.svg (2009-11-01)
+start: 2009-12-16          # first data files (319-2, 715-2)
+end: 2012-02-18            # start of E2 (there is no E1)
+
+basis: header-only       # no hardware.xml: models of this era are reconstructed from data headers
+
+major_change:
+  summary: >-
+    Figure for "the additional switchboards installed for EDISON": 117-2, 117-4, 117-5 (EDISON 1-3, Machine set,
+    Battery), 319-2 (Grid/Local busbars, Bonus turbine, Diesel, Dumpload, B2B, CEE), 715-2 (Gaia, Flexhouse, Solar),
+    and the 319-3 crossbar switch (Busbars A/B/C, cables A1 ... C2).
+  evidence:
+    - {role: announced, source: figure, ref: "syslab 53e433409", date: 2009-11-01}
+    - {role: evidenced, source: header, ref: "column archive 319_2, 715_2", date: 2009-12-16}
+    - {role: evidenced, source: header, ref: "column archive 117_2, 117_4, 117_5", date: 2011-05-01}
+
+operational_periods:
+  - id: 0-a
+    from: 2009-12-16
+    switchboards: [319-2, 715-2]
+    note: switchboards with data files; 117-x and the 319-3 crossbar are drawn but not yet logged
+  - id: 0-b
+    from: 2011-05-01
+    switchboards: [117-2, 117-4, 117-5, 319-2, 715-2]
+    note: 117-2 from 2011-05-01, 117-4 from 2011-05-13, 117-5 from 2011-05-18
+
+changes:
+  - id: E0-001
+    date: 2009-12-16
+    element: {switchboard: "319-2, 715-2"}
+    change: added
+    note: first data files; 319-2 bays Grid, Diesel, Dumpload, B2B, CEE, Bonus, Cable1, Cable2; 715-2 bays Grid, Gaia, Flexhouse, Solar, Cable1, Cable2
+    evidence:
+      - {role: evidenced, source: header, ref: "column archive 319_2, 715_2", date: 2009-12-16}
+    origin: discovered
+    certainty: confirmed
+    in_force: yes
+    status: proposed
+  - id: E0-002
+    date: 2011-05-01
+    element: {switchboard: "117-2, 117-4, 117-5"}
+    change: added
+    note: >-
+      first data files: 117-2 Grid, Battery, Machine, Cable1, Cable2, Ext117-5; 117-4 Transformer, EDISON3;
+      117-5 CEE, Chg post, D1, EDISON1, EDISON2 (in operation since the 2009 figure at the latest)
+    evidence:
+      - {role: evidenced, source: header, ref: "column archive 117_2, 117_4, 117_5", date: 2011-05-01}
+      - {role: announced, source: figure, ref: "syslab 53e433409", date: 2009-11-01}
+    origin: discovered
+    certainty: confirmed
+    in_force: yes
+    status: proposed
+
+configuration_revisions:
+  - {revision: "0.0", entries: [E0-001]}
+  - {revision: "0.1", entries: [E0-002]}

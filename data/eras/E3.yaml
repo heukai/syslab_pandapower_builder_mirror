@@ -1,0 +1,63 @@
+# Configuration era E3: the January 2013 extension to building 716 (overview figure v3).
+#
+# Drafted 2026-10-25 (see E4.yaml). No hardware.xml exists for this era: it is known from the data files (column
+# archive) and the figures only, so its models can only be header-only and unverified. Everything is proposed.
+
+era: E3
+title: Extension to building 716
+figure: 3                  # syslab media/swbdrawing-qmarks-wide-20130101.svg, later switchboard_overview_3.svg
+start: 2013-07-31          # first operational evidence of the extension: 319-3 logs cables E1/E2 to 716-2
+end: 2015-07-29            # start of E4
+
+basis: header-only       # no hardware.xml: models of this era are reconstructed from data headers
+
+major_change:
+  summary: >-
+    "Extension Jan2013" in the figure: cables E1 and E2 from 319-3 and F1 from 715-2 to building 716, a lab busbar with
+    heat pumps, CHP, houses 417/418 and test bays. Switchboard 716-2 itself logs only from 2015-07-29 (E4).
+  evidence:
+    - {role: announced, source: figure, ref: "syslab 2e324c6d9, displayed from 20b8a42a2", date: 2012-10-30}
+    - {role: evidenced, source: header, ref: "column archive 319_3 (bays 'E1 to 716-2', 'E2 to 716-2')", date: 2013-07-31}
+
+operational_periods:
+  - id: 3-a
+    from: 2013-07-31
+    switchboards: [117-2, 117-4, 117-5, 117-6, 319-2, 319-3, 715-2]
+    note: switchboards with data files; 716-2 exists (cables E1/E2 end there) but is not logged
+
+changes:
+  - id: E3-001
+    date: 2013-07-31
+    window: {from: 2013-01-01, to: 2013-07-31}
+    element: {switchboard: 319-3, bay: "E1 to 716-2, E2 to 716-2"}
+    change: added
+    note: cables E1 (Busbar A/B) and E2 (Busbar A/C) to 716-2; the figure is dated 2013-01-01
+    evidence:
+      - {role: evidenced, source: header, ref: "column archive 319_3", date: 2013-07-31}
+      - {role: announced, source: figure, ref: "syslab 2e324c6d9", date: 2012-10-30}
+    origin: discovered
+    certainty: uncertain
+    flag: built between 2013-01-01 (figure date) and 2013-07-31 (first data); no configuration
+    in_force: yes
+    status: proposed
+  - id: E3-002
+    date: 2013-07-31
+    element: {switchboard: 716-2}
+    change: added
+    note: switchboard of building 716 (Flexhouse 2/3, CHP, heat pumps in figure v4); bays unknown until its data of 2015
+    evidence:
+      - {role: announced, source: figure, ref: "syslab 2e324c6d9 ('Extension Jan2013', 'Building xxx')", date: 2012-10-30}
+      - {role: evidenced, source: header, ref: "column archive 319_3 (cables to 716-2)", date: 2013-07-31}
+    origin: discovered
+    certainty: uncertain
+    flag: inferred from the cables; not logged before 2015-07-29
+    in_force: "no: evidence only"
+    status: proposed
+
+configuration_revisions:
+  - {revision: "3.0", entries: [E3-001]}
+
+inquiries:
+  - id: E3-Q1
+    about: 716-2 in 2013-2015
+    question: When did 716-2 go into operation, with which bays, and what was cable F1 connected to before 2015?

@@ -1,0 +1,168 @@
+# Configuration era E4: switchboard 716-2 in operation (overview figure v4).
+#
+# Drafted 2026-10-25 from the column-archive cross-check and the history of the figures (map "dated model
+# versions", research/column-archive-sample.md on main). Everything here is proposed: no person has confirmed it.
+# The first hardware.xml on master is of 2015-08-03, so this is the first era with a configuration history.
+# Figure v5 (2023-01-12) was a draft of v6 and never displayed: there is no era E5.
+
+era: E4
+title: Switchboard 716-2 in operation
+figure: 4
+start: 2015-07-29          # first operational evidence: 716-2 data files
+end: 2023-06-16            # start of E6
+
+major_change:
+  summary: >-
+    New layout of the overview figure (v4) with building 716 (switchboard 716-2, Flexhouse 2 and 3, CHP, heat pumps);
+    716-2 logs its own data files; the configurations move to hardware.xml in the lab repository.
+  evidence:
+    - {role: evidenced, source: header, ref: "column archive 716_2", date: 2015-07-29}
+    - {role: materialized, source: hardware.xml, ref: "syslab affe00650 (first on master)", date: 2015-08-03}
+    - {role: announced, source: figure, ref: "syslab 9f0c83e0e (switchboard_overview_4.svg)", date: 2015-08-11}
+    - {role: materialized, source: hardware.xml, ref: "syslab f9d699cd5 (716-2, first file)", date: 2016-07-12}
+
+operational_periods:
+  - id: 4-a
+    from: 2015-07-29
+    switchboards: [117-2, 117-4, 117-5, 117-6, 319-2, 319-3, 715-2, 716-2]
+    note: 319-3 is configured on node syslab-01 (with 319-2) throughout the era
+
+changes:
+  - id: E4-001
+    date: 2015-08-03
+    element: {switchboard: "117-2, 117-4, 117-5, 117-6, 319-2, 319-3, 715-2"}
+    change: added
+    note: first configuration in the lab repository (busbars "Busbar 1/2", on 319-2 "Grid"/"Local", on 319-3 A/B/C)
+    evidence:
+      - {role: materialized, source: hardware.xml, ref: "syslab affe00650"}
+    origin: discovered
+    certainty: confirmed
+    in_force: yes
+    status: proposed
+  - id: E4-002
+    date: 2015-07-29
+    element: {switchboard: 716-2}
+    change: added
+    note: >-
+      716-2 with bays Grid, CEE, CHP, Cable E1, Cable E2, Cable F1, Flexhouse2, Flexhouse3, Heatpump1, Heatpump2;
+      its hardware.xml comes a year later
+    evidence:
+      - {role: evidenced, source: header, ref: "column archive 716_2", date: 2015-07-29}
+      - {role: announced, source: figure, ref: "syslab 9f0c83e0e", date: 2015-08-11}
+      - {role: materialized, source: hardware.xml, ref: "syslab f9d699cd5"}
+    origin: discovered
+    certainty: confirmed
+    flag: data ahead of the configuration (2015-07-29 to 2016-07-11)
+    in_force: yes
+    status: proposed
+  - id: E4-003
+    date: 2015-08-03
+    element: {asset: aircon, switchboard: 319-2, bay: Aircon}
+    change: added
+    note: AirCon wind turbine on 319-2 (never on 715-2 in any configuration since 2015)
+    evidence:
+      - {role: materialized, source: hardware.xml, ref: "syslab affe00650"}
+      - {role: evidenced, source: header, ref: "column archive 319_2", date: 2012-02-18}
+    origin: discovered
+    certainty: confirmed
+    in_force: yes
+    status: proposed
+  - id: E4-004
+    date: 2016-06-14
+    window: {from: 2016-06-14, to: 2016-07-12}
+    element: {switchboard: 319-3, bay: "E1 to 716-2, E2 to 716-2"}
+    change: moved
+    note: >-
+      cables E1/E2 swap busbars on 319-3 (E1 from Busbar A/B to A/C, E2 from A/C to A/B); in the data from 2016-06-14,
+      in the configuration of branch ModbusCleanup (master 2016-07-13); 716-2 "swapped interlock E1+E2" fixed 2016-09-19.
+      The same kind of swap as E6-008 in 2024.
+    evidence:
+      - {role: evidenced, source: header, ref: "column archive 319_3", date: 2016-06-14}
+      - {role: materialized, source: hardware.xml, ref: "syslab f9d699cd5 (master by merge d11001d55, 2016-07-13)"}
+      - {role: materialized, source: hardware.xml, ref: "syslab 1ba3856b4 (716-2 interlock)", date: 2016-09-19}
+    origin: discovered
+    certainty: uncertain
+    flag: was the swap physical (rewiring) or a correction of names? data and configuration disagree for a month
+    in_force: yes
+    status: proposed
+  - id: E4-005
+    date: 2016-07-12
+    element: {switchboard: 715-2, bay: "Cable1, Cable2 -> CableB1, CableB2; CableF1"}
+    change: renamed
+    note: >-
+      715-2 cables named after their route (B1, B2 to 319-3) and cable F1 to 716-2 added; the data use these names
+      from 2015-08-05, a year before the configuration (header period E4-H02)
+    evidence:
+      - {role: materialized, source: hardware.xml, ref: "syslab 97fa34f04 (branch PVModbusConvertion, 2016-04-26), f9d699cd5"}
+      - {role: evidenced, source: header, ref: "column archive 715_2", date: 2015-08-05}
+    origin: discovered
+    certainty: confirmed
+    in_force: yes
+    status: proposed
+  - id: E4-006
+    date: 2016-11-30
+    element: {switchboard: "117-4, 117-5, 117-6", bay: "Container 1-3, EVSE 1-8, PV"}
+    change: renamed
+    note: >-
+      figure v4 names EDISON bays Container, NEVIC bays EVSE, Solar PV; the configuration keeps the old names until the
+      2023 rebuild (E6)
+    evidence:
+      - {role: displayed, source: figure, ref: "syslab e2f5a8014", date: 2016-11-30}
+    origin: discovered
+    certainty: uncertain
+    flag: figure only
+    in_force: "no: figure only"
+    status: proposed
+  - id: E4-007
+    date: 2018-07-02
+    element: {switchboard: all}
+    change: retyped
+    note: >-
+      the display program moves to the syslab-userspace repository and keeps figure v4 (116 breakers on 8 switchboards);
+      the figure files follow in 2018-12. Displayed since 2015-08-11 (syslab 9f0c83e0e).
+    evidence:
+      - {role: displayed, source: java, ref: "syslab d99d37a54 (userspace classes removed)", date: 2018-07-02}
+    origin: discovered
+    certainty: confirmed
+    in_force: "no: display only"
+    status: proposed
+
+configuration_revisions:
+  - {revision: "4.0", entries: [E4-001, E4-002, E4-003]}
+  - {revision: "4.1", entries: [E4-004, E4-005]}
+
+inquiries:
+  - id: E4-Q1
+    about: cables before the rebuild
+    question: >-
+      Cables A1, A2, B1, B2, C1, C2, D1, E1, E2, F1 and the Ext. 117-2/117-5 cable: were they single cables or already
+      the parallel pairs (A1A/A1B, ...) the 2023 configuration names? Length and type each (the builder's cable data
+      describe the cables from 2023 on).
+  - id: E4-Q2
+    about: equipment behind the bays
+    question: Machine set, Battery, EDISON 1-3, CHP, Heatpump 1/2, Flexhouse 1-3, Bonus/Aircon, Gaia, Solar ratings in 2015-2023.
+
+header_periods:
+  - id: E4-H01
+    switchboards: [716-2]
+    from: 2015-07-29
+    to: 2016-07-11
+    kind: lead
+    carries: "the bay names of syslab f9d699cd5 (committed 2016-07-12)"
+    note: 716-2 logs a year before it has a hardware.xml in the lab repository
+    status: proposed
+  - id: E4-H02
+    switchboards: [715-2]
+    from: 2015-08-05
+    to: 2016-07-11
+    kind: lead
+    carries: "syslab 97fa34f04 (CableB1, CableB2, CableF1; branch only until 2016-07-13)"
+    note: on 2016-06-14, one day with the old names Cable1/Cable2 (a restart with the master configuration?)
+    status: proposed
+  - id: E4-H03
+    switchboards: [319-3]
+    from: 2016-06-14
+    to: 2016-07-11
+    kind: lead
+    carries: "syslab f9d699cd5 (E1/E2 swapped, E4-004)"
+    status: proposed

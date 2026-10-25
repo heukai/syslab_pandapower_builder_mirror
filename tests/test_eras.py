@@ -1,10 +1,10 @@
-"""Configuration era files: the E6 and E7 files load and pass their checks; the checks catch errors."""
+"""Configuration era files: the era files (E0 to E7) load and pass their checks; the checks catch errors."""
 
 import datetime as dt
 
 import pytest
 
-from syslab_pandapower_builder.eras import Era, check_era, check_eras, load_eras
+from syslab_pandapower_builder.eras import Era, check_era, check_eras, era_at, load_eras
 
 
 @pytest.fixture(scope="module")
@@ -12,13 +12,25 @@ def eras():
     return load_eras()
 
 
-def test_e6_and_e7_are_present_and_clean(eras):
-    assert [e.era for e in eras][:2] == ["E6", "E7"]
+def by_id(eras, name):
+    return next(e for e in eras if e.era == name)
+
+
+def test_eras_are_present_in_order_and_clean(eras):
+    assert [e.era for e in eras] == ["E0", "E2", "E3", "E4", "E6", "E7"]   # no E1, no E5
     assert check_eras(eras) == []
 
 
+def test_era_of_a_day(eras):
+    assert era_at(eras, dt.date(2009, 12, 1)) is None              # before the first data files
+    assert era_at(eras, dt.date(2014, 1, 1)).era == "E3"
+    assert era_at(eras, dt.date(2023, 6, 16)).era == "E6"
+    assert era_at(eras, dt.date(2026, 10, 25)).era == "E7"
+    assert [e.basis for e in eras[:4]] == ["header-only"] * 3 + ["configuration"]
+
+
 def test_operational_period_of_a_day(eras):
-    e6 = eras[0]
+    e6 = by_id(eras, "E6")
     assert e6.period_at(dt.date(2023, 6, 30))["id"] == "6-a"
     assert e6.period_at(dt.date(2023, 10, 10))["id"] == "6-c"
     assert "310-2" in e6.period_at(dt.date(2026, 6, 25))["switchboards"]
@@ -26,7 +38,7 @@ def test_operational_period_of_a_day(eras):
 
 
 def test_revisions_list_only_entries_in_force(eras):
-    e7 = eras[1]
+    e7 = by_id(eras, "E7")
     assert not e7.in_force(e7.entry("E7-005"))                 # 316-2 is planned
     assert all(e7.in_force(e7.entry(i)) for r in e7.configuration_revisions for i in r["entries"])
 
@@ -41,7 +53,7 @@ def _era(**changes) -> Era:
 
 
 def test_header_periods_of_a_day(eras):
-    e6 = eras[0]
+    e6 = by_id(eras, "E6")
     assert e6.start == dt.date(2023, 6, 16)                    # first operational evidence: headers
     assert [h["id"] for h in e6.header_periods_at(dt.date(2023, 8, 1), "319-3")] == ["E6-H04"]
     assert e6.header_periods_at(dt.date(2025, 6, 1), "319-3") == []
@@ -75,3 +87,9 @@ def test_header_period_checks(period, msg):
 def test_checks_name_the_entry_to_fix(changes, msg):
     msgs = check_era(_era(**changes))
     assert any(msg in m for m in msgs), msgs
+
+
+def test_header_only_era_rejects_configuration_evidence():
+    era = _era()
+    era.basis = "header-only"
+    assert any("header-only era" in m for m in check_era(era))
