@@ -23,6 +23,7 @@ ROLES = {"announced", "evidenced", "materialized", "displayed", "declared"}
 ORIGINS = {"built", "discovered", "declared"}
 CERTAINTY = {"confirmed", "uncertain"}
 STATUS = {"proposed", "confirmed"}
+HEADER_KINDS = {"lag", "lead", "unmatched", "transition", "meter-lag"}
 
 
 @dataclass
@@ -39,6 +40,7 @@ class Era:
     changes: list[dict]
     configuration_revisions: list[dict] = field(default_factory=list)
     inquiries: list[dict] = field(default_factory=list)
+    header_periods: list[dict] = field(default_factory=list)
     path: Path | None = None
 
     def entry(self, entry_id: str) -> dict:
@@ -53,6 +55,11 @@ class Era:
             return None
         return [p for p in self.operational_periods if p["from"] <= day][-1]
 
+    def header_periods_at(self, day: dt.date, switchboard: str | None = None) -> list[dict]:
+        """Header periods covering ``day``: the data files then carry names other than master's."""
+        return [h for h in self.header_periods if h["from"] <= day <= h["to"]
+                and (switchboard is None or switchboard in h["switchboards"])]
+
 
 def load_era(path: Path | str) -> Era:
     with open(path, encoding="utf-8") as f:
@@ -61,7 +68,7 @@ def load_era(path: Path | str) -> Era:
         era=d["era"], title=d["title"], figure=int(d["figure"]), start=d["start"], end=d.get("end"),
         major_change=d["major_change"], operational_periods=d["operational_periods"],
         changes=d.get("changes") or [], configuration_revisions=d.get("configuration_revisions") or [],
-        inquiries=d.get("inquiries") or [], path=Path(path),
+        inquiries=d.get("inquiries") or [], header_periods=d.get("header_periods") or [], path=Path(path),
     )
 
 
@@ -117,6 +124,27 @@ def check_era(era: Era) -> list[str]:
                 msgs.append(f"{era.era}: revision {r['revision']} lists {eid}, which is not in force")
     if len(set(revs)) != len(revs):
         msgs.append(f"{era.era}: a configuration revision number is used twice")
+    hids = [h.get("id") for h in era.header_periods]
+    for dup in sorted({i for i in hids if hids.count(i) > 1}):
+        msgs.append(f"{era.era}: header period id {dup} used twice")
+    for h in era.header_periods:
+        hid = h.get("id", "?")
+        if not str(hid).startswith(f"{era.era}-H"):
+            msgs.append(f"{hid}: header period id must start with {era.era}-H")
+        if h.get("kind") not in HEADER_KINDS:
+            msgs.append(f"{hid}: kind {h.get('kind')!r} is not one of {sorted(HEADER_KINDS)}")
+        if h.get("status") not in STATUS:
+            msgs.append(f"{hid}: status {h.get('status')!r} is not one of {sorted(STATUS)}")
+        if not (isinstance(h.get("from"), dt.date) and isinstance(h.get("to"), dt.date)):
+            msgs.append(f"{hid}: from and to must be dates")
+        elif h["from"] > h["to"]:
+            msgs.append(f"{hid}: from {h['from']} is after to {h['to']}")
+        elif h["from"] < era.start or (era.end and h["to"] >= era.end):
+            msgs.append(f"{hid}: {h['from']} to {h['to']} outside the era ({era.start} to {era.end})")
+        if not h.get("switchboards"):
+            msgs.append(f"{hid}: no switchboards")
+        if not h.get("carries"):
+            msgs.append(f"{hid}: carries missing (which names the data files use)")
     return msgs
 
 

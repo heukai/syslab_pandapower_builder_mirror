@@ -9,7 +9,8 @@
 era: E6
 title: After the 2023 rebuild
 figure: 6
-start: 2023-06-23
+start: 2023-06-16          # first operational evidence: rebuild names in the headers of five switchboards
+                           # (proposed 2026-10-25 from the column-archive cross-check; was 2023-06-23)
 end: 2026-10-05            # start of E7 (figure v7 check-in)
 
 major_change:
@@ -20,14 +21,16 @@ major_change:
     - {role: materialized, source: hardware.xml, ref: "syslab 86f2e627d (319-2)", date: 2023-06-14}
     - {role: materialized, source: hardware.xml, ref: "syslab ebb1fb939 (319-3 on syslab-52)", date: 2023-06-23}
     - {role: announced, source: figure, ref: "syslab-userspace, display loads figure v6", date: 2023-06-23}
-    - {role: evidenced, source: header, ref: "column archive: header changes on five switchboards", date: 2023-07-01}
+    - {role: evidenced, source: header, ref: "column archive: rebuild names on 117-2, 117-4, 117-5, 715-2, 716-2", date: 2023-06-16}
 
 # Commissioning period: switchboards in operation per period (grid nodes only; 776-1 is not a grid node).
 operational_periods:
   - id: 6-a
-    from: 2023-06-23
+    from: 2023-06-16
     switchboards: [117-2, 117-4, 117-5, 117-6, 319-2, 319-3, 715-2, 716-2]
-    note: rebuild; 319-3 left syslab-01 on 2023-04-13
+    note: >-
+      rebuild; 319-3 left syslab-01 on 2023-04-13; 117-x, 715-2 and 716-2 log the rebuild names from 2023-06-16,
+      319-2 and 319-3 keep the old names until 2023-11-30 (header period E6-H04)
   - id: 6-b
     from: 2023-07-02
     switchboards: [117-2, 117-4, 117-5, 117-6, 319-2, 319-3, 319-4, 715-2, 716-2]
@@ -201,6 +204,176 @@ changes:
     in_force: "no: evidence only"
     status: proposed
 
+  # Entries E6-014 to E6-025: found by the column-archive cross-check (2026-10-25; builder main,
+  # .scratch/features/model-versions/research/). Dates are author dates of the hardware.xml commit; where the
+  # change reached master later by a merge, that date is in the note. No revision yet: the staff decide.
+  - id: E6-014
+    date: 2023-08-13
+    element: {switchboard: 715-2, bay: Flexhouse}
+    change: renamed
+    note: Flexhouse -> Flexhouse_1 (config written as a test case for the old Schneider PLCs)
+    evidence:
+      - {role: materialized, source: hardware.xml, ref: "syslab f3e088dc7"}
+      - {role: evidenced, source: header, ref: "column archive 715_2", date: 2023-10-19}
+    origin: discovered
+    certainty: confirmed
+    flag: logging lags config (2023-08-13 to 2023-10-18)
+    in_force: yes
+    status: proposed
+  - id: E6-015
+    date: 2023-10-23
+    element: {switchboard: 117-2, bay: "Grid, Cable_X1"}
+    change: renamed
+    note: >-
+      naming convention: Grid -> Grid_2, Cable X1 -> Cable_X1_2 (117-5: Cable_X1_5); the other renames of
+      2023-10-19 to 2023-10-31 on all switchboards change spelling only
+    evidence:
+      - {role: materialized, source: hardware.xml, ref: "syslab 2a54a1449, a61c8f814 (master by merge 2520851a8, 2023-11-01)"}
+      - {role: displayed, source: java, ref: "syslab-userspace 5d7d42a", date: 2023-10-31}
+      - {role: evidenced, source: header, ref: "column archive 117_2, 117_5", date: 2024-02-27}
+    origin: discovered
+    certainty: confirmed
+    flag: logging lags config (2023-10-23 to 2024-02-26)
+    in_force: yes
+    status: proposed
+  - id: E6-016
+    date: 2023-10-27
+    element: {switchboard: 716-2, bay: "Cable_E1A, Cable_E1B, Cable_E2A, Cable_E2B, Grid, HeatPump, PV, Spare_1..Spare_4"}
+    change: added
+    note: >-
+      new PLC format and hardware changes: cables E1 and E2 split into A/B bays, new bays Grid, HeatPump
+      (was Heatpump1), PV, Spare_1 to Spare_4 (16 -> 32 breakers)
+    evidence:
+      - {role: materialized, source: hardware.xml, ref: "syslab 20271a203, 150599d9e, b9f692813"}
+      - {role: displayed, source: figure, ref: "syslab-userspace 01de4af (drawing and displet, 716)", date: 2023-10-31}
+      - {role: evidenced, source: header, ref: "column archive 716_2", date: 2024-03-21}
+    origin: discovered
+    certainty: confirmed
+    flag: logging lags config (2023-10-27 to 2024-03-20)
+    in_force: yes
+    status: proposed
+  - id: E6-017
+    date: 2024-06-19
+    element: {switchboard: 319-3, bay: ABB_Pri}
+    change: added
+    note: >-
+      ABB primary-side meter and breaker (after the instrument check); the headers carry ABB_Pri from 2024-03-06,
+      its breaker on a busbar "Grid_Distribution" from 2024-03-07 that no configuration names (header period E6-H05)
+    evidence:
+      - {role: materialized, source: hardware.xml, ref: "syslab 58404461b"}
+      - {role: evidenced, source: header, ref: "column archive 319_3", date: 2024-03-06}
+    origin: discovered
+    certainty: uncertain
+    flag: header ahead of config with another busbar name (2024-03-07 to 2024-09-07)
+    in_force: yes
+    status: proposed
+  - id: E6-018
+    date: 2024-09-08
+    element: {switchboard: 319-3, bay: "Supply, Spare, Amp_1, Amp_2, Grid"}
+    change: added
+    note: "supply side of 319-3 as built: manual breakers Supply, Spare, Amp_1, Amp_2 on Busbar_Transformer; Grid breaker; ABB_Pri breaker removed"
+    evidence:
+      - {role: materialized, source: hardware.xml, ref: "syslab b736d2d87, 52d09abcc"}
+      - {role: displayed, source: java, ref: "syslab-userspace 21412bd", date: 2024-09-08}
+      - {role: evidenced, source: header, ref: "column archive 319_3", date: 2024-09-08}
+    origin: discovered
+    certainty: confirmed
+    in_force: yes
+    status: proposed
+  - id: E6-019
+    date: 2024-09-08
+    element: {switchboard: 319-4, bay: "MetaCross -> Cross_A, Cross_B, Cross_C"}
+    change: retyped
+    note: meta-crossbar bay (3 breakers) split into three cross bays of two breakers each (A-B, B-C, A-C)
+    evidence:
+      - {role: materialized, source: hardware.xml, ref: "syslab b736d2d87"}
+      - {role: displayed, source: java, ref: "syslab-userspace 7d062cf, 353e492", date: 2024-09-08}
+      - {role: evidenced, source: header, ref: "column archive 319_4", date: 2024-09-08}
+    origin: discovered
+    certainty: confirmed
+    in_force: yes
+    status: proposed
+  - id: E6-020
+    date: 2024-10-03
+    element: {switchboard: 319-3, bay: "ABB_Pri, Grid"}
+    change: moved
+    note: '"fixing swapped breakers and changed busbar names": ABB_Pri breaker on Busbar_Supply, the Grid breaker removed'
+    evidence:
+      - {role: materialized, source: hardware.xml, ref: "syslab 74959b439"}
+      - {role: displayed, source: java, ref: "syslab-userspace 667a306, adac4f3", date: 2024-10-03}
+      - {role: evidenced, source: header, ref: "column archive 319_3", date: 2024-10-03}
+    origin: discovered
+    certainty: confirmed
+    in_force: yes
+    status: proposed
+  - id: E6-021
+    date: 2024-10-08
+    element: {switchboard: 117-5, bay: "Booster_Heater, Heatpump, CEE_2"}
+    change: added
+    note: three new bays on 117-5 (8 new breakers); one day of headers with these names already on 2023-09-27 (E6-H02)
+    evidence:
+      - {role: materialized, source: hardware.xml, ref: "syslab 69de9a862"}
+      - {role: displayed, source: java, ref: "syslab-userspace bff0176, de087fd", date: 2024-10-14}
+      - {role: evidenced, source: header, ref: "column archive 117_5", date: 2024-10-09}
+    origin: discovered
+    certainty: confirmed
+    in_force: yes
+    status: proposed
+  - id: E6-022
+    date: 2024-10-09
+    element: {switchboard: "117-2, 117-5", bay: "Cable_X1_2, Cable_X1_5 -> Cable_X1A/X1B/X2A/X2B"}
+    change: retyped
+    note: >-
+      the X cables between 117-2 and 117-5 as four bays with one breaker each (X1A/X1B on Busbar A, X2A/X2B on
+      Busbar B) instead of one bay with two breakers; the builder's cable data must match
+    evidence:
+      - {role: materialized, source: hardware.xml, ref: "syslab 777e5f1a4"}
+      - {role: displayed, source: java, ref: "syslab-userspace eda6aac (X-line bay names fixed)", date: 2025-01-17}
+      - {role: evidenced, source: header, ref: "column archive 117_2, 117_5", date: 2024-10-09}
+    origin: discovered
+    certainty: confirmed
+    in_force: yes
+    status: proposed
+  - id: E6-023
+    date: 2024-10-14
+    element: {switchboard: 117-5, bay: "CEE_1, CEE_2"}
+    change: renamed
+    note: CEE_1, CEE_2 -> CEEx1_1, CEEx1_2
+    evidence:
+      - {role: materialized, source: hardware.xml, ref: "syslab a96c88172"}
+      - {role: displayed, source: java, ref: "syslab-userspace bff0176", date: 2024-10-14}
+      - {role: evidenced, source: header, ref: "column archive 117_5", date: 2024-10-14}
+    origin: discovered
+    certainty: confirmed
+    in_force: yes
+    status: proposed
+  - id: E6-024
+    date: 2023-10-31
+    element: {switchboard: 117-4, bay: Grid}
+    change: renamed
+    note: meter Grid_117-4 -> Grid_4 (breaker names unchanged); headers carry Grid_4 only from 2026-06-24
+    evidence:
+      - {role: materialized, source: hardware.xml, ref: "syslab a61c8f814"}
+      - {role: evidenced, source: header, ref: "column archive 117_4", date: 2026-06-24}
+    origin: discovered
+    certainty: confirmed
+    flag: logging lags config (2023-10-31 to 2026-06-23)
+    in_force: yes
+    status: proposed
+  - id: E6-025
+    date: 2026-01-07
+    element: {switchboard: 117-4, bay: Cable_D1}
+    change: added
+    note: manual breaker of cable D1 with feedback (Cable_D1_Manual, Busbar A); master by merge 947d603db on 2026-02-06
+    evidence:
+      - {role: materialized, source: hardware.xml, ref: "syslab 5e50ea348, 9137e426b"}
+      - {role: displayed, source: java, ref: "syslab-userspace 3c0ea91", date: 2026-01-07}
+      - {role: evidenced, source: header, ref: "column archive 117_4", date: 2026-01-07}
+    origin: discovered
+    certainty: confirmed
+    in_force: yes
+    status: proposed
+
 configuration_revisions:
   - {revision: "6.0", entries: [E6-001, E6-002, E6-003, E6-004, E6-005, E6-006]}
   - {revision: "6.1", entries: [E6-007]}
@@ -208,3 +381,92 @@ configuration_revisions:
   - {revision: "6.3", entries: [E6-009, E6-012]}
   - {revision: "6.4", entries: [E6-010]}
   - {revision: "6.5", entries: [E6-011]}
+
+# Header periods (proposed 2026-10-25, column-archive cross-check): stretches where the data files carry other
+# names than the master hardware.xml in force. They do not change the model; they say which names the data of
+# that time use, so a column map can translate them into this era's model, and selection warns there.
+# kind: lag (names of an older config: the node had not restarted), lead (names of a later config),
+# unmatched (names of no config), transition (one day around a restart), meter-lag (meter names only).
+header_periods:
+  - id: E6-H01
+    switchboards: [117-2, 117-4, 117-5, 715-2, 716-2]
+    from: 2023-06-16
+    to: 2023-06-22
+    kind: lead
+    carries: "syslab ebb1fb939 (committed 2023-06-23)"
+    note: the rebuild runs a week before its configuration is committed
+    status: proposed
+  - id: E6-H02
+    switchboards: [117-2, 117-4, 117-5]
+    from: 2023-09-27
+    to: 2023-09-27
+    kind: lead
+    carries: "syslab 777e5f1a4, a96c88172 (committed 2024-10-09 and 2024-10-14)"
+    note: one day with the names of a configuration committed a year later (a test run?)
+    status: proposed
+  - id: E6-H03
+    switchboards: [117-2, 117-4, 117-5]
+    from: 2023-10-23
+    to: 2024-02-26
+    kind: lag
+    carries: "syslab ebb1fb939"
+    note: master renamed on 2023-10-23 (E6-015); the headers follow on 2024-02-27
+    status: proposed
+  - id: E6-H04
+    switchboards: [319-2, 319-3]
+    from: 2023-06-16
+    to: 2023-11-30
+    kind: lag
+    carries: "319-2: syslab b5d64e3d4 (Grid/Local busbars); 319-3: syslab f9d699cd5 (bays 'A1 to 319-2' ...)"
+    note: >-
+      pre-rebuild names in operational periods 6-a to 6-c, although master has the rebuild configuration
+      (319-2 since 2023-06-14, 319-3 since 2023-06-23); new names from 2023-12-01
+    status: proposed
+  - id: E6-H05
+    switchboards: [319-3]
+    from: 2024-03-07
+    to: 2024-09-07
+    kind: unmatched
+    carries: "none: ABB_Pri breaker on busbar Grid_Distribution"
+    note: the breaker comes into the configuration on 2024-06-19 on Busbar_Grid (E6-017)
+    status: proposed
+  - id: E6-H06
+    switchboards: [319-3]
+    from: 2024-09-08
+    to: 2024-09-08
+    kind: transition
+    carries: "none: E1/E2 busbars swapped against b736d2d87"
+    note: restart day of E6-008 and E6-018
+    status: proposed
+  - id: E6-H07
+    switchboards: [715-2]
+    from: 2023-08-13
+    to: 2023-10-19
+    kind: lag
+    carries: "syslab ebb1fb939 (Flexhouse)"
+    note: E6-014; on 2023-10-19 a restart day with 'Flexhouse' in the new naming (transition)
+    status: proposed
+  - id: E6-H08
+    switchboards: [716-2]
+    from: 2023-10-27
+    to: 2024-03-20
+    kind: lag
+    carries: "syslab ebb1fb939"
+    note: E6-016
+    status: proposed
+  - id: E6-H09
+    switchboards: [117-6]
+    from: 2023-11-14
+    to: 2025-02-13
+    kind: lag
+    carries: "NEVIC names (syslab b5d64e3d4)"
+    note: E6-007
+    status: proposed
+  - id: E6-H10
+    switchboards: [117-2, 117-4, 319-2]
+    from: 2023-10-31
+    to: 2026-06-23
+    kind: meter-lag
+    carries: "old meter names: 117-4 Grid (Grid_4 from 2023-10-31), 117-2 CEEx2 (CEEx2_1/_2 from 2024-10-14), 319-2 CEEx2 (CEEx2.A/B from 2026-06-15)"
+    note: all three switch on 2026-06-24 (restart of syslab-11 and syslab-01?); breakers unaffected
+    status: proposed

@@ -15,6 +15,11 @@ The form is a proposal to validate with the technical staff.
   or research, `confirmed` by a person). Ids are never reused.
 - **Configuration revisions** (`6.3`): sets of confirmed, in-force entries; a model version `6.3.N` describes one.
 - **Inquiries**: parameters a model needs that no source gives yet (Cable Q1's length and type).
+- **Header periods** (`E6-H04`): stretches where the data files carry other names than the master
+  `hardware.xml` in force (kind `lag`, `lead`, `unmatched`, `transition`, `meter-lag`), with the config whose
+  names they carry. They do not change the model; they tell a column map which names to translate, and model
+  selection warns inside them. Found by the column-archive cross-check (`.scratch/features/model-versions/research/`
+  on `main`).
 
 Lab refs are commits of the lab repositories (`syslab`, `syslab-userspace`), which are read-only: never commit
 or push there. They stay in this private builder and are not published with a model.
