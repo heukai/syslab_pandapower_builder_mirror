@@ -85,3 +85,61 @@ Not covered: 776-1 (no breaker columns), 330-12/330-13/310-2/319-4 (one header e
    Flexhouse_1 (2023-08-13); renames 117-2 Grid→Grid_2 and X1→X1_2/X1_5 (2023-10-23/31).
 5. **Era 6 start:** the first operational evidence is 2023-06-16 (headers of five switchboards), not 2023-06-23
    (ticket 05: an era starts at the first operational evidence).
+
+---
+
+# Step 2: eras before 2023 (2026-10-25)
+
+Era files on branch `model-versions` (`ab31d0f`): `data/eras/E0.yaml`, `E2.yaml`, `E3.yaml`, `E4.yaml`, all proposed.
+
+**Figure history found.** The older overview figures are in the history of the `syslab` repository (`media/`, deleted
+there 2018-12-12, continued in `syslab-userspace`). The renames of 2015-08-11 (`9f0c83e0e`) give the numbering:
+
+| Figure | File before 2015 | Added | Displayed from | Shows (new against the one before) |
+|---|---|---|---|---|
+| (none) | `swbdrawing.svg` | 2009-09-19 | 2009-09-19 | before EDISON; precedes all data files |
+| (unnumbered) | `swbdrawing-qmarks.svg` | 2009-11-01 | 2009-11-01 | EDISON 117-2/4/5, 319-2 Grid/Local, 715-2, 319-3 crossbar A/B/C, Bonus |
+| v1 | `swbdrawing-qmarks-20120101.svg` | 2011-12-04 | 2011-12-21 | Aircon, NEVIC, D1 to 117-4, B2B as Ship/Shore |
+| v2 | `swbdrawing-qmarks-wide-20120101.svg` | 2012-01-13 | 2012-01-13 | wide-screen v1 with NEVIC 1-8 (117-6) |
+| v3 | `swbdrawing-qmarks-wide-20130101.svg` | 2012-10-30 | 2012-10-30 | "Extension Jan2013": cables D1, E1, E2, F1, heat pumps, CHP, houses 417/418, test bays |
+| v4 | `switchboard_overview_4.svg` | 2015-08-11 | 2015-08-11 | building 716, Flexhouse 2/3; from 2016-11-30 Container/EVSE/PV labels, 319-3 label 2016-07-15 |
+| v5 | `switchboard_overview_5.svg` | 2023-01-12 | never | draft of v6 |
+
+Figures v2 to v4 have an operator's login name in the access-control layer (ticket 12: such layers are stripped).
+
+**Eras drafted** (named after the figure, starting at the first operational evidence):
+
+| Era | From | To | Basis | Major change | First operational evidence |
+|---|---|---|---|---|---|
+| E0 | 2009-12-16 | 2012-02-18 | header-only | EDISON switchboards (unnumbered figure) | first data files |
+| E2 | 2012-02-18 | 2013-07-31 | header-only | 117-6 NEVIC; Aircon replaces Bonus (v1/v2) | 319-2 Aircon in the data |
+| E3 | 2013-07-31 | 2015-07-29 | header-only | extension to building 716 (v3) | 319-3 logs cables E1/E2 to 716-2 |
+| E4 | 2015-07-29 | 2023-06-16 | configuration | 716-2, figure v4, hardware.xml from 2015-08-03 | 716-2 data files |
+
+No E1 (v1 superseded by v2 in three weeks, no data change in between); no E5 (v5 never displayed). Era 4 is very
+quiet: on master only the 2016 E1/E2 swap and the 715-2 cable names change in seven years.
+
+**Data ahead of the configuration, already in 2015-2016:** 716-2 (a year), 715-2 cable names (a year), the E1/E2 swap
+(a month). Same pattern as in era 6: the node runs a configuration before it is committed.
+
+## Expected model versions (draft for syslab_pandapower)
+
+| Era | Base model | Built from | Status it can reach |
+|---|---|---|---|
+| E7 | 7.0.1 | hardware.xml 2026-10 + cable data + Cable Q1 inquiry | validated (after Q1 answered) |
+| E6 | 6.0.1 ... 6.5.x (today 6.4.2) | hardware.xml per operational period + E6 entries | validated on 2026-06-25 (6.4.2); earlier revisions need their own day |
+| E4 | 4.0.1, 4.1.1 | hardware.xml 2015-08-03 / 2016-07 + **pre-rebuild cable data (missing: E4-Q1)** | validated if a suitable day with data exists (island_residuals) |
+| E3, E2, E0 | 3.0.1, 2.x.1, 0.x.1 | breaker and meter names of the data headers + figure + E4 cable data as a guess | **unverified, header-only**; only on request (staff question 15) |
+
+## How syslab_data would select one (outline)
+
+1. Day -> era (`eras.era_at`), operational period (`period_at`), configuration revision in force.
+2. Newest model version of that revision that is validated, else the newest one marked "fewer guarantees"; a model
+   lacking newer confirmed entries of its era is marked "behind" (ticket 07/08 rules, handout).
+3. Warnings: the era is header-only; the day lies in a header period (`header_periods_at(day, switchboard)`), so the
+   column names of that day are translated with that period's names (`carries`); an entry in force that day is uncertain.
+4. Data files whose names match no model of the day are reported, not guessed (the "unmatched" class).
+
+What `syslab_pandapower` must publish for this: per model version its era, revision, validity, validation days and a
+column map per header period (data names -> model breakers and meters). The column maps are new: they are the
+public, data-side counterpart of the header periods (to settle in the publishing-and-selection ticket).

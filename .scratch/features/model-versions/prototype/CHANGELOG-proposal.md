@@ -9,6 +9,9 @@
 > found twelve configuration changes of era 6 that were missing here, a start of era 6 one week earlier, and periods in
 > which the data files use other names than the configuration. Entry numbers now follow the era file
 > (`data/eras/E6.yaml`, branch `model-versions`).
+>
+> Round 4 (2026-10-25): the eras before 2023, from the data files and the history of the older figures (eras 0, 2, 3, 4;
+> questions 13 to 15).
 
 **How to read it**
 
@@ -135,24 +138,44 @@ of the grid model); the rock store was cancelled.
 
 ---
 
-## Era 4, until the 2023 rebuild (overview figure v4)
+## Era 4, 2015-07-29 to 2023-06-16: switchboard 716-2 in operation (overview figure v4)
 
-| Entry | Date | Change | Seen in | Certainty |
+**Major change:** a new figure layout (v4, 2015-08-11) with building 716 (switchboard 716-2, Flexhouse 2 and 3, CHP, heat
+pumps). 716-2 logs its own data files from 2015-07-29, a year before its configuration is committed (2016-07-12). The
+configurations of the other switchboards enter the lab repository on 2015-08-03. 319-3 is configured on syslab-01 with
+319-2 throughout. Busbars "Busbar 1/2"; on 319-2 "Grid"/"Local"; on 319-3 A/B/C.
+
+| Revision | Entry | Date | Change | Seen in | Certainty |
+|---|---|---|---|---|---|
+| 4.0 | E4-001 | 2015-08-03 | First configuration in the lab repository: 117-2/4/5, 117-6, 319-2, 319-3, 715-2 | configuration | confirmed |
+| 4.0 | E4-002 | 2015-07-29 | 716-2: Grid, CEE, CHP, Cable E1, E2, F1, Flexhouse2/3, Heatpump1/2 | data; figure v4; configuration 2016-07-12 | confirmed (data ahead of configuration) |
+| 4.0 | E4-003 | 2015-08-03 | AirCon wind turbine on 319-2 (in the data since 2012; never on 715-2 in any configuration) | configuration, data | confirmed |
+| 4.1 | E4-004 | 2016-06-14 | 319-3: cables E1/E2 to 716-2 swap busbars (E1 from Busbar A/B to A/C, E2 from A/C to A/B), the same kind of swap as 6.2 in 2024 | data 2016-06-14; configuration 2016-07 (master 2016-07-13); 716-2 "swapped interlock E1+E2" fixed 2016-09-19 | **uncertain** (question 13) |
+| 4.1 | E4-005 | 2016-07-12 | 715-2: Cable1/Cable2 named CableB1/CableB2, cable F1 to 716-2 added | configuration; data from 2015-08-05 | confirmed (data ahead of configuration) |
+| - | E4-006 | 2016-11-30 | Figure v4 names EDISON bays Container, NEVIC bays EVSE, Solar PV (the configuration only in 2023) | figure | figure only |
+| - | E4-007 | 2018-07-02 | Display program moves to syslab-userspace, keeps figure v4 | display | display only |
+
+Nothing else changes in the configuration of era 4: seven years without a breaker change on master. Figure v5
+(2023-01-12) was a draft of v6, never displayed, so there is no era 5.
+
+Open in this era: what the cables were before the rebuild (single cables A1, A2, ... or already the pairs A1A/A1B the
+2023 configuration names), with length and type; the equipment behind the bays (question 14).
+
+## Before 2015: eras known from the data files and the figures only
+
+No configuration history exists before 2015, but the data files go back to 2009 and the lab repository keeps the older
+figures (dated in their file names). Models of these eras could only be rebuilt from the column names of the data and the
+figures, and would stay unverified until checked against measurements (question 15).
+
+| Era | From | Figure | Major change | Then |
 |---|---|---|---|---|
-| E4-001 | 2015-08-03 | First configuration in the lab repository: 117-2/4/5, 117-6, 319-2 and 319-3 (both on syslab-01), 715-2, 716-2 | configuration | confirmed |
-| E4-002 | 2015-08-03 | AirCon wind turbine on 319-2 (never on 715-2 in any configuration since 2015) | configuration | confirmed |
-| E4-003 | 2018-07-02 | Display program uses figure v4 (116 breakers on 8 switchboards, busbars "Busbar 1/2", on 319-2 "Grid"/"Local") | display, figure v4 | confirmed |
-| E4-004 | 2016-06-14 | 319-3: cables E1/E2 to 716-2 swap busbars (E1 from Busbar A/B to A/C, E2 from A/C to A/B), the same kind of swap as 6.2 in 2024 | data 2016-06-14; configuration 2016-07-12; 716-2 "swapped interlock E1+E2" fixed 2016-09-19 | uncertain (round 3) |
-| E4-005 | 2015-08-05 | 715-2: cables named CableB1, CableB2, new CableF1 | data from 2015-08-05; configuration only 2016-07-12 | confirmed (data ahead of configuration) |
+| **3** | 2013-07-31 | v3 "wide-20130101" (displayed from 2012-10-30) | "Extension Jan2013": cables E1, E2 from 319-3 and F1 to building 716 (716-2 not logged before 2015) | E3-001 cables E1/E2 on 319-3 in the data from 2013-07-31 (figure dated 2013-01-01: **built when?**) |
+| **2** | 2012-02-18 | v2 "wide-20120101" (from 2012-01-13; v1 of 2011-12-21 is its narrow predecessor) | switchboard 117-6 for the NEVIC charging posts; Aircon turbine in place of Bonus on 319-2 | 2.0 Aircon (2012-02-18); 2.1 Solar bays on 117-2 (2012-03-14) and 319-2 (2012-04-03); 2.2 117-6 (2012-05-03, breakers from 06-27) with its feeder on 117-4 (2012-07-07); 2.3 319-3 logged (2013-05-19); 117-2 stops logging Ext117-5 (2013-01-30, cable still drawn) |
+| **0** | 2009-12-16 | unnumbered figure of 2009-11-01 ("the additional switchboards installed for EDISON") | the EDISON switchboards 117-2/4/5, 319-2, 715-2, the 319-3 crossbar switch | 319-2 and 715-2 logged from 2009-12-16, 117-2/4/5 from May 2011 |
 
-Figure v5 was never used by the display program.
-
-## Before 2015
-
-No configuration history (first `hardware.xml` on master: 2015-08-03). The data files go back to
-2009 (319-2, 715-2) and show changes the configuration history cannot: for example 319-2 Bonus turbine bay replaced by
-Aircon (2012-02-18), Solar bays (2012), 319-3 logging from 2013-05-19 with E1/E2 from 2013-07-31. Whether these eras get
-models at all is open.
+There is no era 1: figure v1 was replaced by its wide-screen variant v2 within three weeks, before any change it shows
+reached the data. Figures v2 to v4 also carry an operator's login name in their access-control layer; that layer is never
+published.
 
 ---
 
@@ -178,3 +201,9 @@ models at all is open.
     then? Is there a record of node restarts?
 12. The twelve entries found in round 3 (E6-014 to E6-025): which belong together as one configuration revision (for
     example the 117-5 changes of 2024-10-08 to 2024-10-14)?
+13. 2016-06-14: was the E1/E2 swap on 319-3 a rewiring, or a correction of names after the data showed them swapped?
+    (The same question as for 2024.)
+14. Before the 2023 rebuild: were cables A1 ... F1 single cables or pairs, and what length and type? Which equipment
+    (Machine set, Battery, EDISON 1-3, CHP, heat pumps, Flexhouses, Bonus/Aircon) was behind the bays?
+15. Eras 0 to 3 (2009-2015): are models for them worth rebuilding from the data names and figures alone? Which past
+    experiments would need them? When did 716-2 go into operation, with which bays (2013-2015)?
