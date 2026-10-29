@@ -11,7 +11,7 @@
 > (`data/eras/E6.yaml`, branch `model-versions`).
 >
 > Round 4 (2026-10-25): the eras before 2023, from the data files and the history of the older figures (eras 0, 2, 3, 4;
-> questions 13 to 15).
+> C13 to C15).
 
 **How to read it**
 
@@ -68,7 +68,7 @@ configuration, the era starts then).
 **Major change:** the 2023 rebuild (busbars renamed A/B, "Solar" bays renamed PV, 319-3 on its own node). Figure v6 and the
 display program changed on 2023-06-23, the configurations on 2023-06-14 (319-2) and 2023-06-23. **But the data files of
 117-2, 117-4, 117-5, 715-2 and 716-2 already use the rebuild names from 2023-06-16**, a week before the configuration was
-committed. An era starts at its first operational evidence, so we propose 2023-06-16 (question 7).
+committed. An era starts at its first operational evidence, so we propose 2023-06-16 (C7).
 
 **Operational periods (commissioning period 2023)**
 
@@ -100,7 +100,7 @@ for you to say, question 12):
 | E6-014 | 2023-08-13 | 715-2: Flexhouse renamed Flexhouse_1 | configuration; data from 2023-10-19 | confirmed (logging lag) |
 | E6-015 | 2023-10-23 | 117-2: Grid renamed Grid_2, Cable X1 renamed Cable_X1_2 (117-5: Cable_X1_5), with the naming convention of all switchboards (2023-10-19 to 10-31) | configuration, display; data from 2024-02-27 | confirmed (logging lag) |
 | E6-016 | 2023-10-27 | 716-2: cables E1 and E2 split into A/B bays; new bays Grid, HeatPump, PV, Spare_1 ... Spare_4 (16 to 32 breakers) | configuration, figure and display (2023-10-31); data from 2024-03-21 | confirmed (logging lag) |
-| E6-017 | 2024-06-19 | 319-3: ABB primary meter and breaker (ABB_Pri) | configuration; data from 2024-03-06, on a busbar "Grid_Distribution" no configuration names | **uncertain** (question 9) |
+| E6-017 | 2024-06-19 | 319-3: ABB primary meter and breaker (ABB_Pri) | configuration; data from 2024-03-06, on a busbar "Grid_Distribution" no configuration names | **uncertain** (C9) |
 | E6-018 | 2024-09-08 | 319-3: supply side as built: manual breakers Supply, Spare, Amp_1, Amp_2, a Grid breaker | configuration, display, data (same day) | confirmed |
 | E6-019 | 2024-09-08 | 319-4: meta crossbar split into Cross_A, Cross_B, Cross_C | configuration, display, data (same day) | confirmed |
 | E6-020 | 2024-10-03 | 319-3: ABB_Pri breaker on the supply busbar, Grid breaker removed ("swapped breakers") | configuration, display, data (same day) | confirmed |
@@ -115,7 +115,7 @@ for you to say, question 12):
 | Period | Switchboards | From | To | The data use | Why, as far as we can tell |
 |---|---|---|---|---|---|
 | E6-H01 | 117-2, 117-4, 117-5, 715-2, 716-2 | 2023-06-16 | 2023-06-22 | the rebuild names | configuration committed a week after it ran |
-| E6-H02 | 117-2, 117-4, 117-5 | 2023-09-27 | 2023-09-27 | names committed only in October 2024 (Booster_Heater, CEEx1, split X cables) | one day, a test run? (question 10) |
+| E6-H02 | 117-2, 117-4, 117-5 | 2023-09-27 | 2023-09-27 | names committed only in October 2024 (Booster_Heater, CEEx1, split X cables) | one day, a test run? (C10) |
 | E6-H03 | 117-2, 117-4, 117-5 | 2023-10-23 | 2024-02-26 | names before the naming convention | node not restarted |
 | E6-H04 | 319-2, 319-3 | 2023-06-16 | 2023-11-30 | **pre-rebuild names** (319-2 Grid/Local busbars; 319-3 "A1 to 319-2" ...) | node not restarted? Covers operational periods 6-a to 6-c |
 | E6-H05 | 319-3 | 2024-03-07 | 2024-09-07 | ABB_Pri on busbar "Grid_Distribution" | a configuration that was never committed? |
@@ -123,7 +123,7 @@ for you to say, question 12):
 | E6-H07 | 715-2 | 2023-08-13 | 2023-10-19 | Flexhouse (not Flexhouse_1) | node not restarted |
 | E6-H08 | 716-2 | 2023-10-27 | 2024-03-20 | the June 2023 names (E1/E2 not split) | node not restarted |
 | E6-H09 | 117-6 | 2023-11-14 | 2025-02-13 | NEVIC names | node not restarted |
-| E6-H10 | 117-2, 117-4, 319-2 | 2023-10-31 | 2026-06-23 | old meter names (Grid, CEEx2) | all switch on 2026-06-24: a restart of syslab-11 and syslab-01? (question 11) |
+| E6-H10 | 117-2, 117-4, 319-2 | 2023-10-31 | 2026-06-23 | old meter names (Grid, CEEx2) | all switch on 2026-06-24: a restart of syslab-11 and syslab-01? (C11) |
 
 Also noted in this era, without a configuration revision: 330-12 Spare_6/7 no longer logged from 2026-04-19 (still in the
 configuration; spare given to a unit?); 776-1 left the configuration on 2024-05-23 (node syslab-30 now runs EVSE18; not part
@@ -150,7 +150,7 @@ configurations of the other switchboards enter the lab repository on 2015-08-03.
 | 4.0 | E4-001 | 2015-08-03 | First configuration in the lab repository: 117-2/4/5, 117-6, 319-2, 319-3, 715-2 | configuration | confirmed |
 | 4.0 | E4-002 | 2015-07-29 | 716-2: Grid, CEE, CHP, Cable E1, E2, F1, Flexhouse2/3, Heatpump1/2 | data; figure v4; configuration 2016-07-12 | confirmed (data ahead of configuration) |
 | 4.0 | E4-003 | 2015-08-03 | AirCon wind turbine on 319-2 (in the data since 2012; never on 715-2 in any configuration) | configuration, data | confirmed |
-| 4.1 | E4-004 | 2016-06-14 | 319-3: cables E1/E2 to 716-2 swap busbars (E1 from Busbar A/B to A/C, E2 from A/C to A/B), the same kind of swap as 6.2 in 2024 | data 2016-06-14; configuration 2016-07 (master 2016-07-13); 716-2 "swapped interlock E1+E2" fixed 2016-09-19 | **uncertain** (question 13) |
+| 4.1 | E4-004 | 2016-06-14 | 319-3: cables E1/E2 to 716-2 swap busbars (E1 from Busbar A/B to A/C, E2 from A/C to A/B), the same kind of swap as 6.2 in 2024 | data 2016-06-14; configuration 2016-07 (master 2016-07-13); 716-2 "swapped interlock E1+E2" fixed 2016-09-19 | **uncertain** (C13) |
 | 4.1 | E4-005 | 2016-07-12 | 715-2: Cable1/Cable2 named CableB1/CableB2, cable F1 to 716-2 added | configuration; data from 2015-08-05 | confirmed (data ahead of configuration) |
 | - | E4-006 | 2016-11-30 | Figure v4 names EDISON bays Container, NEVIC bays EVSE, Solar PV (the configuration only in 2023) | figure | figure only |
 | - | E4-007 | 2018-07-02 | Display program moves to syslab-userspace, keeps figure v4 | display | display only |
@@ -159,13 +159,13 @@ Nothing else changes in the configuration of era 4: seven years without a breake
 (2023-01-12) was a draft of v6, never displayed, so there is no era 5.
 
 Open in this era: what the cables were before the rebuild (single cables A1, A2, ... or already the pairs A1A/A1B the
-2023 configuration names), with length and type; the equipment behind the bays (question 14).
+2023 configuration names), with length and type; the equipment behind the bays (C14).
 
 ## Before 2015: eras known from the data files and the figures only
 
 No configuration history exists before 2015, but the data files go back to 2009 and the lab repository keeps the older
 figures (dated in their file names). Models of these eras could only be rebuilt from the column names of the data and the
-figures, and would stay unverified until checked against measurements (question 15).
+figures, and would stay unverified until checked against measurements (C15).
 
 | Era | From | Figure | Major change | Then |
 |---|---|---|---|---|
@@ -179,31 +179,38 @@ published.
 
 ---
 
-*Open questions for the staff:*
+*Open questions for the staff* (numbered C1 to C15, apart from the handout's six questions; "so far" notes what we already know):
 
-1. Will the 330-13 bay EVSE_12 be renamed Cable_Q1 in the configuration?
-2. Cable Q1: length and cable type? What is behind the 119-10 bays?
-3. When was 119-10 first powered and logging (a feature-branch configuration before 2026-10-05)?
-4. 330-12 Spare_6/7: given to a named unit?
-5. 319-3 E1/E2 (and C1/C2): which labels were right between December 2023 and September 2024?
-6. 117-2 CEEx2: is `CEEx2_2` the Busbar A socket, as the 2026-06-25 data shows?
-7. **When did era 6 start?** The data files of five switchboards use the rebuild names from 2023-06-16; the configuration
+C1. Will the 330-13 bay EVSE_12 be renamed Cable_Q1 in the configuration?
+   *So far:* the model keeps `EVSE_12` until the configuration renames it (maintainer, 2026-10-21).
+C2. Cable Q1: length and cable type? What is behind the 119-10 bays?
+C3. When was 119-10 first powered and logging (a feature-branch configuration before 2026-10-05)?
+C4. 330-12 Spare_6/7: given to a named unit?
+   *So far:* spares can disappear when they are given to a named unit (maintainer, 2026-10-21).
+C5. 319-3 E1/E2 (and C1/C2): which labels were right between December 2023 and September 2024?
+   *So far:* flagged as uncertain, not corrected: no consistent ground truth (maintainer, 2026-10-21).
+C6. 117-2 CEEx2: is `CEEx2_2` the Busbar A socket, as the 2026-06-25 data shows?
+   *So far:* yes by the data: with the swap every island of 2026-06-25 closes (maintainer agreed, 2026-10-24).
+C7. **When did era 6 start?** The data files of five switchboards use the rebuild names from 2023-06-16; the configuration
    was committed on 2023-06-23 (on master 2023-06-30). Was the rebuild in operation from 2023-06-16? If experiments ran in
    that week, they would get the era-6 model.
-8. **Data-name periods:** is it right to keep these apart from the configuration changes (the grid did not change, only
+C8. **Data-name periods:** is it right to keep these apart from the configuration changes (the grid did not change, only
    the names in the data)? Do you recognise the reasons we give? Are there restarts or test configurations we should know
    about? The longest one: 319-2 and 319-3 logged the pre-rebuild names until 2023-11-30, five months into era 6.
-9. 319-3 ABB_Pri, March to September 2024: the data name its breaker's busbar "Grid_Distribution", a name in no
+   *So far:* lags and feature-branch periods are flagged, not corrected (maintainer, 2026-10-21); a node reads
+   hardware.xml only at a restart.
+C9. 319-3 ABB_Pri, March to September 2024: the data name its breaker's busbar "Grid_Distribution", a name in no
    committed configuration. Which busbar was it?
-10. 2023-09-27: for one day, 117-2 and 117-5 logged names that were committed only in October 2024. A test of the new
-    configuration? Was anything connected differently that day?
-11. 2026-06-24: the meter names of 117-2, 117-4 and 319-2 changed on the same day. Were syslab-11 and syslab-01 restarted
-    then? Is there a record of node restarts?
-12. The twelve entries found in round 3 (E6-014 to E6-025): which belong together as one configuration revision (for
-    example the 117-5 changes of 2024-10-08 to 2024-10-14)?
-13. 2016-06-14: was the E1/E2 swap on 319-3 a rewiring, or a correction of names after the data showed them swapped?
-    (The same question as for 2024.)
-14. Before the 2023 rebuild: were cables A1 ... F1 single cables or pairs, and what length and type? Which equipment
-    (Machine set, Battery, EDISON 1-3, CHP, heat pumps, Flexhouses, Bonus/Aircon) was behind the bays?
-15. Eras 0 to 3 (2009-2015): are models for them worth rebuilding from the data names and figures alone? Which past
-    experiments would need them? When did 716-2 go into operation, with which bays (2013-2015)?
+C10. 2023-09-27: for one day, 117-2 and 117-5 logged names that were committed only in October 2024. A test of the new
+     configuration? Was anything connected differently that day?
+C11. 2026-06-24: the meter names of 117-2, 117-4 and 319-2 changed on the same day. Were syslab-11 and syslab-01 restarted
+     then? Is there a record of node restarts?
+C12. The twelve entries found in round 3 (E6-014 to E6-025): which belong together as one configuration revision (for
+     example the 117-5 changes of 2024-10-08 to 2024-10-14)?
+C13. 2016-06-14: was the E1/E2 swap on 319-3 a rewiring, or a correction of names after the data showed them swapped?
+     (The same question as for 2024.)
+C14. Before the 2023 rebuild: were cables A1 ... F1 single cables or pairs, and what length and type? Which equipment
+     (Machine set, Battery, EDISON 1-3, CHP, heat pumps, Flexhouses, Bonus/Aircon) was behind the bays?
+C15. Eras 0 to 3 (2009-2015): are models for them worth rebuilding from the data names and figures alone? Which past
+     experiments would need them? When did 716-2 go into operation, with which bays (2013-2015)?
+     *So far:* the yearly experiments (June; November or March) are the candidate days (staff, 2026-10-30).

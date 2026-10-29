@@ -81,6 +81,8 @@ Settled while charting (maintainer, 2026-10-20):
 - **Configurations before 2015:** whether eras before the first `hardware.xml` (2015-08-03) are addressed at all.
 - **Verification per era:** how each era's model is checked against a baseline period of measured data (US-28), and how an
   unverified era is marked.
+  Staff (2026-10-30): the validation belongs in this toolbox (today `syslab_data/utilities/island_residuals.py`); the
+  yearly experiments (June; November or March) are the natural validation days.
 - **Era boundaries from the data:** how the topology state index (US-49) and the header eras (US-23) feed or confirm era
   boundaries. First pass done (2026-10-25, `research/column-archive-sample.md`): the header cross-check finds missing
   change entries, an earlier era-6 start and data-name periods (proposed, questions to the staff in the change-log draft);
