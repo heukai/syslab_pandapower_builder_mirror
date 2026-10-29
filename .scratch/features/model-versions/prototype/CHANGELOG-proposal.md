@@ -93,7 +93,7 @@ Data files of the new switchboards start later: 319-4 2023-12-01, 330-13 2023-12
 | 6.5 | E6-011 | 2026-08-13 | 310-2: bay Spare_1 renamed **Boiler** | configuration, figure v6, display (same day) | confirmed |
 
 **Found in round 3, not yet in a revision** (all in the configuration and in the data; which revision each belongs to is
-for you to say, question 12):
+for you to say, C12):
 
 | Entry | Date | Change | Seen in | Certainty |
 |---|---|---|---|---|
@@ -110,7 +110,7 @@ for you to say, question 12):
 | E6-024 | 2023-10-31 | 117-4: Grid meter renamed Grid_4 (breakers unchanged) | configuration; data from 2026-06-24 | confirmed (logging lag) |
 | E6-025 | 2026-01-07 | 117-4: manual breaker of cable D1 with feedback | configuration, display, data (same day) | confirmed |
 
-**Data-name periods** (the data files of that time use other names than the configuration in force; question 8)
+**Data-name periods** (the data files of that time use other names than the configuration in force; C8)
 
 | Period | Switchboards | From | To | The data use | Why, as far as we can tell |
 |---|---|---|---|---|---|
