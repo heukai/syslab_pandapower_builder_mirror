@@ -30,3 +30,7 @@ or push there. They stay in this private builder and are not published with a mo
 
 Check the files: `python -c "from syslab_pandapower_builder.eras import load_eras, check_eras; print(check_eras(load_eras()))"`
 (run from the workspace root); `tests/test_eras.py` does the same.
+
+**Versions log:** `VERSIONS.md`, generated from the era files (revisions, entries not yet in a revision, model versions,
+data-name periods; newest era first): `python -m syslab_pandapower_builder.eras > syslab_pandapower_builder/data/eras/VERSIONS.md`
+from the workspace root. A test fails when it is out of date.

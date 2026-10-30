@@ -4,7 +4,7 @@ import datetime as dt
 
 import pytest
 
-from syslab_pandapower_builder.eras import Era, check_era, check_eras, era_at, load_eras
+from syslab_pandapower_builder.eras import Era, check_era, check_eras, era_at, load_eras, version_log
 
 
 @pytest.fixture(scope="module")
@@ -89,7 +89,32 @@ def test_checks_name_the_entry_to_fix(changes, msg):
     assert any(msg in m for m in msgs), msgs
 
 
+def test_version_log_lists_revisions_models_and_open_entries(eras):
+    log = version_log(eras)
+    assert log.index("## Era 7") < log.index("## Era 6") < log.index("## Era 0")      # newest era first
+    assert "| 6.5 | 2026-08-13 | E6-011 |" in log
+    assert "| 6.4.2 | 6.4 | 2026-10-24 | current | 2026-06-25:" in log
+    assert "E6-025 117-4 Cable_D1: added" in log                                    # not in a revision yet
+    assert "E7-005" in log and "[no: planned]" in log
+
+
+def test_model_version_checks():
+    era = _era()
+    era.model_versions = [{"version": "9.1.1", "revision": "9.1", "status": "current"},
+                          {"version": "8.0.1", "revision": "9.0", "status": "old"}]
+    msgs = check_era(era)
+    assert any("revision 9.1 is not" in m for m in msgs)
+    assert any("must be numbered 9.0.N" in m for m in msgs)
+    assert any("status 'old'" in m for m in msgs)
+
+
 def test_header_only_era_rejects_configuration_evidence():
     era = _era()
     era.basis = "header-only"
     assert any("header-only era" in m for m in check_era(era))
+
+
+def test_versions_log_file_is_up_to_date(eras):
+    """data/eras/VERSIONS.md is generated; regenerate it with `python -m syslab_pandapower_builder.eras`."""
+    path = eras[0].path.parent / "VERSIONS.md"
+    assert path.read_text(encoding="utf-8").replace("\r\n", "\n") == version_log(eras)

@@ -25,6 +25,7 @@ CERTAINTY = {"confirmed", "uncertain"}
 STATUS = {"proposed", "confirmed"}
 HEADER_KINDS = {"lag", "lead", "unmatched", "transition", "meter-lag"}
 BASES = {"configuration", "header-only"}
+MODEL_STATUS = {"current", "superseded", "variant"}
 
 
 @dataclass
@@ -42,6 +43,7 @@ class Era:
     configuration_revisions: list[dict] = field(default_factory=list)
     inquiries: list[dict] = field(default_factory=list)
     header_periods: list[dict] = field(default_factory=list)
+    model_versions: list[dict] = field(default_factory=list)
     basis: str = "configuration"   # header-only: no hardware.xml, models rebuilt from data headers (unverified)
     path: Path | None = None
 
@@ -71,7 +73,7 @@ def load_era(path: Path | str) -> Era:
         major_change=d["major_change"], operational_periods=d["operational_periods"],
         changes=d.get("changes") or [], configuration_revisions=d.get("configuration_revisions") or [],
         inquiries=d.get("inquiries") or [], header_periods=d.get("header_periods") or [],
-        basis=d.get("basis", "configuration"), path=Path(path),
+        model_versions=d.get("model_versions") or [], basis=d.get("basis", "configuration"), path=Path(path),
     )
 
 
@@ -158,7 +160,67 @@ def check_era(era: Era) -> list[str]:
             msgs.append(f"{hid}: no switchboards")
         if not h.get("carries"):
             msgs.append(f"{hid}: carries missing (which names the data files use)")
+    for m in era.model_versions:
+        v, rev = str(m.get("version", "?")), str(m.get("revision", "?"))
+        if rev not in revs:
+            msgs.append(f"model {v}: revision {rev} is not a configuration revision of {era.era}")
+        if not v.startswith(f"{rev}."):
+            msgs.append(f"model {v}: must be numbered {rev}.N (variants {rev}.N.CODE)")
+        if m.get("status") not in MODEL_STATUS:
+            msgs.append(f"model {v}: status {m.get('status')!r} is not one of {sorted(MODEL_STATUS)}")
     return msgs
+
+
+def _what(entry: dict) -> str:
+    el = entry.get("element") or {}
+    keys = [k for k in ("switchboard", "bay") if el.get(k)] or list(el)
+    where = " ".join(str(el[k]) for k in keys)
+    note = " ".join(str(entry.get("note") or "").split())
+    note = note if len(note) <= 110 else note[:107].rsplit(" ", 1)[0] + " ..."
+    return f"{where}: {entry['change']}" + (f" ({note})" if note else "")
+
+
+def version_log(eras: list[Era]) -> str:
+    """The configuration and model versions of all eras as a Markdown log, newest era first."""
+    out = ["# SYSLAB grid: versions log", "",
+           "Generated from `data/eras/E*.yaml` (`python -m syslab_pandapower_builder.eras`); edit the era files, not this.",
+           "Version numbers: era.revision.model, variants era.revision.model.CODE. Everything marked proposed waits for a "
+           "person to confirm it.", ""]
+    for era in sorted(eras, key=lambda e: e.start, reverse=True):
+        basis = " · header-only" if era.basis == "header-only" else ""
+        out += [f"## Era {era.era[1:]}: {era.title}", "",
+                f"{era.start} to {era.end or 'today'} · figure v{era.figure}{basis}", ""]
+        in_rev = set()
+        rows = []
+        for r in era.configuration_revisions:
+            ents = [era.entry(i) for i in r.get("entries", [])]
+            in_rev.update(r.get("entries", []))
+            first = min((e["date"] for e in ents), default=None)
+            for k, e in enumerate(ents):
+                rows.append(f"| {r['revision'] if k == 0 else ''} | {e['date'] if k else first} | {e['id']} | "
+                            f"{_what(e)} | {e['certainty']}, {e['status']} |")
+        if rows:
+            out += ["| Revision | Date | Entry | Change | Certainty, status |", "|---|---|---|---|---|", *rows, ""]
+        rest = sorted((c for c in era.changes if c["id"] not in in_rev), key=lambda c: c["date"])
+        if rest:
+            out += ["Not in a revision:", ""]
+            out += [f"- {c['date']} {c['id']} {_what(c)}"
+                    + ("" if c.get("in_force") is True else f" [{c['in_force']}]") for c in rest]
+            out.append("")
+        if era.model_versions:
+            out += ["| Model | Revision | Published | Status | Validated | Note |", "|---|---|---|---|---|---|"]
+            for m in era.model_versions:
+                val = "; ".join(f"{v['day']}: {v['check']}" for v in m.get("validated") or []) or "-"
+                out.append(f"| {m['version']} | {m['revision']} | {m.get('published', '-')} | {m['status']} | {val} | "
+                           f"{m.get('note', '')} |")
+            out.append("")
+        else:
+            out += ["Model versions: none yet.", ""]
+        if era.header_periods:
+            out += ["Data-name periods: " + "; ".join(
+                f"{h['id']} {', '.join(h['switchboards'])} {h['from']} to {h['to']} ({h['kind']})"
+                for h in era.header_periods), ""]
+    return "\n".join(out).rstrip("\n") + "\n"
 
 
 def check_eras(eras: list[Era]) -> list[str]:
@@ -168,3 +230,14 @@ def check_eras(eras: list[Era]) -> list[str]:
         if a.end != b.start:
             msgs.append(f"{a.era} ends {a.end}, but {b.era} starts {b.start}")
     return msgs
+
+
+if __name__ == "__main__":
+    import sys
+
+    all_eras = load_eras()
+    problems = check_eras(all_eras)
+    if problems:
+        sys.exit("\n".join(problems))
+    sys.stdout.reconfigure(encoding="utf-8")
+    print(version_log(all_eras), end="")
