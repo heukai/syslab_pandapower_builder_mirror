@@ -86,7 +86,7 @@ Settled while charting (maintainer, 2026-10-20):
 - **Era boundaries from the data:** how the topology state index (US-49) and the header eras (US-23) feed or confirm era
   boundaries. First pass done (2026-10-25, `research/column-archive-sample.md`): the header cross-check finds missing
   change entries, an earlier era-6 start and data-name periods (proposed, questions to the staff in the change-log draft);
-  eras before 2023 drafted as E0, E2, E3 (header-only) and E4 (2015-2023) from the data and the older figures (step 2, same note).
+  eras before 2023 drafted as E0, E2, E3 (header-only) and E4 (2015-2023) from the data and the older figures (step 2, same note). Pick-up log for the data-name periods (C8) and the era-6 revisions (C12): `pickup-log-C8-C12.md`.
 - **CI/CD pipeline (the goal, its own epic):** a change to `hardware.xml` triggers a builder update, which triggers an update of
   the `syslab_pandapower` model. This map only has to leave the forward build ready to be triggered that way; the pipeline
   itself is charted as a separate effort.
