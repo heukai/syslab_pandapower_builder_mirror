@@ -33,3 +33,12 @@ the 2023 rebuild as one era with a commissioning period. This ticket adds how a 
    *behind* for dates after the change; selection still offers it, with the warning.
 
 As for the configuration-change ticket, human-facing parts are proposals to validate with the staff.
+
+## Comments
+
+**2026-10-25, amendment (maintainer):** "the last master commit inside the period" is dated by the commit's **author date**
+(when the configuration was written), not by the date it reached master's first-parent line by a merge, which is often weeks
+later (310-2 Boiler: written 2026-08-13, merged 2026-09-12). The data files follow the author date. The merge date is kept
+as evidence. Found by the column-archive cross-check (`research/column-archive-sample.md`), which also proposed
+**data-name periods** (era file section `header_periods`) and an era-6 start of 2023-06-16; both are questions for the staff
+in the change-log draft (questions 7 and 8).

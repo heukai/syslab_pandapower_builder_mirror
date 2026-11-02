@@ -216,28 +216,28 @@ class TestLoadBreakerGroups:
                 assert hasattr(s, "logged")
                 assert isinstance(s.logged, bool)
 
-    def test_unlogged_switch_count(self):
-        """Exactly 19 switches should be marked logged=False."""
+    def test_no_switch_is_unlogged(self):
+        """Every switch appears in the data files (column archive, current header eras), so none is unlogged."""
         unlogged = [
-            s for g in self.groups for s in g.switches if not s.logged
+            s.name for g in self.groups for s in g.switches if not s.logged
         ]
-        assert len(unlogged) == 19
+        assert unlogged == []
 
-    def test_known_unlogged_switches(self):
-        """Specific switches should be marked unlogged."""
+    def test_busbar_grid_switches_are_logged(self):
+        """The Busbar-Grid breakers decide whether an island has the grid (logged as BRK_Grid_Grid, BRK_Grid_2_Grid)."""
         all_switches = {s.name: s for g in self.groups for s in g.switches}
-        assert not all_switches["117_2_BRK_Grid_2_Busbar_Grid"].logged
-        assert not all_switches["117_4_BRK_Cable_D1_Manual_Busbar_A"].logged
-        assert not all_switches["715_2_BRK_Grid_Busbar_Grid"].logged
+        assert all_switches["117_2_BRK_Grid_2_Busbar_Grid"].logged
+        assert all_switches["715_2_BRK_Grid_Busbar_Grid"].logged
+        assert all_switches["117_4_BRK_Cable_D1_Manual_Busbar_A"].logged
 
-    def test_evse_117_6_all_unlogged(self):
-        """All 16 EVSE switches in 117-6 should be unlogged."""
+    def test_evse_117_6_all_logged(self):
+        """All 16 EVSE switches in 117-6 are logged (data files since 2025-02-14)."""
         evse = [
             s for g in self.groups for s in g.switches
             if s.name.startswith("117_6_BRK_EVSE_")
         ]
         assert len(evse) == 16
-        assert all(not s.logged for s in evse)
+        assert all(s.logged for s in evse)
 
     def test_logged_default_true(self):
         """Switches without explicit logged=false should default to True."""

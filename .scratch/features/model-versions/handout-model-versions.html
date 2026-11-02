@@ -1,0 +1,296 @@
+<title>Which Model for Which Day?</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@500;600&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  /* Layout: a printed lab handout — one reading column, one full-width to-scale timeline drawn like a single-line diagram. */
+  :root {
+    --paper: #f7f8f6;
+    --ink: #1c2530;
+    --muted: #5d6874;
+    --rule: #d3d9df;
+    --panel: #eceff1;
+    --accent: #1f5f8b;       /* busbar blue */
+    --accent-soft: #d5e4ef;
+    --ok: #2f7d4f;           /* validated */
+    --warn: #a8671a;         /* behind / fewer guarantees */
+    --plan: #8a94a0;         /* planned */
+    --display: "IBM Plex Sans Condensed", "Arial Narrow", system-ui, sans-serif;
+    --body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #12171c; --ink: #e3e8ec; --muted: #9aa6b1; --rule: #2c353e; --panel: #1b222a;
+      --accent: #7fb3d8; --accent-soft: #1e3446; --ok: #6cc18f; --warn: #e0a256; --plan: #77828d;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #12171c; --ink: #e3e8ec; --muted: #9aa6b1; --rule: #2c353e; --panel: #1b222a;
+    --accent: #7fb3d8; --accent-soft: #1e3446; --ok: #6cc18f; --warn: #e0a256; --plan: #77828d;
+    color-scheme: dark;
+  }
+  body { background: var(--paper); color: var(--ink); font: 16px/1.6 var(--body); }
+  .wrap { max-width: 1060px; margin: 0 auto; padding-block: 40px 72px;
+          padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+  .col { max-width: 68ch; }
+  header { display: grid; gap: 10px; border-bottom: 2px solid var(--ink); padding-bottom: 20px; }
+  .kicker { font: 500 12px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+  h1 { font: 600 clamp(30px, 5vw, 46px)/1.08 var(--display); margin: 0; text-wrap: balance; }
+  h2 { font: 600 24px/1.2 var(--display); margin: 44px 0 10px; text-wrap: balance; }
+  h3 { font: 600 17px/1.3 var(--display); margin: 22px 0 6px; }
+  p { margin: 0 0 12px; }
+  .lede { font-size: 18px; color: var(--ink); }
+  code, .id { font-family: var(--mono); font-size: .92em; }
+  .id { background: var(--accent-soft); color: var(--accent); padding: 0 5px; border-radius: 3px; white-space: nowrap; }
+  .terms { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 0; border-top: 1px solid var(--rule); margin-top: 18px; }
+  .term { padding: 14px 16px 14px 0; border-bottom: 1px solid var(--rule); min-width: 0; }
+  .term b { display: block; font: 600 16px/1.3 var(--display); }
+  .term .ex { font: 13px/1.5 var(--mono); color: var(--accent); margin: 2px 0 6px; }
+  .term p { font-size: 14.5px; color: var(--muted); margin: 0; }
+  .figure { margin-top: 18px; overflow-x: auto; border: 1px solid var(--rule); background: var(--paper); }
+  .figure svg { display: block; min-width: 860px; width: 100%; height: auto; }
+  .caption { font-size: 13px; color: var(--muted); margin-top: 8px; }
+  .flow { display: grid; gap: 0; margin-top: 14px; border-left: 2px solid var(--accent); }
+  .step { display: grid; grid-template-columns: 34px 1fr; gap: 10px; padding: 8px 0 8px 14px; align-items: start; }
+  .step .n { font: 500 13px/24px var(--mono); color: var(--accent); }
+  .step b { font-weight: 600; }
+  .examples { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; margin-top: 18px; }
+  .ex-card { background: var(--panel); padding: 14px 16px; min-width: 0; }
+  .ex-card .date { font: 500 15px var(--mono); }
+  .pill { display: inline-block; font: 500 12px/1.6 var(--mono); padding: 0 8px; border-radius: 999px; border: 1px solid currentColor; margin: 6px 0; }
+  .pill.ok { color: var(--ok); } .pill.warn { color: var(--warn); } .pill.none { color: var(--plan); }
+  .ex-card p { font-size: 14.5px; margin: 0; }
+  .try { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-top: 16px; padding: 12px 14px; border: 1px dashed var(--rule); }
+  .try label { font: 500 14px var(--display); }
+  .try input { font: 15px var(--mono); padding: 4px 8px; border: 1px solid var(--rule); background: var(--paper); color: var(--ink); }
+  .try input:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+  #answer { font-size: 15px; min-width: 0; flex: 1 1 300px; }
+  table { border-collapse: collapse; width: 100%; font-size: 15px; }
+  .tablewrap { overflow-x: auto; margin-top: 12px; }
+  th, td { text-align: left; vertical-align: top; padding: 9px 12px 9px 0; border-bottom: 1px solid var(--rule); }
+  th { font: 600 13px var(--display); letter-spacing: .04em; text-transform: uppercase; color: var(--muted); }
+  ol.questions { padding-left: 1.3em; margin: 12px 0 0; display: grid; gap: 12px; }
+  ol.questions li::marker { font-family: var(--mono); color: var(--accent); }
+  ol.questions .opt { display: block; font-size: 14.5px; color: var(--muted); }
+  footer { margin-top: 48px; padding-top: 14px; border-top: 1px solid var(--rule); font-size: 13px; color: var(--muted); }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<div class="wrap">
+  <header>
+    <span class="kicker">SYSLAB grid model · discussion handout · October 2026</span>
+    <h1>Which model for which day?</h1>
+    <p class="lede col">The SYSLAB grid changes over the years, and the pandapower model has to follow. We want to publish
+    several model versions side by side and let every analysis pick the right one for the date of its data. This page
+    explains the idea and asks for your view on how publishing and choosing should work.</p>
+  </header>
+
+  <section>
+    <h2>Four words we use</h2>
+    <div class="terms">
+      <div class="term"><b>Configuration era</b><div class="ex">E6, E7</div>
+        <p>A period marked by a major change of the grid: usually a new switchboard. Named after the overview figure (figure v7 → era 7).</p></div>
+      <div class="term"><b>Operational period</b><div class="ex">6-a … 6-d</div>
+        <p>Inside an era, the switchboards actually in operation. The 2023 rebuild was commissioned in four stages, and experiments ran in between.</p></div>
+      <div class="term"><b>Configuration revision</b><div class="ex">6.3, 6.4, 6.5</div>
+        <p>A set of smaller changes inside an era: a renamed bay, a second meter. Recorded as change entries with their evidence.</p></div>
+      <div class="term"><b>Model version</b><div class="ex">6.4.2 · 6.4.2/j1a-2026</div>
+        <p>A published model of one revision, improved over time and validated on real days. A scenario model adds an experiment's set-up.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>The last three years on one line</h2>
+    <p class="col">Drawn to scale. Era bands on top, then the commissioning stages, the configuration revisions, and the
+    model versions with the days they were checked on.</p>
+    <div class="figure" role="img" aria-label="Timeline 2022 to 2027 of eras, operational periods, configuration revisions and model versions">
+      <svg id="timeline" viewBox="0 0 1000 300" xmlns="http://www.w3.org/2000/svg"></svg>
+    </div>
+    <p class="caption">Era 4 runs from before 2015 to the 2023 rebuild. The model versions are drawn over the configuration
+    they describe; 6.4.2 was published on 2026-10-24 for the grid of mid-2026 and checked on 2026-06-25.
+    Revisions: 6.0 rebuild (2023-06-23) · 6.1 117-6 EVSE names (2023-11-14) · 6.2 319-3 cables E1/E2 (2024-09-08) ·
+    6.3 117-2 second CEEx2 meter (2024-10-14) · 6.4 319-2 second CEEx2 meter (2026-06-15) · 6.5 310-2 Boiler (2026-08-13) ·
+    7.0 fast charger 119-10 and Cable Q1 (2026-10-05).</p>
+  </section>
+
+  <section>
+    <h2>How a date finds its model</h2>
+    <p class="col">An analysis asks for the model of a day. The answer is picked in this order, and the answer always says
+    how good it is.</p>
+    <div class="flow col">
+      <div class="step"><span class="n">1</span><span><b>Era.</b> The date falls in one configuration era (and one operational period inside it).</span></div>
+      <div class="step"><span class="n">2</span><span><b>Validated on that day?</b> A model of the era that was checked against measured data on that day wins.</span></div>
+      <div class="step"><span class="n">3</span><span><b>Valid for that period?</b> Otherwise a model whose validity period covers the date.</span></div>
+      <div class="step"><span class="n">4</span><span><b>Base model of the era.</b> Otherwise the latest general model of the era: it applies, with fewer guarantees. Scenario models are never the default.</span></div>
+      <div class="step"><span class="n">5</span><span><b>Behind?</b> If the grid changed after the model was built (a confirmed change it does not include), the answer carries a warning.</span></div>
+    </div>
+
+    <div class="examples">
+      <div class="ex-card"><div class="date">2026-06-25</div><span class="pill ok">validated</span>
+        <p>Era 6, period 6-d. Model <span class="id">6.4.2</span>: checked on this day, every island closes (largest island 0.22 kW RMSE). With the converter experiment: <span class="id">6.4.2/j1a-2026</span>.</p></div>
+      <div class="ex-card"><div class="date">2024-03-01</div><span class="pill warn">fewer guarantees</span>
+        <p>Era 6, period 6-d. No model was checked on a day near it, and 6.4.2 describes the grid from June 2026. A model of configuration 6.1 would be better; until then the base model applies with fewer guarantees.</p></div>
+      <div class="ex-card"><div class="date">2026-11-01</div><span class="pill none">no model yet</span>
+        <p>Era 7 (fast charger 119-10). Model 7.0.1 is waiting for facts: the length and type of Cable Q1, what is behind the 119-10 bays.</p></div>
+    </div>
+
+    <div class="try">
+      <label for="qdate">Try a date</label>
+      <input type="date" id="qdate" value="2026-08-20" min="2015-01-01" max="2027-12-31">
+      <span id="answer" aria-live="polite"></span>
+    </div>
+  </section>
+
+  <section>
+    <h2>What gets published, and what stays inside the lab</h2>
+    <p class="col">The model package <code>syslab_pandapower</code> is public. The configuration history behind it comes
+    from the lab's own repositories, which are not.</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Published with each model version</th><th>Stays in the private builder</th></tr></thead>
+        <tbody>
+          <tr><td>The pandapower model files of that version</td><td>The era files with all change entries and their sources</td></tr>
+          <tr><td>A short manifest: era, version, the changes it includes, the days it was validated on, its validity period</td><td>References to commits of the lab repositories</td></tr>
+          <tr><td>The switchboard overview figure of its era, cleaned (no login layers, no internal paths), as SVG and PNG</td><td>The original figures and the operator display program</td></tr>
+          <tr><td>A label map from each breaker in the figure to the model</td><td>Open questions to the staff, raw data and measurements</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>What we would like your view on</h2>
+    <ol class="questions col">
+      <li><b>Choosing a model.</b> Should an analysis pick the model by date automatically, or should the user always name a version?
+        <span class="opt">Our draft: by date, and the answer says which version and how good it is.</span></li>
+      <li><b>When is a model "validated" for a day?</b> Which check, and how close is close enough?
+        <span class="opt">Our draft: every island of the day simulated against its grid meter; the largest island within about 0.5 kW RMSE at 1-minute resolution.</span></li>
+      <li><b>Data that spans an era change.</b> Split the analysis at the change, or warn and use one model?
+        <span class="opt">Our draft: split, and say so.</span></li>
+      <li><b>How many versions stay available?</b> All versions side by side, or the latest per revision plus an archive?</li>
+      <li><b>Who records a validation?</b> After a yearly experiment, who checks the model against that day and writes it down?</li>
+      <li><b>Which past days are worth checking?</b> Experiments in 2023 to 2025 that would let us validate older revisions (6.0 to 6.3).</li>
+    </ol>
+  </section>
+
+  <footer>Draft for discussion. Terms and examples come from the builder's map "dated model versions" (tickets on
+  configuration changes, eras and publishing). Model numbers other than 6.4.1 and 6.4.2 are illustrative.</footer>
+</div>
+
+<script>
+(function () {
+  // Data shown on the timeline and used by "Try a date". Dates are ISO strings.
+  var ERAS = [
+    { id: "E4", from: "2015-08-03", to: "2023-06-23", label: "Era 4 · figure v4", note: "since 2015" },
+    { id: "E6", from: "2023-06-23", to: "2026-10-05", label: "Era 6 · figure v6 · after the 2023 rebuild" },
+    { id: "E7", from: "2026-10-05", to: null, label: "Era 7 · v7" }
+  ];
+  var PERIODS = [
+    { id: "6-a", from: "2023-06-23", to: "2023-07-02" }, { id: "6-b", from: "2023-07-02", to: "2023-10-06" },
+    { id: "6-c", from: "2023-10-06", to: "2023-10-19" }, { id: "6-d", from: "2023-10-19", to: "2026-10-05" },
+    { id: "7-a", from: "2026-10-05", to: null }
+  ];
+  var REVS = [
+    { id: "6.0", at: "2023-06-23", what: "rebuild" }, { id: "6.1", at: "2023-11-14", what: "117-6 EVSE names" },
+    { id: "6.2", at: "2024-09-08", what: "319-3 E1/E2" }, { id: "6.3", at: "2024-10-14", what: "117-2 second meter" },
+    { id: "6.4", at: "2026-06-15", what: "319-2 second meter" }, { id: "6.5", at: "2026-08-13", what: "Boiler" },
+    { id: "7.0", at: "2026-10-05", what: "119-10, Cable Q1" }
+  ];
+  var MODELS = [
+    { id: "6.4.2", era: "E6", from: "2026-06-15", to: "2026-08-13", validated: ["2026-06-25"], behindFrom: "2026-08-13" }
+  ];
+  var T0 = Date.parse("2022-07-01"), T1 = Date.parse("2027-07-01"), X0 = 30, X1 = 980;
+  function x(d) { var t = d ? Date.parse(d) : T1; t = Math.max(T0, Math.min(T1, t)); return X0 + (t - T0) / (T1 - T0) * (X1 - X0); }
+  var NS = "http://www.w3.org/2000/svg", svg = document.getElementById("timeline");
+  function el(name, attrs, text) {
+    var e = document.createElementNS(NS, name);
+    for (var k in attrs) e.setAttribute(k, attrs[k]);
+    if (text != null) e.textContent = text;
+    svg.appendChild(e); return e;
+  }
+  var css = getComputedStyle(document.documentElement);
+  function c(v) { return css.getPropertyValue(v).trim(); }
+  function draw() {
+    while (svg.firstChild) svg.removeChild(svg.firstChild);
+    var ink = c("--ink"), muted = c("--muted"), rule = c("--rule"), acc = c("--accent"), soft = c("--accent-soft"),
+        ok = c("--ok"), warn = c("--warn"), mono = c("--mono"), disp = c("--display");
+    // year grid
+    for (var y = 2023; y <= 2027; y++) {
+      var xx = x(y + "-01-01");
+      el("line", { x1: xx, x2: xx, y1: 22, y2: 290, stroke: rule, "stroke-width": 1 });
+      el("text", { x: xx + 4, y: 16, fill: muted, "font-size": 12, "font-family": mono }, String(y));
+    }
+    // row labels
+    var rows = [["ERAS", 46], ["PERIODS", 104], ["REVISIONS", 160], ["MODELS", 232]];
+    rows.forEach(function (r) { el("text", { x: X0, y: r[1] - 14, fill: muted, "font-size": 10, "letter-spacing": "0.08em", "font-family": mono }, r[0]); });
+    // eras
+    ERAS.forEach(function (e, i) {
+      var a = x(e.from), b = x(e.to);
+      el("rect", { x: a, y: 38, width: Math.max(2, b - a - 2), height: 28, fill: i % 2 ? soft : c("--panel"), stroke: acc, "stroke-width": 1 });
+      el("text", { x: a + 6, y: 57, fill: ink, "font-size": 13, "font-family": disp, "font-weight": 600 }, e.label);
+    });
+    // operational periods
+    PERIODS.forEach(function (p, i) {
+      var a = x(p.from), b = x(p.to);
+      el("line", { x1: a, x2: b - 1, y1: 98, y2: 98, stroke: acc, "stroke-width": 6 });
+      el("line", { x1: a, x2: a, y1: 90, y2: 106, stroke: ink, "stroke-width": 1.5 });
+    });
+    el("text", { x: x("2023-06-23") + 4, y: 122, fill: muted, "font-size": 11, "font-family": mono }, "6-a 6-b 6-c 6-d: commissioning Jun–Oct 2023");
+    el("text", { x: x("2026-10-05") + 4, y: 122, fill: muted, "font-size": 11, "font-family": mono }, "7-a");
+    // revisions
+    REVS.forEach(function (r, i) {
+      var xx = x(r.at), up = i % 2 === 0;
+      el("line", { x1: xx, x2: xx, y1: 148, y2: 176, stroke: ink, "stroke-width": 1.5 });
+      el("circle", { cx: xx, cy: 162, r: 4, fill: acc });
+      el("text", { x: xx + 6, y: up ? 158 : 184, fill: ink, "font-size": 12, "font-family": mono }, r.id);
+      el("title", {}, r.id + ": " + r.what);
+    });
+    // models
+    MODELS.forEach(function (m) {
+      var a = x(m.from), b = x(m.to);
+      el("rect", { x: a, y: 222, width: b - a, height: 20, fill: soft, stroke: acc });
+      el("text", { x: a - 4, y: 237, fill: ink, "font-size": 12, "font-family": mono, "text-anchor": "end" }, m.id);
+      m.validated.forEach(function (d) {
+        var xx = x(d);
+        el("circle", { cx: xx, cy: 232, r: 5, fill: ok });
+        el("text", { x: xx, y: 262, fill: ok, "font-size": 11, "font-family": mono, "text-anchor": "middle" }, "validated " + d);
+      });
+      var bx = x(m.behindFrom);
+      el("line", { x1: bx, x2: x("2026-10-05") - 1, y1: 232, y2: 232, stroke: warn, "stroke-width": 2, "stroke-dasharray": "4 3" });
+      el("text", { x: bx + 4, y: 218, fill: warn, "font-size": 11, "font-family": mono }, "behind from 6.5");
+    });
+    el("rect", { x: x("2026-10-05"), y: 222, width: x(null) - x("2026-10-05") - 2, height: 20, fill: "none", stroke: muted, "stroke-dasharray": "3 3" });
+    el("text", { x: x("2026-10-05") + 6, y: 237, fill: muted, "font-size": 12, "font-family": mono }, "7.0.1 pending");
+    el("text", { x: X0, y: 286, fill: muted, "font-size": 11, "font-family": c("--body") }, "Era 4 continues to the left (from 2015); revisions of era 4 are not shown.");
+  }
+  draw();
+  try { matchMedia("(prefers-color-scheme: dark)").addEventListener("change", function () { css = getComputedStyle(document.documentElement); draw(); }); } catch (e) {}
+  new MutationObserver(function () { css = getComputedStyle(document.documentElement); draw(); }).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+
+  // Try a date: era, period, revision, model, and how good the answer is.
+  function answer() {
+    var d = document.getElementById("qdate").value, out = document.getElementById("answer");
+    if (!d) { out.textContent = ""; return; }
+    var era = ERAS.filter(function (e) { return e.from <= d && (!e.to || d < e.to); })[0];
+    if (!era) { out.textContent = "Before the first recorded configuration (2015): not covered."; return; }
+    var per = PERIODS.filter(function (p) { return p.from <= d && (!p.to || d < p.to); })[0];
+    var rev = REVS.filter(function (r) { return r.at <= d && r.id.charAt(0) === era.id.charAt(1); }).pop();
+    var parts = ["Era " + era.id.slice(1)];
+    if (per) parts.push("period " + per.id);
+    if (rev) parts.push("configuration " + rev.id);
+    var m = MODELS.filter(function (m) { return m.era === era.id; })[0];
+    var verdict;
+    if (m && m.validated.indexOf(d) >= 0) verdict = "model " + m.id + ", validated on this day.";
+    else if (m && m.from <= d && d < m.to) verdict = "model " + m.id + ", valid for this period, not checked on this day.";
+    else if (m && d >= m.behindFrom) verdict = "model " + m.id + " applies with fewer guarantees, and is behind: the grid changed (" + rev.id + ") after it was built.";
+    else if (m) verdict = "model " + m.id + " is the era's base model and applies with fewer guarantees; a model of configuration " + (rev ? rev.id : "?") + " would be better.";
+    else if (era.id === "E7") verdict = "no model yet: 7.0.1 is waiting for the Cable Q1 facts.";
+    else verdict = "no model published for this era yet.";
+    out.textContent = parts.join(", ") + ": " + verdict;
+  }
+  document.getElementById("qdate").addEventListener("input", answer);
+  answer();
+})();
+</script>
