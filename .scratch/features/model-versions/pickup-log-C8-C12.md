@@ -68,21 +68,21 @@ Regenerate (from a folder outside the repos, workspace root as `W`):
 
 ## C12: configuration revisions of era 6
 
-Twelve entries found on 2026-10-25 (E6-014 to E6-025) have no revision yet. Proposal: group by date and by the
+**Decided 2026-11-03 (maintainer): this proposal is taken**; applied in the era file (branch `model-versions`). Twelve entries found on 2026-10-25 (E6-014 to E6-025) had no revision. Proposal: group by date and by the
 configuration commit they share, and number the revisions in time order. The current numbers (6.0 to 6.5) were marked
 illustrative in the change-log draft and are not published anywhere, so renumbering is still cheap; the validated model
-6.4.2 would become 6.6.1 (it accommodates everything up to the 319-2 CEEx2 meter).
+6.4.2 becomes 6.6.2 (and the superseded 6.4.1 becomes 6.6.1: the model counter of revision 6.6 keeps both).
 
 | Proposed | Dates | Entries (new in bold) | What | Today | Status |
 |---|---|---|---|---|---|
-| 6.0 | 2023-06-16 to 10-19 | E6-001 ... E6-006, **E6-014** | the rebuild and its commissioning; 715-2 Flexhouse_1 (2023-08-13) | 6.0 | open |
-| 6.1 | 2023-10-23 to 11-14 | **E6-015, E6-016, E6-024**, E6-007 | naming convention on all switchboards; 716-2 E-cables split, new bays; 117-4 Grid_4; 117-6 EVSE | 6.1 | open |
-| 6.2 | 2024-06-19 | **E6-017** | 319-3 ABB_Pri (instrument check) | (new) | open |
-| 6.3 | 2024-09-08 to 10-03 | E6-008, **E6-018, E6-019, E6-020** | 319-3 and 319-4 as built: E1/E2, supply side, cross bays, supply breakers (same commit `b736d2d87` for three of them) | 6.2 | open |
-| 6.4 | 2024-10-08 to 10-14 | **E6-021, E6-022, E6-023**, E6-009, E6-012 | "validated syslab-11 configuration": 117-5 new bays, X cables split, CEEx1, 117-2 CEEx2 | 6.3 | open |
-| 6.5 | 2026-01-07 | **E6-025** | 117-4 manual breaker of cable D1 | (new) | open |
-| 6.6 | 2026-06-15 | E6-010 | 319-2 CEEx2 (two sockets) | 6.4 | open |
-| 6.7 | 2026-08-13 | E6-011 | 310-2 Boiler | 6.5 | open |
+| 6.0 | 2023-06-16 to 10-19 | E6-001 ... E6-006, **E6-014** | the rebuild and its commissioning; 715-2 Flexhouse_1 (2023-08-13) | 6.0 | confirmed 2026-11-03 (maintainer) |
+| 6.1 | 2023-10-23 to 11-14 | **E6-015, E6-016, E6-024**, E6-007 | naming convention on all switchboards; 716-2 E-cables split, new bays; 117-4 Grid_4; 117-6 EVSE | 6.1 | confirmed 2026-11-03 (maintainer) |
+| 6.2 | 2024-06-19 | **E6-017** | 319-3 ABB_Pri (instrument check) | (new) | confirmed 2026-11-03 (maintainer) |
+| 6.3 | 2024-09-08 to 10-03 | E6-008, **E6-018, E6-019, E6-020** | 319-3 and 319-4 as built: E1/E2, supply side, cross bays, supply breakers (same commit `b736d2d87` for three of them) | 6.2 | confirmed 2026-11-03 (maintainer) |
+| 6.4 | 2024-10-08 to 10-14 | **E6-021, E6-022, E6-023**, E6-009, E6-012 | "validated syslab-11 configuration": 117-5 new bays, X cables split, CEEx1, 117-2 CEEx2 | 6.3 | confirmed 2026-11-03 (maintainer) |
+| 6.5 | 2026-01-07 | **E6-025** | 117-4 manual breaker of cable D1 | (new) | confirmed 2026-11-03 (maintainer) |
+| 6.6 | 2026-06-15 | E6-010 | 319-2 CEEx2 (two sockets) | 6.4 | confirmed 2026-11-03 (maintainer) |
+| 6.7 | 2026-08-13 | E6-011 | 310-2 Boiler | 6.5 | confirmed 2026-11-03 (maintainer) |
 
 Alternatives: keep 6.0 to 6.5 and put the new entries into the nearest existing revision (no new numbers, but 6.2 would
 then hold changes from June and October 2024); or open the new revisions as 6.6 and 6.7 out of time order (no

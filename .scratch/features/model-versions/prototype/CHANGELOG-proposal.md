@@ -81,34 +81,29 @@ committed. An era starts at its first operational evidence, so we propose 2023-0
 
 Data files of the new switchboards start later: 319-4 2023-12-01, 330-13 2023-12-19, 330-12 2024-06-10, 310-2 2025-02-24.
 
-**Configuration revisions**
+**Configuration revisions** (numbered in time order, agreed by the maintainer on 2026-11-03; until then 6.2 to 6.5
+were numbered 6.3, 6.4, 6.6 and 6.7 here, and the round-3 entries E6-014 to E6-025 had no revision)
 
 | Revision | Entry | Date | Change | Seen in | Certainty |
 |---|---|---|---|---|---|
 | 6.0 | E6-001 ... | 2023-06-23 | The rebuild configuration (all switchboards above, by operational period) | configuration, figure v6, display | confirmed |
-| 6.1 | E6-007 | 2023-11-14 | 117-6: NEVIC bays renamed EVSE (data files use EVSE from 2025-02-14) | configuration; data | confirmed (logging lag) |
-| 6.2 | E6-008 | 2024-09-08 | 319-3: cables E1/E2 swapped in the configuration (as built differed from as planned; figure swapped C1/C2 and E1/E2 labels on 2024-06-19) | configuration, figure | **uncertain 2023-12-01 to 2024-09-07**: 319-3 E1/E2 breaker data may carry swapped names |
-| 6.3 | E6-009, E6-012 | 2024-10-14 | 117-2: second CEEx2 meter (two sockets, one per busbar; `CEEx2_2` on Busbar A, `CEEx2_1` on Busbar B, from the 2026-06-25 data) | configuration; data from 2026-06-24 | confirmed (logging lag) |
-| 6.4 | E6-010 | 2026-06-15 | 319-2: second CEEx2 meter (two sockets, one per busbar) | configuration; data from 2026-06-24 | confirmed |
-| 6.5 | E6-011 | 2026-08-13 | 310-2: bay Spare_1 renamed **Boiler** | configuration, figure v6, display (same day) | confirmed |
-
-**Found in round 3, not yet in a revision** (all in the configuration and in the data; which revision each belongs to is
-for you to say, C12):
-
-| Entry | Date | Change | Seen in | Certainty |
-|---|---|---|---|---|
-| E6-014 | 2023-08-13 | 715-2: Flexhouse renamed Flexhouse_1 | configuration; data from 2023-10-19 | confirmed (logging lag) |
-| E6-015 | 2023-10-23 | 117-2: Grid renamed Grid_2, Cable X1 renamed Cable_X1_2 (117-5: Cable_X1_5), with the naming convention of all switchboards (2023-10-19 to 10-31) | configuration, display; data from 2024-02-27 | confirmed (logging lag) |
-| E6-016 | 2023-10-27 | 716-2: cables E1 and E2 split into A/B bays; new bays Grid, HeatPump, PV, Spare_1 ... Spare_4 (16 to 32 breakers) | configuration, figure and display (2023-10-31); data from 2024-03-21 | confirmed (logging lag) |
-| E6-017 | 2024-06-19 | 319-3: ABB primary meter and breaker (ABB_Pri) | configuration; data from 2024-03-06, on a busbar "Grid_Distribution" no configuration names | **uncertain** (C9) |
-| E6-018 | 2024-09-08 | 319-3: supply side as built: manual breakers Supply, Spare, Amp_1, Amp_2, a Grid breaker | configuration, display, data (same day) | confirmed |
-| E6-019 | 2024-09-08 | 319-4: meta crossbar split into Cross_A, Cross_B, Cross_C | configuration, display, data (same day) | confirmed |
-| E6-020 | 2024-10-03 | 319-3: ABB_Pri breaker on the supply busbar, Grid breaker removed ("swapped breakers") | configuration, display, data (same day) | confirmed |
-| E6-021 | 2024-10-08 | 117-5: new bays Booster_Heater, Heatpump, CEE_2 | configuration; data from 2024-10-09; display 2024-10-14 | confirmed |
-| E6-022 | 2024-10-09 | 117-2 and 117-5: X cables as four bays with one breaker each (X1A/X1B on Busbar A, X2A/X2B on Busbar B) | configuration, data (same day); display fixed 2025-01-17 | confirmed |
-| E6-023 | 2024-10-14 | 117-5: CEE_1, CEE_2 renamed CEEx1_1, CEEx1_2 | configuration, display, data (same day) | confirmed |
-| E6-024 | 2023-10-31 | 117-4: Grid meter renamed Grid_4 (breakers unchanged) | configuration; data from 2026-06-24 | confirmed (logging lag) |
-| E6-025 | 2026-01-07 | 117-4: manual breaker of cable D1 with feedback | configuration, display, data (same day) | confirmed |
+|  | E6-014 | 2023-08-13 | 715-2: Flexhouse renamed Flexhouse_1 | configuration; data from 2023-10-19 | confirmed (logging lag) |
+| 6.1 | E6-015 | 2023-10-23 | 117-2: Grid renamed Grid_2, Cable X1 renamed Cable_X1_2 (117-5: Cable_X1_5), with the naming convention of all switchboards (2023-10-19 to 10-31) | configuration, display; data from 2024-02-27 | confirmed (logging lag) |
+|  | E6-016 | 2023-10-27 | 716-2: cables E1 and E2 split into A/B bays; new bays Grid, HeatPump, PV, Spare_1 ... Spare_4 (16 to 32 breakers) | configuration, figure and display (2023-10-31); data from 2024-03-21 | confirmed (logging lag) |
+|  | E6-024 | 2023-10-31 | 117-4: Grid meter renamed Grid_4 (breakers unchanged) | configuration; data from 2026-06-24 | confirmed (logging lag) |
+|  | E6-007 | 2023-11-14 | 117-6: NEVIC bays renamed EVSE (data files use EVSE from 2025-02-14) | configuration; data | confirmed (logging lag) |
+| 6.2 | E6-017 | 2024-06-19 | 319-3: ABB primary meter and breaker (ABB_Pri) | configuration; data from 2024-03-06, on a busbar "Grid_Distribution" no configuration names | **uncertain** (C9) |
+| 6.3 | E6-008 | 2024-09-08 | 319-3: cables E1/E2 swapped in the configuration (as built differed from as planned; figure swapped C1/C2 and E1/E2 labels on 2024-06-19) | configuration, figure | **uncertain 2023-12-01 to 2024-09-07**: 319-3 E1/E2 breaker data may carry swapped names |
+|  | E6-018 | 2024-09-08 | 319-3: supply side as built: manual breakers Supply, Spare, Amp_1, Amp_2, a Grid breaker | configuration, display, data (same day) | confirmed |
+|  | E6-019 | 2024-09-08 | 319-4: meta crossbar split into Cross_A, Cross_B, Cross_C | configuration, display, data (same day) | confirmed |
+|  | E6-020 | 2024-10-03 | 319-3: ABB_Pri breaker on the supply busbar, Grid breaker removed ("swapped breakers") | configuration, display, data (same day) | confirmed |
+| 6.4 | E6-021 | 2024-10-08 | 117-5: new bays Booster_Heater, Heatpump, CEE_2 | configuration; data from 2024-10-09; display 2024-10-14 | confirmed |
+|  | E6-022 | 2024-10-09 | 117-2 and 117-5: X cables as four bays with one breaker each (X1A/X1B on Busbar A, X2A/X2B on Busbar B) | configuration, data (same day); display fixed 2025-01-17 | confirmed |
+|  | E6-023 | 2024-10-14 | 117-5: CEE_1, CEE_2 renamed CEEx1_1, CEEx1_2 | configuration, display, data (same day) | confirmed |
+|  | E6-009, E6-012 | 2024-10-14 | 117-2: second CEEx2 meter (two sockets, one per busbar; `CEEx2_2` on Busbar A, `CEEx2_1` on Busbar B, from the 2026-06-25 data) | configuration; data from 2026-06-24 | confirmed (logging lag) |
+| 6.5 | E6-025 | 2026-01-07 | 117-4: manual breaker of cable D1 with feedback | configuration, display, data (same day) | confirmed |
+| 6.6 | E6-010 | 2026-06-15 | 319-2: second CEEx2 meter (two sockets, one per busbar) | configuration; data from 2026-06-24 | confirmed |
+| 6.7 | E6-011 | 2026-08-13 | 310-2: bay Spare_1 renamed **Boiler** | configuration, figure v6, display (same day) | confirmed |
 
 **Data-name periods** (the data files of that time use other names than the configuration in force; C8)
 
@@ -129,12 +124,13 @@ Also noted in this era, without a configuration revision: 330-12 Spare_6/7 no lo
 configuration; spare given to a unit?); 776-1 left the configuration on 2024-05-23 (node syslab-30 now runs EVSE18; not part
 of the grid model); the rock store was cancelled.
 
-**Model versions** (numbers illustrative until the first era file exists)
+**Model versions**
 
 | Model | Published | Accommodates | Validated on | Note |
 |---|---|---|---|---|
-| 6.4.1 | 2026-10-20 | revisions up to 6.4 (CEEx2 as two sockets) | 2026 J1A experiment, 2026-06-25 (310-2 island closes) | superseded by 6.4.2 |
-| 6.4.2 | 2026-10-24 | 6.4.1 + 117-2 CEEx2 meters corrected (`CEEx2_2` is the Busbar A socket, found in the data) | **2026-06-25, all islands close** (319-3 island RMSE 0.22 kW at 1 min; scenario 6.4.2/j1a-2026 for the converter) | **behind** from 2026-08-13 (Boiler, 6.5) |
+| 6.6.1 | 2026-10-20 | revisions up to 6.6 (CEEx2 as two sockets) | 2026 J1A experiment, 2026-06-25 (310-2 island closes) | superseded by 6.6.2; was numbered 6.4.1 |
+| 6.6.2 | 2026-10-24 | 6.6.1 + 117-2 CEEx2 meters corrected (`CEEx2_2` is the Busbar A socket, found in the data) | **2026-06-25, all islands close** (319-3 island RMSE 0.22 kW at 1 min; variant 6.6.2.J1A for the converter) | the published model today; was numbered 6.4.2 |
+| 6.7.1 | built 2026-11-03, not published | revision 6.7 (310-2 Boiler), built from the configuration in force on 2026-08-13 | not yet | the last model of era 6 |
 
 ---
 
@@ -207,6 +203,7 @@ C11. 2026-06-24: the meter names of 117-2, 117-4 and 319-2 changed on the same d
      then? Is there a record of node restarts?
 C12. The twelve entries found in round 3 (E6-014 to E6-025): which belong together as one configuration revision (for
      example the 117-5 changes of 2024-10-08 to 2024-10-14)?
+     *Decided:* grouped by date and shared configuration commit, numbered in time order (maintainer, 2026-11-03).
 C13. 2016-06-14: was the E1/E2 swap on 319-3 a rewiring, or a correction of names after the data showed them swapped?
      (The same question as for 2024.)
 C14. Before the 2023 rebuild: were cables A1 ... F1 single cables or pairs, and what length and type? Which equipment
