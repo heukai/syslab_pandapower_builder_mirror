@@ -32,3 +32,5 @@ port of its own.
 - Is "CEE 1" the bay `CEE` of 319-2 (hardware.xml has `CEE` and `CEEx2` on 319-2)?
 
 ## Comments
+- 2026-11-03, maintainer: "CEE 1" is the bay `CEE` of 319-2 in hardware.xml. Whether other CEE bays have more than one
+  socket: the maintainer checks at the lab.
