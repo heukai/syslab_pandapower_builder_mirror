@@ -176,6 +176,19 @@ def main(argv: list[str] | None = None) -> None:
         help="Path to conf/ folder (from syslab-master) (default: %(default)s)",
     )
     parser.add_argument(
+        "--conf-repo",
+        type=Path,
+        default=None,
+        help="Lab repository syslab/ (read-only): build from the hardware.xml in force on --conf-date instead of "
+             "--conf-dir",
+    )
+    parser.add_argument(
+        "--conf-date",
+        default=None,
+        help="ISO date whose configuration to build, with --conf-repo (per node, the last master commit written "
+             "on or before it)",
+    )
+    parser.add_argument(
         "--output-dir",
         type=Path,
         default=Path("syslab_pandapower"),
@@ -198,7 +211,26 @@ def main(argv: list[str] | None = None) -> None:
     )
     args = parser.parse_args(argv)
 
-    conf_dir = args.conf_dir.resolve()
+    if (args.conf_repo is None) != (args.conf_date is None):
+        parser.error("--conf-repo and --conf-date go together")
+    snapshot = None
+    if args.conf_repo is not None:
+        import datetime as dt
+        import tempfile
+
+        from .conf_snapshot import export_conf
+
+        snapshot = tempfile.TemporaryDirectory(prefix="syslab_conf_")
+        day = dt.date.fromisoformat(args.conf_date)
+        taken = export_conf(args.conf_repo, day, snapshot.name)
+        print(f"Configuration in force on {day} (lab commits stay in this log, not in the published files):")
+        for node, nc in sorted(taken.items()):
+            print(f"  {node}: {nc.commit} written {nc.written}")
+        conf_dir = Path(snapshot.name)
+        source = f"syslab/conf as in force on {day}"
+    else:
+        conf_dir = args.conf_dir.resolve()
+        source = portable_source_path(conf_dir)
     output_dir = args.output_dir.resolve()
     model_data_dir = output_dir / "model_data"
     model_data_dir.mkdir(parents=True, exist_ok=True)
@@ -301,7 +333,7 @@ def main(argv: list[str] | None = None) -> None:
         model_data_dir,
         valid_from=args.valid_from,
         valid_to=args.valid_to,
-        hardware_xml_source=portable_source_path(conf_dir),
+        hardware_xml_source=source,
         notes=args.notes,
     )
     print(f"  Written: {model_data_dir / 'model_version.json'}")
@@ -311,6 +343,8 @@ def main(argv: list[str] | None = None) -> None:
     loader_path.write_text(_LOADER_TEMPLATE, encoding="utf-8")
     print(f"  Written: {loader_path}")
 
+    if snapshot is not None:
+        snapshot.cleanup()
     print("\nBuild complete.")
 
 
