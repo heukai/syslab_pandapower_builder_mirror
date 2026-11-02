@@ -374,34 +374,45 @@ changes:
     in_force: yes
     status: proposed
 
+# Revisions in time order, grouped by date and shared configuration commit (maintainer, 2026-11-03: the time-ordered
+# proposal of pickup-log-C8-C12.md on main). Before that, 6.2 to 6.5 were numbered 6.3, 6.4, 6.6, 6.7 now.
 configuration_revisions:
-  - {revision: "6.0", entries: [E6-001, E6-002, E6-003, E6-004, E6-005, E6-006]}
-  - {revision: "6.1", entries: [E6-007]}
-  - {revision: "6.2", entries: [E6-008]}
-  - {revision: "6.3", entries: [E6-009, E6-012]}
-  - {revision: "6.4", entries: [E6-010]}
-  - {revision: "6.5", entries: [E6-011]}
+  - {revision: "6.0", entries: [E6-001, E6-002, E6-003, E6-004, E6-005, E6-006, E6-014]}   # rebuild, commissioning
+  - {revision: "6.1", entries: [E6-015, E6-016, E6-024, E6-007]}   # naming convention, 716-2 split, 117-6 EVSE
+  - {revision: "6.2", entries: [E6-017]}                           # 319-3 ABB_Pri
+  - {revision: "6.3", entries: [E6-008, E6-018, E6-019, E6-020]}   # 319-3 and 319-4 as built
+  - {revision: "6.4", entries: [E6-021, E6-022, E6-023, E6-009, E6-012]}   # validated syslab-11 configuration
+  - {revision: "6.5", entries: [E6-025]}                           # 117-4 manual breaker of cable D1
+  - {revision: "6.6", entries: [E6-010]}                           # 319-2 second CEEx2 meter
+  - {revision: "6.7", entries: [E6-011]}                           # 310-2 Boiler
 
 # Model versions: era.revision.model, plus a fourth level for experiment variants (a project code; form to settle).
 # Levels 1 and 2 follow the lab's changes; level 3 only adds knowledge (superseded ones fade into the git history).
 model_versions:
-  - version: "6.4.1"
-    revision: "6.4"
+  - version: "6.6.1"
+    revision: "6.6"
     published: 2026-10-20
-    note: CEEx2 sockets as two plugs (one bus and port per socket)
+    note: CEEx2 sockets as two plugs (one bus and port per socket); numbered 6.4.1 until 2026-11-03
     status: superseded
-  - version: "6.4.2"
-    revision: "6.4"
+  - version: "6.6.2"
+    revision: "6.6"
     published: 2026-10-24
-    note: 117-2 CEEx2 meters corrected (CEEx2_2 is the Busbar A socket, found in the data)
+    note: 117-2 CEEx2 meters corrected (CEEx2_2 is the Busbar A socket, found in the data); numbered 6.4.2 until 2026-11-03
     validated:
-      - {day: 2026-06-25, check: "island_residuals, all islands; largest (319-3) RMSE 0.22 kW at 1 min", with: "6.4.2.J1A"}
+      - {day: 2026-06-25, check: "island_residuals, all islands; largest (319-3) RMSE 0.22 kW at 1 min", with: "6.6.2.J1A"}
     status: current
-  - version: "6.4.2.J1A"
-    revision: "6.4"
+  - version: "6.6.2.J1A"
+    revision: "6.6"
     published: 2026-10-24
     note: variant for the 2026 J1A experiment (converter set-up); was written 6.4.2/j1a-2026
     status: variant
+  - version: "6.7.1"
+    revision: "6.7"
+    built: 2026-11-03
+    note: >-
+      first model built from the configuration in force on a day (build_model --conf-repo syslab --conf-date
+      2026-08-13); against 6.6.2 only 310-2 Spare_1 -> Boiler; not published, not yet validated
+    status: current
 
 # Header periods (proposed 2026-10-25, column-archive cross-check): stretches where the data files carry other
 # names than the master hardware.xml in force. They do not change the model; they say which names the data of

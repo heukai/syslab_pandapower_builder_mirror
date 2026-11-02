@@ -92,9 +92,11 @@ def test_checks_name_the_entry_to_fix(changes, msg):
 def test_version_log_lists_revisions_models_and_open_entries(eras):
     log = version_log(eras)
     assert log.index("## Era 7") < log.index("## Era 6") < log.index("## Era 0")      # newest era first
-    assert "| 6.5 | 2026-08-13 | E6-011 |" in log
-    assert "| 6.4.2 | 6.4 | 2026-10-24 | current | 2026-06-25:" in log
-    assert "E6-025 117-4 Cable_D1: added" in log                                    # not in a revision yet
+    assert "| 6.7 (from 2026-08-13) | 2026-08-13 | E6-011 |" in log
+    assert "| 6.6.2 | 6.6 | 2026-10-24 | current | 2026-06-25:" in log
+    assert "| 6.7.1 | 6.7 | built 2026-11-03, not published | current |" in log
+    assert "| 6.5 (from 2026-01-07) | 2026-01-07 | E6-025 | 117-4 Cable_D1: added" in log
+    assert "E6-013 330-12 Spare_6, Spare_7: removed" in log and "[no: evidence only]" in log   # not in a revision
     assert "E7-005" in log and "[no: planned]" in log
 
 

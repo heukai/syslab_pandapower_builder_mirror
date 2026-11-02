@@ -195,10 +195,10 @@ def version_log(eras: list[Era]) -> str:
         for r in era.configuration_revisions:
             ents = [era.entry(i) for i in r.get("entries", [])]
             in_rev.update(r.get("entries", []))
-            first = min((e["date"] for e in ents), default=None)
-            for k, e in enumerate(ents):
-                rows.append(f"| {r['revision'] if k == 0 else ''} | {e['date'] if k else first} | {e['id']} | "
-                            f"{_what(e)} | {e['certainty']}, {e['status']} |")
+            first = min((e["date"] for e in ents), default="")
+            for k, e in enumerate(sorted(ents, key=lambda e: e["date"])):
+                rev = f"{r['revision']} (from {first})" if k == 0 else ""
+                rows.append(f"| {rev} | {e['date']} | {e['id']} | {_what(e)} | {e['certainty']}, {e['status']} |")
         if rows:
             out += ["| Revision | Date | Entry | Change | Certainty, status |", "|---|---|---|---|---|", *rows, ""]
         rest = sorted((c for c in era.changes if c["id"] not in in_rev), key=lambda c: c["date"])
@@ -211,8 +211,9 @@ def version_log(eras: list[Era]) -> str:
             out += ["| Model | Revision | Published | Status | Validated | Note |", "|---|---|---|---|---|---|"]
             for m in era.model_versions:
                 val = "; ".join(f"{v['day']}: {v['check']}" for v in m.get("validated") or []) or "-"
-                out.append(f"| {m['version']} | {m['revision']} | {m.get('published', '-')} | {m['status']} | {val} | "
-                           f"{m.get('note', '')} |")
+                when = m.get("published") or (f"built {m['built']}, not published" if m.get("built") else "-")
+                note = " ".join(str(m.get("note", "")).split())
+                out.append(f"| {m['version']} | {m['revision']} | {when} | {m['status']} | {val} | {note} |")
             out.append("")
         else:
             out += ["Model versions: none yet.", ""]

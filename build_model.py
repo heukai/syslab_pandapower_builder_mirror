@@ -20,7 +20,9 @@ Outputs written to ``<output-dir>/``:
 from __future__ import annotations
 
 import argparse
+import datetime as dt
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -205,6 +207,12 @@ def main(argv: list[str] | None = None) -> None:
         help="ISO date when this model configuration stopped being valid (default: None = current)",
     )
     parser.add_argument(
+        "--model-version",
+        default=None,
+        help="Model version number era.revision.model (e.g. 6.7.1), written to model_version.json with its era "
+             "and configuration revision",
+    )
+    parser.add_argument(
         "--notes",
         default="",
         help="Free-text notes for model_version.json",
@@ -213,15 +221,17 @@ def main(argv: list[str] | None = None) -> None:
 
     if (args.conf_repo is None) != (args.conf_date is None):
         parser.error("--conf-repo and --conf-date go together")
+    if args.model_version and not re.fullmatch(r"\d+\.\d+\.\d+(\.[A-Za-z0-9]+)?", args.model_version):
+        parser.error("--model-version must be era.revision.model, optionally .CODE (e.g. 6.7.1)")
+    # Curated data dated with valid_from/valid_to are taken as valid on the configuration date.
+    day = dt.date.fromisoformat(args.conf_date or args.valid_from)
     snapshot = None
     if args.conf_repo is not None:
-        import datetime as dt
         import tempfile
 
         from .conf_snapshot import export_conf
 
         snapshot = tempfile.TemporaryDirectory(prefix="syslab_conf_")
-        day = dt.date.fromisoformat(args.conf_date)
         taken = export_conf(args.conf_repo, day, snapshot.name)
         print(f"Configuration in force on {day} (lab commits stay in this log, not in the published files):")
         for node, nc in sorted(taken.items()):
@@ -267,7 +277,12 @@ def main(argv: list[str] | None = None) -> None:
     print(f"  Written: {conv_path}")
 
     # Save breaker groups + inline ports
-    groups, ports = load_breaker_groups()
+    groups, ports = load_breaker_groups(day=day)
+    # Consistency check: curated breaker groups name only switches the configuration has (dated entries make a
+    # rename such as 310-2 Spare_1 -> Boiler match on both sides of its date).
+    unknown = sorted({s.name for g in groups for s in g.switches} - set(switch_map))
+    if unknown:
+        sys.exit(f"breaker_groups.yaml names switches not in the configuration of {day}: {', '.join(unknown)}")
     socket_ports = derive_socket_ports(
         load_grid_switchboards(conf_dir), load_socket_meters()
     )
@@ -335,6 +350,7 @@ def main(argv: list[str] | None = None) -> None:
         valid_to=args.valid_to,
         hardware_xml_source=source,
         notes=args.notes,
+        model_version=args.model_version,
     )
     print(f"  Written: {model_data_dir / 'model_version.json'}")
 

@@ -11,6 +11,7 @@ pandapower switch indices without reverse-engineering bus names at runtime.
 
 from __future__ import annotations
 
+import datetime
 import json
 import re
 from dataclasses import dataclass, field
@@ -157,10 +158,19 @@ class InlinePortDef:
     modes: list[InlinePortMode]
 
 
+def valid_on(item: dict, day: datetime.date) -> bool:
+    """Whether a curated item with optional ``valid_from`` / ``valid_to`` (inclusive) applies on *day*."""
+    return item.get("valid_from", datetime.date.min) <= day <= item.get("valid_to", datetime.date.max)
+
+
 def load_breaker_groups(
     path: Path | None = None,
+    day: datetime.date | None = None,
 ) -> tuple[list[BreakerGroupDef], list[InlinePortDef]]:
     """Load breaker group and inline port definitions from YAML.
+
+    Switches and interlocks dated with ``valid_from`` / ``valid_to`` are kept only when valid on *day*
+    (default: today, the lab as it is now).
 
     Returns
     -------
@@ -168,6 +178,8 @@ def load_breaker_groups(
     """
     if path is None:
         path = _DATA_DIR / "breaker_groups.yaml"
+    if day is None:
+        day = datetime.date.today()
     with open(path, encoding="utf-8") as f:
         data = yaml.safe_load(f)
 
@@ -182,7 +194,7 @@ def load_breaker_groups(
                     default_closed=s["default_closed"],
                     logged=s.get("logged", True),
                 )
-                for s in g.get("switches", [])
+                for s in g.get("switches", []) if valid_on(s, day)
             ],
             interlocks=[
                 InterlockDef(
@@ -190,7 +202,7 @@ def load_breaker_groups(
                     max_closed=i["max_closed"],
                     members=list(i["members"]),
                 )
-                for i in g.get("interlocks", [])
+                for i in g.get("interlocks", []) if valid_on(i, day)
             ],
         )
         for g in (data.get("breaker_groups") or [])
@@ -800,13 +812,21 @@ def save_model_version(
     valid_to: str | None = None,
     hardware_xml_source: str = "",
     notes: str = "",
+    model_version: str | None = None,
 ) -> None:
-    """Write model_version.json with validity and provenance metadata."""
-    import datetime
+    """Write model_version.json with validity and provenance metadata.
 
+    With *model_version* (``era.revision.model[.CODE]``), the number, its era (``E6``) and configuration revision
+    (``6.7``) come first; without it the file keeps its earlier form.
+    """
     from . import __version__ as builder_version
 
-    version_info = {
+    version_info = {}
+    if model_version:
+        parts = model_version.split(".")
+        version_info = {"model_version": model_version, "era": f"E{parts[0]}",
+                        "configuration_revision": ".".join(parts[:2])}
+    version_info |= {
         "model_build_date": datetime.date.today().isoformat(),
         "builder_version": builder_version,
         "valid_from": valid_from,

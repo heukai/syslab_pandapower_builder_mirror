@@ -34,3 +34,8 @@ Check the files: `python -c "from syslab_pandapower_builder.eras import load_era
 **Versions log:** `VERSIONS.md`, generated from the era files (revisions, entries not yet in a revision, model versions,
 data-name periods; newest era first): `python -m syslab_pandapower_builder.eras > syslab_pandapower_builder/data/eras/VERSIONS.md`
 from the workspace root. A test fails when it is out of date.
+
+**Building a model version:** `python -m syslab_pandapower_builder.build_model --conf-repo syslab --conf-date <first day of
+the revision> --model-version <era.revision.model> --valid-from ... --valid-to ... --output-dir ...` (workspace root). It takes,
+per node, the master hardware.xml written on or before that day, and the curated entries valid on that day
+(`valid_from`/`valid_to` in `breaker_groups.yaml`); it refuses breaker groups naming switches the configuration lacks.

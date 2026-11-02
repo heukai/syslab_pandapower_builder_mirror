@@ -9,6 +9,8 @@
 #   - Interlocks: every bay with 2+ breakers on different busbars
 #     gets max_closed=1 (only connected to one busbar at a time)
 #   - Single-breaker bays have no interlock entry
+#   - A switch or interlock that exists only for part of the time carries valid_from / valid_to (ISO dates,
+#     both inclusive, as hardware.xml dates its change); a build takes the entries valid on its configuration date
 #
 # Inline ports document cable plug points where mobile equipment
 # can be inserted.  Graph mutation logic for inline ports is
@@ -457,9 +459,12 @@ breaker_groups:
       # RockStorage (A, B)
       - {name: "310_2_BRK_RockStorage_Busbar_A", default_closed: false}
       - {name: "310_2_BRK_RockStorage_Busbar_B", default_closed: false}
-      # Spare_1 (A, B)
-      - {name: "310_2_BRK_Spare_1_Busbar_A", default_closed: false}
-      - {name: "310_2_BRK_Spare_1_Busbar_B", default_closed: false}
+      # Spare_1 (A, B), renamed Boiler in hardware.xml on 2026-08-13 (era file E6-011)
+      - {name: "310_2_BRK_Spare_1_Busbar_A", default_closed: false, valid_to: 2026-08-12}
+      - {name: "310_2_BRK_Spare_1_Busbar_B", default_closed: false, valid_to: 2026-08-12}
+      # Boiler (A, B)
+      - {name: "310_2_BRK_Boiler_Busbar_A", default_closed: false, valid_from: 2026-08-13}
+      - {name: "310_2_BRK_Boiler_Busbar_B", default_closed: false, valid_from: 2026-08-13}
       # CHP (A, B)
       - {name: "310_2_BRK_CHP_Busbar_A", default_closed: false}
       - {name: "310_2_BRK_CHP_Busbar_B", default_closed: false}
@@ -485,7 +490,8 @@ breaker_groups:
       - {group: "Cable_J2A", max_closed: 1, members: ["310_2_BRK_Cable_J2A_Busbar_A", "310_2_BRK_Cable_J2A_Busbar_B"]}
       - {group: "Cable_J2B", max_closed: 1, members: ["310_2_BRK_Cable_J2B_Busbar_A", "310_2_BRK_Cable_J2B_Busbar_B"]}
       - {group: "RockStorage", max_closed: 1, members: ["310_2_BRK_RockStorage_Busbar_A", "310_2_BRK_RockStorage_Busbar_B"]}
-      - {group: "Spare_1", max_closed: 1, members: ["310_2_BRK_Spare_1_Busbar_A", "310_2_BRK_Spare_1_Busbar_B"]}
+      - {group: "Spare_1", max_closed: 1, members: ["310_2_BRK_Spare_1_Busbar_A", "310_2_BRK_Spare_1_Busbar_B"], valid_to: 2026-08-12}
+      - {group: "Boiler", max_closed: 1, members: ["310_2_BRK_Boiler_Busbar_A", "310_2_BRK_Boiler_Busbar_B"], valid_from: 2026-08-13}
       - {group: "CHP", max_closed: 1, members: ["310_2_BRK_CHP_Busbar_A", "310_2_BRK_CHP_Busbar_B"]}
       - {group: "BoosterHeater", max_closed: 1, members: ["310_2_BRK_BoosterHeater_Busbar_A", "310_2_BRK_BoosterHeater_Busbar_B"]}
       - {group: "CEE_1", max_closed: 1, members: ["310_2_BRK_CEE_1_Busbar_A", "310_2_BRK_CEE_1_Busbar_B"]}

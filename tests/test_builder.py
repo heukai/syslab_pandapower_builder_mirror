@@ -470,7 +470,7 @@ class TestBreakerGroupsJson:
             for s in g["switches"]
             if not s["logged"]
         ]
-        assert len(unlogged) == 19
+        assert unlogged == []    # every switch is logged (breaker-logging ticket 01)
 
     def test_logged_is_bool(self):
         for g in self.data["breaker_groups"]:
