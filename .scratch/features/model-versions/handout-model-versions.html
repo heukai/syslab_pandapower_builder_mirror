@@ -80,11 +80,11 @@
 
 <div class="wrap">
   <header>
-    <span class="kicker">SYSLAB grid model · discussion handout · October 2026</span>
+    <span class="kicker">SYSLAB grid model · discussion handout · November 2026</span>
     <h1>Which model for which day?</h1>
     <p class="lede col">The SYSLAB grid changes over the years, and the pandapower model has to follow. We want to publish
     several model versions side by side and let every analysis pick the right one for the date of its data. This page
-    explains the idea and asks for your view on how publishing and choosing should work.</p>
+    explains the idea and what the staff said about publishing and choosing.</p>
   </header>
 
   <section>
@@ -94,10 +94,10 @@
         <p>A period marked by a major change of the grid: usually a new switchboard. Named after the overview figure (figure v7 → era 7).</p></div>
       <div class="term"><b>Operational period</b><div class="ex">6-a … 6-d</div>
         <p>Inside an era, the switchboards actually in operation. The 2023 rebuild was commissioned in four stages, and experiments ran in between.</p></div>
-      <div class="term"><b>Configuration revision</b><div class="ex">6.3, 6.4, 6.5</div>
-        <p>A set of smaller changes inside an era: a renamed bay, a second meter. Recorded as change entries with their evidence.</p></div>
-      <div class="term"><b>Model version</b><div class="ex">6.4.2 · 6.4.2/j1a-2026</div>
-        <p>A published model of one revision, improved over time and validated on real days. A scenario model adds an experiment's set-up.</p></div>
+      <div class="term"><b>Configuration revision</b><div class="ex">6.5, 6.6, 6.7</div>
+        <p>A set of smaller changes inside an era that came into force together: a renamed bay, a second meter. Numbered in time order and recorded as change entries with their evidence.</p></div>
+      <div class="term"><b>Model version</b><div class="ex">6.6.2 · 6.6.2.J1A</div>
+        <p>A model of one revision, improved over time and validated on real days (the third number). A variant adds an experiment's set-up, named by a project code (the fourth part).</p></div>
     </div>
   </section>
 
@@ -109,29 +109,33 @@
       <svg id="timeline" viewBox="0 0 1000 300" xmlns="http://www.w3.org/2000/svg"></svg>
     </div>
     <p class="caption">Era 4 runs from before 2015 to the 2023 rebuild. The model versions are drawn over the configuration
-    they describe; 6.4.2 was published on 2026-10-24 for the grid of mid-2026 and checked on 2026-06-25.
-    Revisions: 6.0 rebuild (2023-06-23) · 6.1 117-6 EVSE names (2023-11-14) · 6.2 319-3 cables E1/E2 (2024-09-08) ·
-    6.3 117-2 second CEEx2 meter (2024-10-14) · 6.4 319-2 second CEEx2 meter (2026-06-15) · 6.5 310-2 Boiler (2026-08-13) ·
-    7.0 fast charger 119-10 and Cable Q1 (2026-10-05).</p>
+    they describe: 6.6.2 (published 2026-10-24) for configuration 6.6 and checked on 2026-06-25; 6.7.1 (built
+    2026-11-03, not yet validated) for configuration 6.7, the last of era 6.
+    Revisions: 6.0 rebuild and commissioning (2023-06-23) · 6.1 naming convention, 716-2 cables split, 117-6 EVSE
+    (2023-10-23) · 6.2 319-3 ABB primary meter (2024-06-19) · 6.3 319-3 and 319-4 as built (2024-09-08) · 6.4 117-5 new
+    bays, X cables split (2024-10-08) · 6.5 117-4 manual breaker of cable D1 (2026-01-07) · 6.6 319-2 second CEEx2 meter
+    (2026-06-15) · 6.7 310-2 Boiler (2026-08-13) · 7.0 fast charger 119-10 and Cable Q1 (2026-10-05).</p>
   </section>
 
   <section>
     <h2>How a date finds its model</h2>
-    <p class="col">An analysis asks for the model of a day. The answer is picked in this order, and the answer always says
-    how good it is.</p>
+    <p class="col">An analysis asks for the model of a day. The first two numbers follow the lab's changes, so the date
+    picks them; the answer always says how good the model is. (Agreed with the staff, 2026-10-30.)</p>
     <div class="flow col">
-      <div class="step"><span class="n">1</span><span><b>Era.</b> The date falls in one configuration era (and one operational period inside it).</span></div>
-      <div class="step"><span class="n">2</span><span><b>Validated on that day?</b> A model of the era that was checked against measured data on that day wins.</span></div>
-      <div class="step"><span class="n">3</span><span><b>Valid for that period?</b> Otherwise a model whose validity period covers the date.</span></div>
-      <div class="step"><span class="n">4</span><span><b>Base model of the era.</b> Otherwise the latest general model of the era: it applies, with fewer guarantees. Scenario models are never the default.</span></div>
-      <div class="step"><span class="n">5</span><span><b>Behind?</b> If the grid changed after the model was built (a confirmed change it does not include), the answer carries a warning.</span></div>
+      <div class="step"><span class="n">1</span><span><b>Era and revision.</b> The date falls in one configuration era and one configuration revision: the first two numbers, <span class="id">6.7</span>.</span></div>
+      <div class="step"><span class="n">2</span><span><b>Best model of that revision.</b> Its highest third number: the most validated, most accurate model, <span class="id">6.7.1</span>. Older ones of the same revision stay in the history.</span></div>
+      <div class="step"><span class="n">3</span><span><b>Validated on that day?</b> The answer says whether the model was checked against measured data on that day, or only on other days, or not yet.</span></div>
+      <div class="step"><span class="n">4</span><span><b>No model of that revision yet?</b> Then the nearest model of the era applies, with fewer guarantees, and the answer names the changes it lacks. Variants (an experiment's set-up) are never the default.</span></div>
+      <div class="step"><span class="n">5</span><span><b>Data across an era change?</b> Rare; the analysis keeps one model and warns.</span></div>
     </div>
 
     <div class="examples">
       <div class="ex-card"><div class="date">2026-06-25</div><span class="pill ok">validated</span>
-        <p>Era 6, period 6-d. Model <span class="id">6.4.2</span>: checked on this day, every island closes (largest island 0.22 kW RMSE). With the converter experiment: <span class="id">6.4.2/j1a-2026</span>.</p></div>
+        <p>Era 6, configuration 6.6. Model <span class="id">6.6.2</span>: checked on this day, every island closes (largest island 0.22 kW RMSE). With the converter experiment: variant <span class="id">6.6.2.J1A</span>.</p></div>
+      <div class="ex-card"><div class="date">2026-09-15</div><span class="pill warn">not validated yet</span>
+        <p>Era 6, configuration 6.7 (310-2 Boiler). Model <span class="id">6.7.1</span> describes exactly this configuration, but no day has been checked with it yet.</p></div>
       <div class="ex-card"><div class="date">2024-03-01</div><span class="pill warn">fewer guarantees</span>
-        <p>Era 6, period 6-d. No model was checked on a day near it, and 6.4.2 describes the grid from June 2026. A model of configuration 6.1 would be better; until then the base model applies with fewer guarantees.</p></div>
+        <p>Era 6, configuration 6.1. No model of 6.1 yet: the nearest model, 6.6.2, applies with fewer guarantees and has five revisions of changes too many (6.2 to 6.6).</p></div>
       <div class="ex-card"><div class="date">2026-11-01</div><span class="pill none">no model yet</span>
         <p>Era 7 (fast charger 119-10). Model 7.0.1 is waiting for facts: the length and type of Cable Q1, what is behind the 119-10 bays.</p></div>
     </div>
@@ -161,22 +165,24 @@
   </section>
 
   <section>
-    <h2>What we would like your view on</h2>
+    <h2>What the staff said (2026-10-30)</h2>
     <ol class="questions col">
-      <li><b>Choosing a model.</b> Should an analysis pick the model by date automatically, or should the user always name a version?
-        <span class="opt">Our draft: by date, and the answer says which version and how good it is.</span></li>
-      <li><b>When is a model "validated" for a day?</b> Which check, and how close is close enough?
-        <span class="opt">Our draft: every island of the day simulated against its grid meter; the largest island within about 0.5 kW RMSE at 1-minute resolution.</span></li>
-      <li><b>Data that spans an era change.</b> Split the analysis at the change, or warn and use one model?
-        <span class="opt">Our draft: split, and say so.</span></li>
-      <li><b>How many versions stay available?</b> All versions side by side, or the latest per revision plus an archive?</li>
-      <li><b>Who records a validation?</b> After a yearly experiment, who checks the model against that day and writes it down?</li>
-      <li><b>Which past days are worth checking?</b> Experiments in 2023 to 2025 that would let us validate older revisions (6.0 to 6.3).</li>
+      <li><b>Choosing a model.</b> By date: the date picks era and revision, then the best model of that revision.
+        <span class="opt">As drafted.</span></li>
+      <li><b>When is a model "validated" for a day?</b> Not discussed; every island of the day simulated against its grid meter, the largest within about 0.5 kW RMSE at 1-minute resolution, seems fine.</li>
+      <li><b>Data that spans an era change.</b> Warn and use one model; it is unlikely to happen.
+        <span class="opt">Our draft (split) did not hold.</span></li>
+      <li><b>How many versions stay available?</b> All of them: models are small. Superseded models of a revision fade into the version history.</li>
+      <li><b>Who records a validation?</b> The toolbox that builds the models also holds the validation.</li>
+      <li><b>Which past days are worth checking?</b> The experiments repeated every year with slightly changed set-ups, in June and in November or March.</li>
+      <li><b>New:</b> a fourth part of the number for variants that add cables or equipment for one experiment, named by a project code (<span class="id">6.6.2.J1A</span>). Its exact form is still open.</li>
     </ol>
   </section>
 
   <footer>Draft for discussion. Terms and examples come from the builder's map "dated model versions" (tickets on
-  configuration changes, eras and publishing). Model numbers other than 6.4.1 and 6.4.2 are illustrative.</footer>
+  configuration changes, eras and publishing). Revision numbers in time order agreed on 2026-11-03; model numbers other
+  than 6.6.1, 6.6.2 and 6.7.1 are illustrative. The start of era 6 (2023-06-23 here, possibly 2023-06-16) is a question
+  for the staff.</footer>
 </div>
 
 <script>
@@ -193,13 +199,20 @@
     { id: "7-a", from: "2026-10-05", to: null }
   ];
   var REVS = [
-    { id: "6.0", at: "2023-06-23", what: "rebuild" }, { id: "6.1", at: "2023-11-14", what: "117-6 EVSE names" },
-    { id: "6.2", at: "2024-09-08", what: "319-3 E1/E2" }, { id: "6.3", at: "2024-10-14", what: "117-2 second meter" },
-    { id: "6.4", at: "2026-06-15", what: "319-2 second meter" }, { id: "6.5", at: "2026-08-13", what: "Boiler" },
+    { id: "6.0", at: "2023-06-23", what: "rebuild and commissioning" },
+    { id: "6.1", at: "2023-10-23", what: "naming convention, 716-2 cables split, 117-6 EVSE" },
+    { id: "6.2", at: "2024-06-19", what: "319-3 ABB primary meter" },
+    { id: "6.3", at: "2024-09-08", what: "319-3 and 319-4 as built" },
+    { id: "6.4", at: "2024-10-08", what: "117-5 new bays, X cables split" },
+    { id: "6.5", at: "2026-01-07", what: "117-4 manual breaker of cable D1" },
+    { id: "6.6", at: "2026-06-15", what: "319-2 second CEEx2 meter" },
+    { id: "6.7", at: "2026-08-13", what: "310-2 Boiler" },
     { id: "7.0", at: "2026-10-05", what: "119-10, Cable Q1" }
   ];
+  // One entry per model version: the best model of its revision (older ones fade into the history).
   var MODELS = [
-    { id: "6.4.2", era: "E6", from: "2026-06-15", to: "2026-08-13", validated: ["2026-06-25"], behindFrom: "2026-08-13" }
+    { id: "6.6.2", era: "E6", rev: "6.6", from: "2026-06-15", to: "2026-08-13", validated: ["2026-06-25"] },
+    { id: "6.7.1", era: "E6", rev: "6.7", from: "2026-08-13", to: "2026-10-05", validated: [] }
   ];
   var T0 = Date.parse("2022-07-01"), T1 = Date.parse("2027-07-01"), X0 = 30, X1 = 980;
   function x(d) { var t = d ? Date.parse(d) : T1; t = Math.max(T0, Math.min(T1, t)); return X0 + (t - T0) / (T1 - T0) * (X1 - X0); }
@@ -248,18 +261,18 @@
       el("title", {}, r.id + ": " + r.what);
     });
     // models
-    MODELS.forEach(function (m) {
-      var a = x(m.from), b = x(m.to);
-      el("rect", { x: a, y: 222, width: b - a, height: 20, fill: soft, stroke: acc });
-      el("text", { x: a - 4, y: 237, fill: ink, "font-size": 12, "font-family": mono, "text-anchor": "end" }, m.id);
+    MODELS.forEach(function (m, i) {
+      var a = x(m.from), b = x(m.to), checked = m.validated.length > 0;
+      // a validated model is filled; one not validated yet is drawn as a dashed outline
+      el("rect", { x: a, y: 222, width: b - a - 1, height: 20, fill: checked ? soft : "none", stroke: checked ? acc : warn,
+                   "stroke-dasharray": checked ? "" : "4 3" });
+      if (i === 0) el("text", { x: a - 4, y: 237, fill: ink, "font-size": 12, "font-family": mono, "text-anchor": "end" }, m.id);
+      else el("text", { x: a, y: 216, fill: warn, "font-size": 12, "font-family": mono }, m.id + " not validated yet");
       m.validated.forEach(function (d) {
         var xx = x(d);
         el("circle", { cx: xx, cy: 232, r: 5, fill: ok });
-        el("text", { x: xx, y: 262, fill: ok, "font-size": 11, "font-family": mono, "text-anchor": "middle" }, "validated " + d);
+        el("text", { x: xx, y: 262, fill: ok, "font-size": 11, "font-family": mono, "text-anchor": "end" }, "validated " + d);
       });
-      var bx = x(m.behindFrom);
-      el("line", { x1: bx, x2: x("2026-10-05") - 1, y1: 232, y2: 232, stroke: warn, "stroke-width": 2, "stroke-dasharray": "4 3" });
-      el("text", { x: bx + 4, y: 218, fill: warn, "font-size": 11, "font-family": mono }, "behind from 6.5");
     });
     el("rect", { x: x("2026-10-05"), y: 222, width: x(null) - x("2026-10-05") - 2, height: 20, fill: "none", stroke: muted, "stroke-dasharray": "3 3" });
     el("text", { x: x("2026-10-05") + 6, y: 237, fill: muted, "font-size": 12, "font-family": mono }, "7.0.1 pending");
@@ -280,14 +293,19 @@
     var parts = ["Era " + era.id.slice(1)];
     if (per) parts.push("period " + per.id);
     if (rev) parts.push("configuration " + rev.id);
-    var m = MODELS.filter(function (m) { return m.era === era.id; })[0];
+    var own = rev && MODELS.filter(function (m) { return m.rev === rev.id; }).pop();
+    var inEra = MODELS.filter(function (m) { return m.era === era.id; });
     var verdict;
-    if (m && m.validated.indexOf(d) >= 0) verdict = "model " + m.id + ", validated on this day.";
-    else if (m && m.from <= d && d < m.to) verdict = "model " + m.id + ", valid for this period, not checked on this day.";
-    else if (m && d >= m.behindFrom) verdict = "model " + m.id + " applies with fewer guarantees, and is behind: the grid changed (" + rev.id + ") after it was built.";
-    else if (m) verdict = "model " + m.id + " is the era's base model and applies with fewer guarantees; a model of configuration " + (rev ? rev.id : "?") + " would be better.";
+    if (own && own.validated.indexOf(d) >= 0) verdict = "model " + own.id + ", validated on this day.";
+    else if (own && own.validated.length) verdict = "model " + own.id + " of this configuration, validated on other days (" + own.validated.join(", ") + ").";
+    else if (own) verdict = "model " + own.id + " of this configuration, not validated yet.";
+    else if (inEra.length) {
+      // nearest model of the era: the latest one before the date, else the earliest one after it
+      var before = inEra.filter(function (m) { return m.from <= d; }), near = before.length ? before.pop() : inEra[0];
+      verdict = "no model of configuration " + (rev ? rev.id : "?") + " yet; the nearest, " + near.id + " (configuration " + near.rev + "), applies with fewer guarantees.";
+    }
     else if (era.id === "E7") verdict = "no model yet: 7.0.1 is waiting for the Cable Q1 facts.";
-    else verdict = "no model published for this era yet.";
+    else verdict = "no model of this era yet.";
     out.textContent = parts.join(", ") + ": " + verdict;
   }
   document.getElementById("qdate").addEventListener("input", answer);
