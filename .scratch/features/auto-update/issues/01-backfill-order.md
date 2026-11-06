@@ -1,7 +1,7 @@
 # In which order does the backfill build past revisions?
 
 Type: grilling
-Status: open
+Status: resolved
 Blocked by:
 
 ## Question
@@ -12,5 +12,12 @@ Draft: newest first, 6.6 down to 6.0, then era 4 (4.1, 4.0); eras 0 to 3 (data h
 C15). The newest revisions need the least missing data: from 6.3 down, the curated cable data need dates (the X cables
 between 117-2 and 117-5 were split on 2024-10-09), and era 4 needs the cables before the 2023 rebuild (staff C14). A
 revision whose curated data do not cover its date is skipped and reported, not built with guessed data.
+
+## Answer
+
+Settled with the maintainer, 2026-11-06: as drafted. Newest first, 6.6 down to 6.0, then era 4 (4.1, 4.0); eras 0 to 3
+only on request. A revision whose curated data do not cover its date is skipped and reported, never built with guessed
+data (today: 6.3 and older until the X cables of 2024-10-09 are dated, era 4 until the cables before the 2023 rebuild are
+known, staff C14).
 
 ## Comments

@@ -20,7 +20,7 @@ Settled while charting (maintainer, 2026-11-06):
 - **Division of work:** design questions are settled in the local session (this map, its tickets: only
   `.scratch/features/auto-update/`); code, era files, model builds and validation runs belong to the remote session
   "Syslab pandapower builder assessments" (syslab-model-data-05), which owns the builder otherwise.
-- **Phases** (proposed, ticket 05): phase 1 answers "what was the grid on that day?" from the sources (hardware.xml
+- **Phases** (ticket 05): phase 1 answers "what was the grid on that day?" from the sources (hardware.xml
   history, data headers, figures, curated data): proposals, one model per revision, validation with its residuals.
   Phase 2 answers "how do we make the model more accurate from the data?" (swapped or mislabelled meters, meter offsets,
   cable parameters): third-level model improvements.
@@ -40,11 +40,14 @@ Settled while charting (maintainer, 2026-11-06):
 
 <!-- one line per resolved ticket -->
 
+- [In which order does the backfill build past revisions?](issues/01-backfill-order.md): newest first (6.6 to 6.0, then era 4); a revision whose curated data do not cover its date is skipped and reported, never guessed.
+- [What does the builder bot's merge request contain?](issues/04-merge-request-contents.md): one per revision, with a change list, the residual figures of the validation day, the era-file changes and what was skipped; model files stay on the sandbox.
+- [Phase 1 only, or an early residual-based detector?](issues/05-phase-1-scope.md): the job starts with phase 1; phase 2 is prototyped in this map (ticket 07).
+
 ## Not yet specified
 
 - **Forward detection:** how a new hardware.xml commit, figure change or header change on a later day becomes a proposal
   (the detect stage after the backfill).
-- **Phase 2 detectors:** which residual-based checks, with what thresholds, proposed how.
 - **Moving to a GitLab scheduled pipeline** (runner on the sandbox) once the builder is rolled out; the CI/CD epic of the
   map "dated model versions".
 - **Alerts:** how a failed or stuck run reaches the maintainer.
