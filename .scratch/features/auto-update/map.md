@@ -30,6 +30,8 @@ Settled while charting (maintainer, 2026-11-06):
   `conf_snapshot.py` and `build_model --conf-repo --conf-date --model-version`; dated curated data
   (`valid_from`/`valid_to` in `breaker_groups.yaml`); research scripts `header_xcheck.py`, `data_name_periods.py`;
   in `syslab_data`: the column archive and its scanner, `utilities/island_residuals.py`, `cache_cleanup`.
+  The validate stage: `island_residuals --model-dir <build>/model_data` takes network and topology from a given build and
+  writes its `model_version.json` with the results (remote session, 2026-11-06; in `syslab_data`, not committed yet).
 - **Rules that hold:** never commit or push to the lab repositories `syslab/` and `syslab-userspace/`;
   `syslab_pandapower` is public (no lab refs, private data or paths); no whole data files downloaded on the maintainer's
   machine (weak connection); the staff decisions on model versions (map "dated model versions", ticket 09 comments).
