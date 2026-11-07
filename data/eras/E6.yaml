@@ -411,7 +411,17 @@ model_versions:
     built: 2026-11-03
     note: >-
       first model built from the configuration in force on a day (build_model --conf-repo syslab --conf-date
-      2026-08-13); against 6.6.2 only 310-2 Spare_1 -> Boiler; not published, not yet validated
+      2026-08-13); against 6.6.2 only 310-2 Spare_1 -> Boiler; not published; 2026-09-08 island_residuals: all
+      islands with a slack meter close (largest RMSE 0.040 kW at 1 min), but 310-2 was idle that day, so the Boiler
+      change is not tested by it
+    status: superseded
+  - version: "6.7.2"
+    revision: "6.7"
+    built: 2026-11-07
+    note: >-
+      6.7.1 with the meter names of all metered bays from hardware.xml (bay_meters, auto-update ticket 09; only
+      117-4 Grid -> Grid_4 differs from its bay); network, switch map, converters and catalog as 6.7.1; not
+      published, not yet validated
     status: current
 
 # Header periods (proposed 2026-10-25, column-archive cross-check): stretches where the data files carry other
