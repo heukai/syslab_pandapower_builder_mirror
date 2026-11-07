@@ -9,11 +9,12 @@ import yaml
 from syslab_pandapower_builder.builder import (
     SocketPortDef,
     create_syslab_model,
+    derive_bay_meters,
     derive_socket_ports,
     load_equipment_catalog,
     portable_source_path,
 )
-from syslab_pandapower_builder.hardware_parser import BayDef, BreakerDef, InterlockDef, SwitchboardDef
+from syslab_pandapower_builder.hardware_parser import BayDef, BreakerDef, InstrumentDef, InterlockDef, SwitchboardDef
 
 _CONF_DIR = Path(__file__).resolve().parents[2] / "syslab-master-conf" / "conf"
 
@@ -29,6 +30,35 @@ def _bay(name: str, with_breakers: bool = True, interlock: bool = True) -> BayDe
     )
     ils = [InterlockDef(f"{name}-IL", f"{name}-A", f"{name}-B")] if brks and interlock else []
     return BayDef(name=name, breakers=brks, interlocks=ils)
+
+
+class TestDeriveBayMeters:
+    """Auto-update ticket 09: every metered bay carries its hardware.xml instrument names."""
+
+    @staticmethod
+    def _metered(name: str, *meters: str, with_breakers: bool = True) -> BayDef:
+        bay = _bay(name, with_breakers=with_breakers)
+        bay.instruments = [InstrumentDef(m, "") for m in meters]
+        return bay
+
+    def test_meter_name_differs_from_bay(self):
+        (m,) = derive_bay_meters({"117-4": _sb("117-4", [self._metered("Grid", "Grid_4")])})
+        assert m == {"switchboard": "117-4", "bay": "Grid", "bus": "117-4_Grid", "meters": ["Grid_4"]}
+
+    def test_only_bays_with_breakers_and_instruments_no_cee(self):
+        sbs = {"319-2": _sb("319-2", [
+            self._metered("PV", "PV"), _bay("Aircon"), self._metered("Spare", "Spare", with_breakers=False),
+            self._metered("CEEx2", "CEEx2.A", "CEEx2.B"),
+        ])}
+        assert [(m["bay"], m["meters"]) for m in derive_bay_meters(sbs)] == [("PV", ["PV"])]
+
+    def test_several_instruments_kept_in_order_and_sorted(self):
+        sbs = {
+            "716-2": _sb("716-2", [self._metered("Grid", "Grid")]),
+            "117-2": _sb("117-2", [self._metered("Cable_C1", "Cable_C1B", "Cable_C1A")]),
+        }
+        assert [(m["switchboard"], m["meters"]) for m in derive_bay_meters(sbs)] == [
+            ("117-2", ["Cable_C1B", "Cable_C1A"]), ("716-2", ["Grid"])]
 
 
 class TestDeriveSocketPorts:

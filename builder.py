@@ -269,6 +269,31 @@ def has_socket_per_busbar(bay: BayDef) -> bool:
     )
 
 
+def derive_bay_meters(switchboards: dict[str, SwitchboardDef]) -> list[dict]:
+    """The meter names of every metered bay, from the ``hardware.xml`` instruments (auto-update ticket 09).
+
+    The data name a bay's measurements after its instrument, not always after the bay
+    (117-4 bay ``Grid``, instrument ``Grid_4``: ``P_Grid_4[kW]``). One entry per bay with
+    at least one breaker and one instrument: ``switchboard``, ``bay``, ``bus`` and ``meters``
+    (instrument names in ``hardware.xml`` order). CEE bays are left out: their sockets
+    carry their meter as socket ports (:func:`derive_socket_ports`). Sorted by switchboard
+    and bay.
+    """
+    out: list[dict] = []
+    for sw_name in sorted(switchboards):
+        sw = switchboards[sw_name]
+        for bay in sorted(sw.bays, key=lambda b: b.name):
+            if bay.name.startswith(SOCKET_BAY_PREFIX) or not bay.breakers or not bay.instruments:
+                continue
+            out.append({
+                "switchboard": sw.name,
+                "bay": bay.name,
+                "bus": _bay_bus_name(sw.name, bay.name),
+                "meters": [i.name for i in bay.instruments],
+            })
+    return out
+
+
 def load_socket_meters(path: Path | None = None) -> dict[str, str]:
     """Load ``socket_meters.yaml``: ``{port name: meter name}``."""
     if path is None:

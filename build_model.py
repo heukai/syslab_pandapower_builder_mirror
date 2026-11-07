@@ -11,7 +11,7 @@ Outputs written to ``<output-dir>/``:
     model_data/syslab_grid.json       — serialized pandapower network
     model_data/switch_name_map.json   — BRK name → switch index mapping
     model_data/converter_connections.json — B2B converter definitions
-    model_data/breaker_groups.json    — breaker groups + inline/socket ports
+    model_data/breaker_groups.json    — breaker groups + inline/socket ports + bay meter names
     model_data/equipment_catalog.json — equipment + cable types for ports
     model_data/model_version.json     — version/validity metadata
     create_model.py                   — thin loader (auto-generated)
@@ -31,6 +31,7 @@ import pandapower as pp
 from .hardware_parser import load_grid_switchboards
 from .builder import (
     create_syslab_model,
+    derive_bay_meters,
     derive_socket_ports,
     load_socket_meters,
     load_breaker_groups,
@@ -283,9 +284,9 @@ def main(argv: list[str] | None = None) -> None:
     unknown = sorted({s.name for g in groups for s in g.switches} - set(switch_map))
     if unknown:
         sys.exit(f"breaker_groups.yaml names switches not in the configuration of {day}: {', '.join(unknown)}")
-    socket_ports = derive_socket_ports(
-        load_grid_switchboards(conf_dir), load_socket_meters()
-    )
+    switchboards = load_grid_switchboards(conf_dir)
+    socket_ports = derive_socket_ports(switchboards, load_socket_meters())
+    bay_meters = derive_bay_meters(switchboards)
     bg_path = model_data_dir / "breaker_groups.json"
     with open(bg_path, "w", encoding="utf-8") as f:
         json.dump(
@@ -332,6 +333,7 @@ def main(argv: list[str] | None = None) -> None:
                     }
                     for p in socket_ports
                 ],
+                "bay_meters": bay_meters,
             },
             f, indent=2,
         )
