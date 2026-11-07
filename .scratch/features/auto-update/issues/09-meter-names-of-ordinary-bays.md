@@ -1,7 +1,7 @@
 # Which meter name does the model give an ordinary bay?
 
 Type: grilling
-Status: open
+Status: resolved
 Blocked by:
 
 ## Question
@@ -15,5 +15,12 @@ exactly when the data caught up with the configuration. Same pattern for `Grid_2
 Draft: the model carries, for every metered bay, the instrument name from hardware.xml (`Grid_4`), as socket ports
 already do; the simulation reads the meter by that name; the data of a meter-lag period are translated by its column
 map (ticket 08). Builder and syslab_data change; done in the remote session.
+
+## Answer
+
+Settled with the maintainer, 2026-11-07: the model carries, for every metered bay, the instrument name from
+hardware.xml (bay `Grid` of 117-4 -> meter `Grid_4`), as socket ports already do, and the simulation reads a bay's meter
+by that name. Builder and syslab_data change; done in the remote session. Data of meter-lag periods are read through
+their column map (ticket 08).
 
 ## Comments

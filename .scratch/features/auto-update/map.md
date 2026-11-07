@@ -48,6 +48,8 @@ Settled while charting (maintainer, 2026-11-06):
 - [On which days is each revision validated, and when is it accepted?](issues/02-validation-days.md): three days per revision; days with only meter-name or spelling differences count, breaker-name periods are skipped (6.1, 6.2 for now); islands with a switchboard lacking data are not checkable, not failed.
 - [How often does the job run, and within which budget?](issues/03-cadence-and-budget.md): a systemd user timer with lingering on the sandbox (no cron there), one revision per night, own downloads deleted after validation, stop below 10 GB free.
 - [What should a phase-2 detector find, and how does it propose?](issues/07-phase-2-detector-prototype.md): prototype PASS on 2026-06-25 (finds the 117-2 CEEx2 swap before the fix, nothing after); proposal = change, evidence, closure check; runs need the day's experiment set-up.
+- [How are old names in the data translated to a model's names?](issues/08-translating-old-names-in-the-data.md): one column map per data-name period, derived from the configuration the data carry, unmatched names listed, confirmed in the bot's merge request; kept in the era file, published per model version as `column_map.json`; 6.1 joins the backfill once its map is confirmed, 6.2 waits for C9.
+- [Which meter name does the model give an ordinary bay?](issues/09-meter-names-of-ordinary-bays.md): the hardware.xml instrument name (`Grid_4`), as for socket ports; the simulation reads meters by that name.
 
 ## Not yet specified
 
