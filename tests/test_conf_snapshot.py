@@ -9,7 +9,7 @@ from syslab_pandapower_builder.conf_snapshot import conf_in_force, export_conf
 from syslab_pandapower_builder.hardware_parser import load_grid_switchboards
 
 LAB = Path(__file__).resolve().parents[2] / "syslab"
-pytestmark = pytest.mark.skipif(not (LAB / "conf").is_dir(), reason="no syslab/ clone in the workspace")
+pytestmark = pytest.mark.skipif(not (LAB / ".git").exists(), reason="no syslab/ clone with history in the workspace")
 
 
 def test_last_commit_written_on_or_before_the_day():
