@@ -45,6 +45,7 @@ Settled while charting (maintainer, 2026-11-06):
 - [Phase 1 only, or an early residual-based detector?](issues/05-phase-1-scope.md): the job starts with phase 1; phase 2 is prototyped in this map (ticket 07).
 - [On which days is each revision validated, and when is it accepted?](issues/02-validation-days.md): three days per revision; days with only meter-name or spelling differences count, breaker-name periods are skipped (6.1, 6.2 for now); islands with a switchboard lacking data are not checkable, not failed.
 - [How often does the job run, and within which budget?](issues/03-cadence-and-budget.md): a systemd user timer with lingering on the sandbox (no cron there), one revision per night, own downloads deleted after validation, stop below 10 GB free.
+- [What should a phase-2 detector find, and how does it propose?](issues/07-phase-2-detector-prototype.md): prototype PASS on 2026-06-25 (finds the 117-2 CEEx2 swap before the fix, nothing after); proposal = change, evidence, closure check; runs need the day's experiment set-up.
 
 ## Not yet specified
 
@@ -53,6 +54,8 @@ Settled while charting (maintainer, 2026-11-06):
 - **Moving to a GitLab scheduled pipeline** (runner on the sandbox) once the builder is rolled out; the CI/CD epic of the
   map "dated model versions".
 - **Alerts:** how a failed or stuck run reaches the maintainer.
+- **More phase-2 detectors:** steady meter offsets (also for islands that do not close), and the experiment set-up of a
+  validation day (a day with an experiment needs its set-up, or the job must know to skip it).
 
 ## Out of scope
 
