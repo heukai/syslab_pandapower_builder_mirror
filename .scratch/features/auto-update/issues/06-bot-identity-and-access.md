@@ -18,3 +18,6 @@ Answer: what was set up, where the credentials live (not in a repository), and a
   machine meanwhile.
 - 2026-11-07: also needed on the sandbox, an admin step: `loginctl enable-linger kheu`, so the job's systemd user
   timer runs without a login (ticket 03).
+- 2026-11-07, maintainer: the sandbox now has a copy of `syslab/conf`. Dated builds (`build_model --conf-repo
+  --conf-date`) and column maps (ticket 08) need its git history, not only today's files: to check on the sandbox.
+  Read-only as everywhere: never commit or push to the lab repositories.
