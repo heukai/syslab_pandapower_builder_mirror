@@ -13,3 +13,6 @@ build/
 *.bak
 *.tmp
 .cache/
+
+# Built model versions and run outputs (workspace, not versioned)
+outputs/
