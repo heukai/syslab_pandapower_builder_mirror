@@ -24,3 +24,12 @@ by that name. Builder and syslab_data change; done in the remote session. Data o
 their column map (ticket 08).
 
 ## Comments
+- 2026-11-07, implemented by the remote session on local branches, not pushed (waiting for the maintainer): builder
+  `bay-meters` (from `model-versions`) writes `bay_meters` [{switchboard, bay, bus, meters}] into breaker_groups.json
+  with the hardware.xml instrument names (CEE bays left out: their sockets carry a meter); syslab_data `bay-meters` keeps
+  them in the graph, and `apply_socket_meters` copies a single-instrument bay's meter column to the bay's column
+  (`P_Grid_4` -> `P_Grid`), never overwriting an existing bay column, leaving bays with several instruments alone. So the
+  simulation still reads bay columns; the data are mapped onto them (a variant of the decision, same effect). End to end,
+  2026-06-25 with set-up and reader fix: the 117-4/117-5 island closes at -0.003 / 0.015 kW; every island of the day
+  closes. D27 days (data `P_Grid`) need no column map for this. Blocker: no hardware.xml on the sandbox, so no real build
+  with `bay_meters` there (ticket 06).
