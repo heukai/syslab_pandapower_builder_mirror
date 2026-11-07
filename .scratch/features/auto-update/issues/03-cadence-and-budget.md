@@ -1,7 +1,7 @@
 # How often does the cron job run, and within which budget?
 
 Type: grilling
-Status: open
+Status: resolved
 Blocked by:
 
 ## Question
@@ -12,6 +12,17 @@ run may take, and what happens when a budget is reached.
 Draft: nightly, one revision per run (build plus validation of one day); a data budget for the day files of validation
 (the cache budget `SYSLAB_CACHE_MAX_GB` on the sandbox); a run stops cleanly at its budget and continues the next night.
 Facts needed from the remote session: free disk, download speed, time of one `island_residuals` day with all boards.
+
+## Answer
+
+Settled with the maintainer, 2026-11-07:
+1. **Scheduler:** a systemd user timer for the user `kheu` on the sandbox, with lingering enabled
+   (`loginctl enable-linger kheu`, an admin step, ticket 06), so it runs without a login; logs in the journal. Same role
+   as the cron job of the map's notes; installing cronie is the alternative.
+2. **Pace:** one revision per night (three days, about 20 minutes); the era-6 backfill (6.0, 6.3 to 6.7) takes about a
+   week.
+3. **Disk:** the job deletes the day files it downloaded itself once validated, keeps files that were in the cache
+   before, and stops cleanly, to continue the next night, when free disk would fall below 10 GB.
 
 ## Comments
 - 2026-11-07, facts from the remote session: disk 31 GB free of 196 GB (84 % used), the FTP cache holds 92 GB; one

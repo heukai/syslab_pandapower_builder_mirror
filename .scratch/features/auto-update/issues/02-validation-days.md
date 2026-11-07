@@ -1,7 +1,7 @@
 # On which days is each revision validated, and when is it accepted?
 
 Type: grilling
-Status: open
+Status: resolved
 Blocked by:
 
 ## Question
@@ -13,6 +13,19 @@ switchboards logging, no data-name period (pickup log C8) and complete breaker s
 day closes and the largest one is within about 0.5 kW RMSE at 1 minute (staff, 2026-10-30). A day that fails is
 reported with its residuals, not retried silently. Facts needed from the remote session: which days in each revision
 have complete data.
+
+## Answer
+
+Settled with the maintainer, 2026-11-07, after the sandbox facts (comment below):
+1. **Data-name periods:** the first version accepts days whose data differ from the model only in meter names or
+   spelling (kinds `meter-lag`, `alias`) and skips days in breaker-name periods (`lag`, `lead`, `branch`, `unmatched`,
+   `transition`); 6.1 and 6.2 are skipped and reported for now. Translating old names is its own ticket (08).
+2. **Switchboards without data:** an island whose switchboards all have data is checked; an island with a switchboard
+   lacking data is "not checkable" (not a failure). A revision is validated when every checkable island closes on at
+   least one day (largest within about 0.5 kW RMSE at 1 min, staff 2026-10-30). The merge request lists the unchecked
+   switchboards and islands; a revision with no checkable island is skipped.
+3. **Days per revision:** three, spread over the revision, from the candidates; a yearly experiment day goes first once
+   the maintainer names one (the sandbox does not know them).
 
 ## Comments
 - 2026-11-07, facts from the remote session (FTP listings of 2026-11-06, nothing downloaded; "complete" = every board

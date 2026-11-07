@@ -16,3 +16,5 @@ Answer: what was set up, where the credentials live (not in a repository), and a
   yet, so there is no `syslab/` clone there; the sync and build stages (`build_model --conf-repo`) need read access to
   it (and to `syslab-userspace` for the figures). Model 6.7.1 is validated from files copied over from the maintainer's
   machine meanwhile.
+- 2026-11-07: also needed on the sandbox, an admin step: `loginctl enable-linger kheu`, so the job's systemd user
+  timer runs without a login (ticket 03).

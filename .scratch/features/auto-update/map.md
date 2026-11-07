@@ -11,7 +11,7 @@ and `/to-tickets` in the remote session.
 
 Settled while charting (maintainer, 2026-11-06):
 
-- **Scheduler: a cron job on the sandbox for now.** A GitLab scheduled pipeline (CI/CD) is the right future approach,
+- **Scheduler: a scheduled job on the sandbox for now** (a systemd user timer, ticket 03; the sandbox has no cron). A GitLab scheduled pipeline (CI/CD) is the right future approach,
   but only once the builder is fully rolled out, with the old model versions built. Until then cron.
 - **First job: backfill.** The job works through past eras and revisions and builds their models first; watching for new
   changes (forward detection) comes after.
@@ -43,6 +43,8 @@ Settled while charting (maintainer, 2026-11-06):
 - [In which order does the backfill build past revisions?](issues/01-backfill-order.md): newest first (6.6 to 6.0, then era 4); a revision whose curated data do not cover its date is skipped and reported, never guessed.
 - [What does the builder bot's merge request contain?](issues/04-merge-request-contents.md): one per revision, with a change list, the residual figures of the validation day, the era-file changes and what was skipped; model files stay on the sandbox.
 - [Phase 1 only, or an early residual-based detector?](issues/05-phase-1-scope.md): the job starts with phase 1; phase 2 is prototyped in this map (ticket 07).
+- [On which days is each revision validated, and when is it accepted?](issues/02-validation-days.md): three days per revision; days with only meter-name or spelling differences count, breaker-name periods are skipped (6.1, 6.2 for now); islands with a switchboard lacking data are not checkable, not failed.
+- [How often does the job run, and within which budget?](issues/03-cadence-and-budget.md): a systemd user timer with lingering on the sandbox (no cron there), one revision per night, own downloads deleted after validation, stop below 10 GB free.
 
 ## Not yet specified
 
