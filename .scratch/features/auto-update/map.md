@@ -32,6 +32,8 @@ Settled while charting (maintainer, 2026-11-06):
   in `syslab_data`: the column archive and its scanner, `utilities/island_residuals.py`, `cache_cleanup`.
   The validate stage: `island_residuals --model-dir <build>/model_data` takes network and topology from a given build and
   writes its `model_version.json` with the results (remote session, 2026-11-06; in `syslab_data`, not committed yet).
+  A reader regression in `syslab_data` (minute values as first samples instead of means since 2026-10-25) inflated all
+  island residuals; fix tested remotely, waiting for the maintainer (ticket 07 comment).
 - **Rules that hold:** never commit or push to the lab repositories `syslab/` and `syslab-userspace/`;
   `syslab_pandapower` is public (no lab refs, private data or paths); no whole data files downloaded on the maintainer's
   machine (weak connection); the staff decisions on model versions (map "dated model versions", ticket 09 comments).
@@ -54,7 +56,8 @@ Settled while charting (maintainer, 2026-11-06):
 - **Moving to a GitLab scheduled pipeline** (runner on the sandbox) once the builder is rolled out; the CI/CD epic of the
   map "dated model versions".
 - **Alerts:** how a failed or stuck run reaches the maintainer.
-- **More phase-2 detectors:** steady meter offsets (also for islands that do not close), and the experiment set-up of a
+- **More phase-2 detectors:** steady meter offsets (also for islands that do not close; the partner needs a slope
+  condition, not only a correlation threshold: 330-13 island +0.135 kW on 2026-06-25), and the experiment set-up of a
   validation day (a day with an experiment needs its set-up, or the job must know to skip it).
 
 ## Out of scope

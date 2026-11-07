@@ -40,3 +40,14 @@ island +0.14 kW steady at 0.20 kW RMSE: a meter offset?) and 4 (117-4/117-5 isla
 without P on 2026-06-25, the day after data-name period D27) stand until the rerun.
 
 ## Comments
+- 2026-11-07, rerun with the J1A set-up (remote session): **a regression in syslab_data** made every island's RMSE too
+  high since b6aee8a (US-51 v2 ticket 02, 2026-10-25): `find_test_periods.read_board_minutes`/`load_day` give P/Q/U as
+  the first valid sample of each minute instead of the minute mean (right for breakers, wrong for power balances across
+  boards that sample at different instants); 6c3442d reproduces task 5c exactly. Fix tested in a scratch copy
+  (`load_day(..., meas_how="mean")` for island_residuals, breakers still first samples), not committed, waiting for the
+  maintainer; `find_flow_partner` probably affected too. With set-up and fix (06-18 UTC, 1 min; P mean / P RMSE kW):
+  319-3 island -0.161 / 0.218; 319-2 0.016 / 0.099; 330-13 0.135 / 0.200; 310-2 0.007 / 0.059; 716-2 0.016 / 0.017;
+  117-4/117-5 NaN (see ticket 09). Same for the published model and the `--model-dir` build. Before model: 319-3
+  -0.229 / 0.743. Detector with set-up: finds the swap more clearly (P_CEEx2_2 corr 0.980, slope 0.94), nothing on the
+  fixed model. Findings 1 and 3 withdrawn (set-up plus regression). Finding 2 (330-13 offset +0.135 kW) stays; an offset
+  rule needs a slope condition on the partner, not only a correlation threshold.

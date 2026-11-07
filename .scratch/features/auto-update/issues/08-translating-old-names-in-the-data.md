@@ -14,3 +14,6 @@ configuration the data carry and confirmed by a person; or skip such days for go
 selection needs (map "dated model versions", ticket on publishing and selection), so the form should serve both.
 
 ## Comments
+- 2026-11-07: meter names count as well (ticket 09): with the model naming a bay's meter `Grid_4`, the days of
+  meter-lag period D27 (data `P_Grid`) need the same translation; ticket 02 accepted meter-lag days assuming the meter
+  names do not matter, which holds only once they are translated.
