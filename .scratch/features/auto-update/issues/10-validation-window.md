@@ -25,3 +25,10 @@ periods of at least 2 hours within 06:00-18:00 UTC, the minutes around a switch 
 is the worst of its periods; an island without such a period is not checkable that day (not failed).
 
 ## Comments
+- 2026-11-08, implemented by the remote session: `syslab_data` main 48f00a5, `utilities/validate_day.py` (island periods
+  from the model's own graph, 2 minutes left out next to each breaker change, periods >= 120 min, 1-min means, an
+  island = its switchboards, worst period counts, closes at <= 0.5 kW; output periods.csv, islands.csv,
+  model_version.json). 6.7.2: 2026-09-24 PASS (9 close, worst 330-13 0.170 kW; 2 not checkable); 2026-09-21: 9 close,
+  5 not checkable, one fails: 12:45-16:08 seven switchboards (117-2, 117-5, 117-6, 319-3, 319-4, 330-12, 330-13) run on
+  the 319-4 grid emulator after 330-12's grid breaker opened; with GridEmu as slack P mean -3.03 kW, RMSE 5.22 kW over
+  204 min (ticket 11).
