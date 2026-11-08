@@ -28,3 +28,8 @@ and 09-24 (every checkable grid-connected island closes); the -3 kW offset of th
 later look at the emulator's metering.
 
 ## Comments
+- 2026-11-08, implemented by the remote session: `syslab_data` main c528a26 (`validate_day`: slack a grid-forming
+  converter -> "converter-driven, not used", worst figures still shown; an island with grid and converter periods counts
+  only its grid periods; `--include-converter-islands`; periods.csv gains `slack_kind`). Builder `model-versions`
+  9a40cbd: 6.7.2 validated on 2026-09-21 (every checkable grid-connected island closes, worst 716-2 0.32 kW; the
+  grid-emulator island converter-driven, not used) and 09-24 (worst 330-13 0.17 kW).
