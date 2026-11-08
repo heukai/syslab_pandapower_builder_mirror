@@ -423,8 +423,8 @@ model_versions:
       117-4 Grid -> Grid_4 differs from its bay); network, switch map, converters and catalog as 6.7.1; not
       published; on both days the published model misses the Boiler (310-2 island 16.9 and 36.7 kW RMSE)
     validated:
-      - {day: 2026-09-21, check: "island_residuals 06:00-12:40, all islands; largest (319-3) RMSE 0.15 kW at 1 min (all at most 0.15); 310-2 with the Boiler 0.04 kW"}
-      - {day: 2026-09-24, check: "island_residuals 10:15-18:00, all islands; largest (319-3) RMSE 0.09 kW at 1 min (all at most 0.11); 310-2 with the Boiler 0.07 kW"}
+      - {day: 2026-09-21, check: "validate_day (island periods of at least 2 h, 06:00-18:00): every checkable grid-connected island closes; largest (319-3) RMSE 0.12 kW at 1 min, worst 716-2 0.32 kW; 310-2 with the Boiler 0.03 kW; the 12:45-16:08 grid-emulator island (slack 319-4 GridEmu, 7 boards) is converter-driven, not used (P mean -3.0 kW, RMSE 5.2 kW; the emulator's metering to be looked at)"}
+      - {day: 2026-09-24, check: "validate_day (island periods of at least 2 h, 06:00-18:00): every checkable island closes; largest (319-3) RMSE 0.09 kW at 1 min, worst 330-13 0.17 kW; 310-2 with the Boiler 0.07 kW"}
     status: current
 
 # Header periods (proposed 2026-10-25, column-archive cross-check): stretches where the data files carry other
