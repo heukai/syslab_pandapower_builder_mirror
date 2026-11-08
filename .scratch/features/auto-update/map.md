@@ -51,6 +51,7 @@ Settled while charting (maintainer, 2026-11-06):
 - [How are old names in the data translated to a model's names?](issues/08-translating-old-names-in-the-data.md): one column map per data-name period, derived from the configuration the data carry, unmatched names listed, confirmed in the bot's merge request; kept in the era file, published per model version as `column_map.json`; 6.1 joins the backfill once its map is confirmed, 6.2 waits for C9.
 - [Which meter name does the model give an ordinary bay?](issues/09-meter-names-of-ordinary-bays.md): the hardware.xml instrument name (`Grid_4`), as for socket ports; the simulation reads meters by that name.
 - [Which time window does a validation day use?](issues/10-validation-window.md): the island periods of the day (unchanged breaker states), at least 2 hours within 06:00-18:00 UTC, worst period counts; no such period = not checkable.
+- [How does validation treat an island held up by a converter (grid emulator)?](issues/11-islands-on-a-converter.md): guideline, not a hard rule: islands driven by a converter are not used by default and listed separately; a person may include one; 6.7.2 stands validated.
 
 ## Not yet specified
 

@@ -1,7 +1,7 @@
 # How does validation treat an island held up by a converter (grid emulator)?
 
 Type: grilling
-Status: open
+Status: resolved
 Blocked by:
 
 ## Question
@@ -15,5 +15,16 @@ Draft: an island whose only grid-forming unit is a converter (grid emulator, B2B
 checkable unless the day has a declared set-up for it (like the J1A set-up), and listed separately in the merge request.
 6.7.2 then stands validated on 2026-09-21 and 09-24 (every checkable, grid-connected island closes). The -3 kW offset is
 noted for a later look at the emulator's metering (phase 2), not a reason to fail the model.
+
+## Answer
+
+Settled with the maintainer, 2026-11-08, with a caveat: it is a lab, there are always experiments, so "experiment" is not
+the criterion. The criterion is **a converter driving the grid**: an island whose only grid-forming unit is a converter
+(grid emulator, B2B) is not used for validation by default, because of the potential complexities (operation, losses,
+metering side). This is a **guideline, not a hard rule**: the job marks such islands "converter-driven, not used" and
+lists them separately in the merge request; a person may still include one (for example with a declared set-up). Islands
+on the utility grid are validated as usual, whatever experiment runs. Consequence: 6.7.2 stands validated on 2026-09-21
+and 09-24 (every checkable grid-connected island closes); the -3 kW offset of the emulator island on 09-21 is noted for a
+later look at the emulator's metering.
 
 ## Comments
