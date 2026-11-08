@@ -42,3 +42,9 @@ Settled with the maintainer, 2026-11-07, after the sandbox facts (comment below)
     09-23, 09-30, 10-07; 6.4 (D27/D31 tolerated, 310-2 from 2025-02-25) 2025-02-25, 05-15, 08-01, 10-20, 2026-01-06;
     6.5 (D27/D31 tolerated) 2026-01-07, 02-17, 03-26, 05-04, 06-12; 6.6 2026-06-25, 07-07, 07-20, 07-31, 08-12;
     6.7 2026-08-13, 08-26, 09-08, 09-21, 10-02. Yearly experiment days not known on the sandbox.
+- 2026-11-08, remote session, validation of 6.7.2 on the Boiler days 2026-09-21 and 09-24 (named by the maintainer):
+  310-2 island P RMSE 0.027 / 0.067 kW (published model without the Boiler: 16.9 / 36.7 kW); 117-4 island 0.029 / 0.033
+  (bay meters, ticket 09). The fixed 06:00-18:00 window with islands taken at one instant failed the 330-12+330-13
+  island on all models (1.93 / 3.75 kW): topology changed inside the window (09-21: 330-12 Grid and PV_1 open
+  12:42-16:12; 09-24: PV_1 off 07:04-10:13). In windows free of those changes every island closes on 6.7.2 (largest
+  319-3, 0.152 / 0.090 kW). -> the window rule is ticket 10.
