@@ -1,7 +1,7 @@
 # Which time window does a validation day use?
 
 Type: grilling
-Status: open
+Status: resolved
 Blocked by:
 
 ## Question
@@ -16,5 +16,12 @@ stretches in which the breaker states, and so the islands, do not change; each i
 exists in that are at least 2 hours long within 06:00-18:00 UTC; the day's result per island is the worst of its
 periods; switching minutes themselves are left out. A day without such a period for an island marks that island not
 checkable on that day.
+
+## Answer
+
+Settled with the maintainer, 2026-11-08: as drafted. Per validation day the job takes its windows from the island periods
+(`syslab_data` topology/island_periods, US-51), stretches with unchanged breaker states; each island is checked over its
+periods of at least 2 hours within 06:00-18:00 UTC, the minutes around a switch left out; the island's result for the day
+is the worst of its periods; an island without such a period is not checkable that day (not failed).
 
 ## Comments

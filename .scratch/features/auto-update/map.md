@@ -50,6 +50,7 @@ Settled while charting (maintainer, 2026-11-06):
 - [What should a phase-2 detector find, and how does it propose?](issues/07-phase-2-detector-prototype.md): prototype PASS on 2026-06-25 (finds the 117-2 CEEx2 swap before the fix, nothing after); proposal = change, evidence, closure check; runs need the day's experiment set-up.
 - [How are old names in the data translated to a model's names?](issues/08-translating-old-names-in-the-data.md): one column map per data-name period, derived from the configuration the data carry, unmatched names listed, confirmed in the bot's merge request; kept in the era file, published per model version as `column_map.json`; 6.1 joins the backfill once its map is confirmed, 6.2 waits for C9.
 - [Which meter name does the model give an ordinary bay?](issues/09-meter-names-of-ordinary-bays.md): the hardware.xml instrument name (`Grid_4`), as for socket ports; the simulation reads meters by that name.
+- [Which time window does a validation day use?](issues/10-validation-window.md): the island periods of the day (unchanged breaker states), at least 2 hours within 06:00-18:00 UTC, worst period counts; no such period = not checkable.
 
 ## Not yet specified
 
