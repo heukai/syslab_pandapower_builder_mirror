@@ -14,6 +14,9 @@
 #   terminals     1 (socket-type) or 2 (inline-type)
 #   ports         port kinds the device can be plugged into: socket | inline
 #   parameters    electrical data; null = not yet filled in
+#   control       how P and Q can be steered: none (measured only), limit (can be capped,
+#                 e.g. curtailment), setpoint (follows a set value), unknown; same levels as
+#                 the asset registry in syslab_data (metadata/devices.py, control)
 #   status        placeholder = quantity/name known, parameters still to be
 #                 supplied by SYSLAB staff (do not rely on null values)
 #
@@ -22,13 +25,14 @@
 
 equipment:
 
-  # -- Mobile loads (three units, controllable like the dump load) --
+  # -- Mobile loads (three units, controllable like the dump load: P set, Q not; maintainer 2026-11-12) --
   - id: mobile_load_1
     name: "Mobile Load 1"
     kind: load
     terminals: 1
     ports: [socket, inline]
-    parameters: {p_max_kw: null, q_max_kvar: null, controllable: true}
+    parameters: {p_max_kw: null, q_max_kvar: null}
+    control: {P: setpoint, Q: none}
     status: placeholder
 
   - id: mobile_load_2
@@ -36,7 +40,8 @@ equipment:
     kind: load
     terminals: 1
     ports: [socket, inline]
-    parameters: {p_max_kw: null, q_max_kvar: null, controllable: true}
+    parameters: {p_max_kw: null, q_max_kvar: null}
+    control: {P: setpoint, Q: none}
     status: placeholder
 
   - id: mobile_load_3
@@ -44,7 +49,8 @@ equipment:
     kind: load
     terminals: 1
     ports: [socket, inline]
-    parameters: {p_max_kw: null, q_max_kvar: null, controllable: true}
+    parameters: {p_max_kw: null, q_max_kvar: null}
+    control: {P: setpoint, Q: none}
     status: placeholder
 
   # -- Inline impedance (two terminals, series element in a cable) --

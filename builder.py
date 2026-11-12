@@ -365,6 +365,7 @@ def derive_socket_ports(
 
 _EQUIPMENT_KINDS = {"load": 1, "impedance": 2, "converter": 2}
 _PORT_KINDS = {"socket", "inline"}
+_CONTROL_LEVELS = {"none", "limit", "setpoint", "unknown"}   # as syslab_data metadata/devices.py
 
 
 def load_equipment_catalog(path: Path | None = None) -> dict:
@@ -396,6 +397,9 @@ def load_equipment_catalog(path: Path | None = None) -> dict:
         bad = set(e["ports"]) - _PORT_KINDS
         if bad or not e["ports"]:
             raise ValueError(f"{eid}: invalid ports {e['ports']!r}")
+        control = e.get("control") or {}
+        if set(control) - {"P", "Q"} or set(control.values()) - _CONTROL_LEVELS:
+            raise ValueError(f"{eid}: invalid control {control!r} (P/Q: {sorted(_CONTROL_LEVELS)})")
 
     return {"equipment": equipment, "cable_types": load_cable_types()}
 
