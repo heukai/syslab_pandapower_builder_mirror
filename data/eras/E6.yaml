@@ -441,6 +441,220 @@ header_periods:
     carries: "syslab ebb1fb939 (committed 2023-06-23)"
     note: the rebuild runs a week before its configuration is committed
     status: proposed
+    column_map:
+    - status: proposed
+      from: 2023-06-16
+      to: 2023-06-22
+      targets:
+      - from: 2023-06-16
+        nodes:
+          syslab-09: 29e3f21a0
+          syslab-11: 948f15ef1
+          syslab-29: b9d04a949
+      switchboards:
+        117-2:
+          carried: ebb1fb939
+          pairs:
+          - {data: 117_2_BRK_Grid_Grid, model: 117_2_BRK_Grid_Busbar_Grid, rule: same bay and busbar}
+          same: 2
+          unmatched_data:
+          - 117_2_BRK_Battery_Busbar A
+          - 117_2_BRK_Battery_Busbar B
+          - 117_2_BRK_CEEx2_Busbar A
+          - 117_2_BRK_CEEx2_Busbar B
+          - 117_2_BRK_CableC1A_Busbar A
+          - 117_2_BRK_CableC1A_Busbar B
+          - 117_2_BRK_CableC1B_Busbar A
+          - 117_2_BRK_CableC1B_Busbar B
+          - 117_2_BRK_CableC2A_Busbar A
+          - 117_2_BRK_CableC2A_Busbar B
+          - 117_2_BRK_CableC2B_Busbar A
+          - 117_2_BRK_CableC2B_Busbar B
+          - 117_2_BRK_CableX1_Busbar A
+          - 117_2_BRK_CableX1_Busbar B
+          - 117_2_BRK_Grid_Busbar A
+          - 117_2_BRK_Grid_Busbar B
+          - 117_2_BRK_PV_Busbar A
+          - 117_2_BRK_PV_Busbar B
+          - P_CEEx2
+          - P_CableC1A
+          - P_CableC1B
+          - P_CableC2A
+          - P_CableC2B
+          - P_PV
+          unmatched_model:
+          - 117_2_BRK_Battery_Busbar_Busbar 1
+          - 117_2_BRK_Battery_Busbar_Busbar 2
+          - 117_2_BRK_Cable1_Busbar_Busbar 1
+          - 117_2_BRK_Cable1_Busbar_Busbar 2
+          - 117_2_BRK_Cable2_Busbar_Busbar 1
+          - 117_2_BRK_Cable2_Busbar_Busbar 2
+          - 117_2_BRK_Ext117-5_Busbar_Busbar 1
+          - 117_2_BRK_Ext117-5_Busbar_Busbar 2
+          - 117_2_BRK_Grid_Busbar_Busbar 1
+          - 117_2_BRK_Grid_Busbar_Busbar 2
+          - 117_2_BRK_Machine_Busbar_Busbar 1
+          - 117_2_BRK_Machine_Busbar_Busbar 2
+          - 117_2_BRK_Solar_Busbar_Busbar 1
+          - 117_2_BRK_Solar_Busbar_Busbar 2
+          - P_Cable C1
+          - P_Cable C2
+          - P_Machine set
+          - P_Solar
+          not_in_headers: []
+        117-4:
+          carried: ebb1fb939
+          pairs: []
+          same: 0
+          unmatched_data:
+          - 117_4_BRK_CableH1_Busbar A
+          - 117_4_BRK_Container3_Busbar A
+          - 117_4_BRK_Grid_Busbar A
+          - P_Container3
+          - P_Grid
+          unmatched_model:
+          - 117_4_BRK_EDISON3_Busbar_Busbar 1
+          - 117_4_BRK_NEVIC_Busbar_Busbar 1
+          - 117_4_BRK_Transformer_Busbar_Busbar 1
+          - P_EDISON3
+          - P_Transformer
+          not_in_headers: []
+        117-5:
+          carried: ebb1fb939
+          pairs:
+          - {data: P_CableD1, model: P_Cable D1, rule: same name after spelling}
+          same: 0
+          unmatched_data:
+          - 117_5_BRK_CEE1_Busbar A
+          - 117_5_BRK_CEE1_Busbar B
+          - 117_5_BRK_CableD1_Busbar A
+          - 117_5_BRK_CableD1_Busbar B
+          - 117_5_BRK_CableG1_Busbar A
+          - 117_5_BRK_CableG1_Busbar B
+          - 117_5_BRK_CableX1_Busbar A
+          - 117_5_BRK_CableX1_Busbar B
+          - 117_5_BRK_Container1_Busbar A
+          - 117_5_BRK_Container1_Busbar B
+          - 117_5_BRK_Container2_Busbar A
+          - 117_5_BRK_Container2_Busbar B
+          - P_CEE1
+          - P_CableG1
+          - P_Container1
+          - P_Container2
+          unmatched_model:
+          - 117_5_BRK_CEE_Busbar_Busbar 1
+          - 117_5_BRK_CEE_Busbar_Busbar 2
+          - 117_5_BRK_Chg post_Busbar_Busbar 1
+          - 117_5_BRK_Chg post_Busbar_Busbar 2
+          - 117_5_BRK_D1_Busbar_Busbar 1
+          - 117_5_BRK_D1_Busbar_Busbar 2
+          - 117_5_BRK_EDISON1_Busbar_Busbar 1
+          - 117_5_BRK_EDISON1_Busbar_Busbar 2
+          - 117_5_BRK_EDISON2_Busbar_Busbar 1
+          - 117_5_BRK_EDISON2_Busbar_Busbar 2
+          - 117_5_BRK_Ext117-2_Busbar_Busbar 1
+          - 117_5_BRK_Ext117-2_Busbar_Busbar 2
+          - P_CEE
+          - P_ChgPost
+          - P_EDISON1
+          - P_EDISON2
+          not_in_headers: []
+        715-2:
+          carried: ebb1fb939
+          pairs:
+          - {data: 715_2_BRK_Grid_Grid, model: 715_2_BRK_Grid_Busbar_Grid, rule: same bay and busbar}
+          same: 3
+          unmatched_data:
+          - 715_2_BRK_CableB1A_Busbar A
+          - 715_2_BRK_CableB1A_Busbar B
+          - 715_2_BRK_CableB1B_Busbar A
+          - 715_2_BRK_CableB1B_Busbar B
+          - 715_2_BRK_CableB2A_Busbar A
+          - 715_2_BRK_CableB2A_Busbar B
+          - 715_2_BRK_CableB2B_Busbar A
+          - 715_2_BRK_CableB2B_Busbar B
+          - 715_2_BRK_CableF1_Busbar A
+          - 715_2_BRK_CableF1_Busbar B
+          - 715_2_BRK_Flexhouse_Busbar A
+          - 715_2_BRK_Flexhouse_Busbar B
+          - 715_2_BRK_Grid_Busbar A
+          - 715_2_BRK_Grid_Busbar B
+          - 715_2_BRK_PV_Busbar A
+          - 715_2_BRK_PV_Busbar B
+          - 715_2_BRK_Spare_Busbar A
+          - 715_2_BRK_Spare_Busbar B
+          - P_CableB1A
+          - P_CableB1B
+          - P_CableB2A
+          - P_CableB2B
+          - P_Flexhouse
+          - P_PV
+          unmatched_model:
+          - 715_2_BRK_CableB1_Busbar_Busbar 1
+          - 715_2_BRK_CableB1_Busbar_Busbar 2
+          - 715_2_BRK_CableB2_Busbar_Busbar 1
+          - 715_2_BRK_CableB2_Busbar_Busbar 2
+          - 715_2_BRK_CableF1_Busbar_Busbar 1
+          - 715_2_BRK_CableF1_Busbar_Busbar 2
+          - 715_2_BRK_Gaia_Busbar_Busbar 1
+          - 715_2_BRK_Gaia_Busbar_Busbar 2
+          - 715_2_BRK_Grid_Busbar_Busbar 1
+          - 715_2_BRK_Grid_Busbar_Busbar 2
+          - 715_2_BRK_Solar_Busbar_Busbar 1
+          - 715_2_BRK_Solar_Busbar_Busbar 2
+          - 715_2_BRK_Spare_Busbar_Busbar 1
+          - 715_2_BRK_Spare_Busbar_Busbar 2
+          - P_CableB1
+          - P_CableB2
+          - P_Gaia
+          - P_Solar
+          not_in_headers: []
+        716-2:
+          carried: ebb1fb939
+          pairs:
+          - {data: P_CEE, model: P_Grid, rule: same bay}
+          - {data: P_Flexhouse 3, model: P_Flexhouse3, rule: same name after spelling}
+          same: 5
+          unmatched_data:
+          - 716_2_BRK_BoosterHeater_Busbar A
+          - 716_2_BRK_BoosterHeater_Busbar B
+          - 716_2_BRK_CEE_Busbar A
+          - 716_2_BRK_CEE_Busbar B
+          - 716_2_BRK_CableE1_Busbar A
+          - 716_2_BRK_CableE1_Busbar B
+          - 716_2_BRK_CableE2_Busbar A
+          - 716_2_BRK_CableE2_Busbar B
+          - 716_2_BRK_CableF1_Busbar A
+          - 716_2_BRK_CableF1_Busbar B
+          - 716_2_BRK_Flexhouse 3_Busbar A
+          - 716_2_BRK_Flexhouse 3_Busbar B
+          - 716_2_BRK_Flexhouse2_Busbar A
+          - 716_2_BRK_Flexhouse2_Busbar B
+          - 716_2_BRK_Heatpump1_Busbar A
+          - 716_2_BRK_Heatpump1_Busbar B
+          - P_BoosterHeater
+          unmatched_model:
+          - 716_2_BRK_CEE_Busbar_Busbar 1
+          - 716_2_BRK_CEE_Busbar_Busbar 2
+          - 716_2_BRK_CHP_Busbar_Busbar 1
+          - 716_2_BRK_CHP_Busbar_Busbar 2
+          - 716_2_BRK_Cable E2_Busbar_Busbar 1
+          - 716_2_BRK_Cable E2_Busbar_Busbar 2
+          - 716_2_BRK_Cable F1_Busbar_Busbar 1
+          - 716_2_BRK_Cable F1_Busbar_Busbar 2
+          - 716_2_BRK_CableE1_Busbar_Busbar 1
+          - 716_2_BRK_CableE1_Busbar_Busbar 2
+          - 716_2_BRK_Flexhouse2_Busbar_Busbar 1
+          - 716_2_BRK_Flexhouse2_Busbar_Busbar 2
+          - 716_2_BRK_Flexhouse3_Busbar_Busbar 1
+          - 716_2_BRK_Flexhouse3_Busbar_Busbar 2
+          - 716_2_BRK_Heatpump1_Busbar_Busbar 1
+          - 716_2_BRK_Heatpump1_Busbar_Busbar 2
+          - 716_2_BRK_Heatpump2_Busbar_Busbar 1
+          - 716_2_BRK_Heatpump2_Busbar_Busbar 2
+          - P_CHP
+          - P_Heatpump2
+          not_in_headers: []
   - id: E6-H02
     switchboards: [117-2, 117-4, 117-5]
     from: 2023-09-27
@@ -449,6 +663,136 @@ header_periods:
     carries: "syslab 777e5f1a4, a96c88172 (committed 2024-10-09 and 2024-10-14)"
     note: one day with the names of a configuration committed a year later (a test run?)
     status: proposed
+    column_map:
+    - status: proposed
+      from: 2023-09-27
+      to: 2023-09-27
+      targets:
+      - from: 2023-09-27
+        nodes:
+          syslab-11: ebb1fb939
+      switchboards:
+        117-2:
+          carried: a96c88172
+          pairs:
+          - {data: P_Cable_C1A, model: P_Cable C1A, rule: same name after spelling}
+          - {data: P_Cable_C1B, model: P_Cable C1B, rule: same name after spelling}
+          - {data: P_Cable_C2A, model: P_Cable C2A, rule: same name after spelling}
+          - {data: P_Cable_C2B, model: P_Cable C2B, rule: same name after spelling}
+          same: 2
+          unmatched_data:
+          - 117_2_BRK_Battery_Busbar_A
+          - 117_2_BRK_Battery_Busbar_B
+          - 117_2_BRK_CEEx2_Busbar_A
+          - 117_2_BRK_CEEx2_Busbar_B
+          - 117_2_BRK_Cable_C1A_Busbar_A
+          - 117_2_BRK_Cable_C1A_Busbar_B
+          - 117_2_BRK_Cable_C1B_Busbar_A
+          - 117_2_BRK_Cable_C1B_Busbar_B
+          - 117_2_BRK_Cable_C2A_Busbar_A
+          - 117_2_BRK_Cable_C2A_Busbar_B
+          - 117_2_BRK_Cable_C2B_Busbar_A
+          - 117_2_BRK_Cable_C2B_Busbar_B
+          - 117_2_BRK_Cable_X1A_2_Busbar_A
+          - 117_2_BRK_Cable_X1B_2_Busbar_A
+          - 117_2_BRK_Cable_X2A_2_Busbar_B
+          - 117_2_BRK_Cable_X2B_2_Busbar_B
+          - 117_2_BRK_Grid_2_Busbar_A
+          - 117_2_BRK_Grid_2_Busbar_B
+          - 117_2_BRK_Grid_2_Grid
+          - 117_2_BRK_PV_Busbar_A
+          - 117_2_BRK_PV_Busbar_B
+          - P_CEEx2_1
+          - P_CEEx2_2
+          - P_Grid_2
+          unmatched_model:
+          - 117_2_BRK_Battery_Busbar_Busbar A
+          - 117_2_BRK_Battery_Busbar_Busbar B
+          - 117_2_BRK_CEEx2_Busbar_Busbar A
+          - 117_2_BRK_CEEx2_Busbar_Busbar B
+          - 117_2_BRK_CableC1A_Busbar_Busbar A
+          - 117_2_BRK_CableC1A_Busbar_Busbar B
+          - 117_2_BRK_CableC1B_Busbar_Busbar A
+          - 117_2_BRK_CableC1B_Busbar_Busbar B
+          - 117_2_BRK_CableC2A_Busbar_Busbar A
+          - 117_2_BRK_CableC2A_Busbar_Busbar B
+          - 117_2_BRK_CableC2B_Busbar_Busbar A
+          - 117_2_BRK_CableC2B_Busbar_Busbar B
+          - 117_2_BRK_CableX1_Busbar_Busbar A
+          - 117_2_BRK_CableX1_Busbar_Busbar B
+          - 117_2_BRK_Grid_Busbar_Busbar A
+          - 117_2_BRK_Grid_Busbar_Busbar B
+          - 117_2_BRK_Grid_Busbar_Grid
+          - 117_2_BRK_PV_Busbar_Busbar A
+          - 117_2_BRK_PV_Busbar_Busbar B
+          - P_CEEx2
+          - P_Grid
+          not_in_headers:
+          - P_CEEx2_1
+          - P_CEEx2_2
+        117-4:
+          carried: a96c88172
+          pairs:
+          - {data: P_Grid, model: P_Grid 117-4, rule: same bay}
+          - {data: P_Container_3, model: P_Container 3, rule: same name after spelling}
+          same: 0
+          unmatched_data:
+          - 117_4_BRK_Cable_H1_Busbar_A
+          - 117_4_BRK_Container_3_Busbar_A
+          - 117_4_BRK_Grid_Busbar_A
+          unmatched_model:
+          - 117_4_BRK_CableH1_Busbar_Busbar A
+          - 117_4_BRK_Container3_Busbar_Busbar A
+          - 117_4_BRK_Grid_Busbar_Busbar A
+          not_in_headers: []
+        117-5:
+          carried: a96c88172
+          pairs:
+          - {data: P_Cable_D1, model: P_Cable D1, rule: same name after spelling}
+          - {data: P_Container_1, model: P_Container 1, rule: same name after spelling}
+          - {data: P_Container_2, model: P_Container 2, rule: same name after spelling}
+          - {data: P_Cable_G1, model: P_Cable G1, rule: same name after spelling}
+          same: 0
+          unmatched_data:
+          - 117_5_BRK_Booster_Heater_Busbar_A
+          - 117_5_BRK_Booster_Heater_Busbar_B
+          - 117_5_BRK_CEEx1_1_Busbar_A
+          - 117_5_BRK_CEEx1_1_Busbar_B
+          - 117_5_BRK_CEEx1_2_Busbar_A
+          - 117_5_BRK_CEEx1_2_Busbar_B
+          - 117_5_BRK_Cable_D1_Busbar_A
+          - 117_5_BRK_Cable_D1_Busbar_B
+          - 117_5_BRK_Cable_G1_Busbar_A
+          - 117_5_BRK_Cable_G1_Busbar_B
+          - 117_5_BRK_Cable_X1A_5_Busbar_A
+          - 117_5_BRK_Cable_X1B_5_Busbar_A
+          - 117_5_BRK_Cable_X2A_5_Busbar_B
+          - 117_5_BRK_Cable_X2B_5_Busbar_B
+          - 117_5_BRK_Container_1_Busbar_A
+          - 117_5_BRK_Container_1_Busbar_B
+          - 117_5_BRK_Container_2_Busbar_A
+          - 117_5_BRK_Container_2_Busbar_B
+          - 117_5_BRK_Heatpump_Busbar_A
+          - 117_5_BRK_Heatpump_Busbar_B
+          - P_Booster_Heater
+          - P_CEEx1_1
+          - P_CEEx1_2
+          - P_Heatpump
+          unmatched_model:
+          - 117_5_BRK_CEE1_Busbar_Busbar A
+          - 117_5_BRK_CEE1_Busbar_Busbar B
+          - 117_5_BRK_CableD1_Busbar_Busbar A
+          - 117_5_BRK_CableD1_Busbar_Busbar B
+          - 117_5_BRK_CableG1_Busbar_Busbar A
+          - 117_5_BRK_CableG1_Busbar_Busbar B
+          - 117_5_BRK_CableX1_Busbar_Busbar A
+          - 117_5_BRK_CableX1_Busbar_Busbar B
+          - 117_5_BRK_Container1_Busbar_Busbar A
+          - 117_5_BRK_Container1_Busbar_Busbar B
+          - 117_5_BRK_Container2_Busbar_Busbar A
+          - 117_5_BRK_Container2_Busbar_Busbar B
+          - P_CEE1
+          not_in_headers: []
   - id: E6-H03
     switchboards: [117-2, 117-4, 117-5]
     from: 2023-10-23
@@ -457,6 +801,163 @@ header_periods:
     carries: "syslab ebb1fb939"
     note: master renamed on 2023-10-23 (E6-015); the headers follow on 2024-02-27
     status: proposed
+    column_map:
+    - status: proposed
+      from: 2023-10-23
+      to: 2023-10-30
+      targets:
+      - from: 2023-10-23
+        nodes:
+          syslab-11: 2a54a1449
+      switchboards:
+        117-2:
+          carried: ebb1fb939
+          pairs:
+          - {data: 117_2_BRK_Grid_Grid, model: 117_2_BRK_Grid_Busbar_Grid, rule: same bay and busbar}
+          - {data: 117_2_BRK_Grid_Busbar A, model: 117_2_BRK_Grid_Busbar_A, rule: same name after spelling}
+          - {data: 117_2_BRK_Grid_Busbar B, model: 117_2_BRK_Grid_Busbar_B, rule: same name after spelling}
+          - {data: 117_2_BRK_Battery_Busbar A, model: 117_2_BRK_Battery_Busbar_A, rule: same name after spelling}
+          - {data: 117_2_BRK_Battery_Busbar B, model: 117_2_BRK_Battery_Busbar_B, rule: same name after spelling}
+          - {data: 117_2_BRK_CEEx2_Busbar A, model: 117_2_BRK_CEEx2_Busbar_A, rule: same name after spelling}
+          - {data: 117_2_BRK_CEEx2_Busbar B, model: 117_2_BRK_CEEx2_Busbar_B, rule: same name after spelling}
+          - {data: 117_2_BRK_CableX1_Busbar A, model: 117_2_BRK_Cable_X1_Busbar_A, rule: same name after spelling}
+          - {data: 117_2_BRK_CableX1_Busbar B, model: 117_2_BRK_Cable_X1_Busbar_B, rule: same name after spelling}
+          - {data: 117_2_BRK_CableC1A_Busbar A, model: 117_2_BRK_Cable_C1A_Busbar_A, rule: same name after spelling}
+          - {data: 117_2_BRK_CableC1A_Busbar B, model: 117_2_BRK_Cable_C1A_Busbar_B, rule: same name after spelling}
+          - {data: 117_2_BRK_CableC1B_Busbar A, model: 117_2_BRK_Cable_C1B_Busbar_A, rule: same name after spelling}
+          - {data: 117_2_BRK_CableC1B_Busbar B, model: 117_2_BRK_Cable_C1B_Busbar_B, rule: same name after spelling}
+          - {data: 117_2_BRK_CableC2A_Busbar A, model: 117_2_BRK_Cable_C2A_Busbar_A, rule: same name after spelling}
+          - {data: 117_2_BRK_CableC2A_Busbar B, model: 117_2_BRK_Cable_C2A_Busbar_B, rule: same name after spelling}
+          - {data: 117_2_BRK_CableC2B_Busbar A, model: 117_2_BRK_Cable_C2B_Busbar_A, rule: same name after spelling}
+          - {data: 117_2_BRK_CableC2B_Busbar B, model: 117_2_BRK_Cable_C2B_Busbar_B, rule: same name after spelling}
+          - {data: 117_2_BRK_PV_Busbar A, model: 117_2_BRK_PV_Busbar_A, rule: same name after spelling}
+          - {data: 117_2_BRK_PV_Busbar B, model: 117_2_BRK_PV_Busbar_B, rule: same name after spelling}
+          - {data: P_CableC1A, model: P_Cable C1A, rule: same name after spelling}
+          - {data: P_CableC1B, model: P_Cable C1B, rule: same name after spelling}
+          - {data: P_CableC2A, model: P_Cable C2A, rule: same name after spelling}
+          - {data: P_CableC2B, model: P_Cable C2B, rule: same name after spelling}
+          same: 4
+          unmatched_data: []
+          unmatched_model: []
+          not_in_headers: []
+        117-4:
+          carried: ebb1fb939
+          pairs:
+          - {data: 117_4_BRK_Grid_Busbar A, model: 117_4_BRK_Grid_Busbar_A, rule: same name after spelling}
+          - {data: 117_4_BRK_Container3_Busbar A, model: 117_4_BRK_Container_3_Busbar_A, rule: same name after spelling}
+          - {data: 117_4_BRK_CableH1_Busbar A, model: 117_4_BRK_Cable_H1_Busbar_A, rule: same name after spelling}
+          - {data: P_Container3, model: P_Container_3, rule: same name after spelling}
+          same: 1
+          unmatched_data: []
+          unmatched_model: []
+          not_in_headers: []
+        117-5:
+          carried: ebb1fb939
+          pairs:
+          - {data: 117_5_BRK_CableD1_Busbar A, model: 117_5_BRK_Cable_D1_Busbar_A, rule: same name after spelling}
+          - {data: 117_5_BRK_CableD1_Busbar B, model: 117_5_BRK_Cable_D1_Busbar_B, rule: same name after spelling}
+          - {data: 117_5_BRK_CableX1_Busbar A, model: 117_5_BRK_Cable_X1_Busbar_A, rule: same name after spelling}
+          - {data: 117_5_BRK_CableX1_Busbar B, model: 117_5_BRK_Cable_X1_Busbar_B, rule: same name after spelling}
+          - {data: 117_5_BRK_CEE1_Busbar A, model: 117_5_BRK_CEE_1_Busbar_A, rule: same name after spelling}
+          - {data: 117_5_BRK_CEE1_Busbar B, model: 117_5_BRK_CEE_1_Busbar_B, rule: same name after spelling}
+          - {data: 117_5_BRK_Container1_Busbar A, model: 117_5_BRK_Container_1_Busbar_A, rule: same name after spelling}
+          - {data: 117_5_BRK_Container1_Busbar B, model: 117_5_BRK_Container_1_Busbar_B, rule: same name after spelling}
+          - {data: 117_5_BRK_Container2_Busbar A, model: 117_5_BRK_Container_2_Busbar_A, rule: same name after spelling}
+          - {data: 117_5_BRK_Container2_Busbar B, model: 117_5_BRK_Container_2_Busbar_B, rule: same name after spelling}
+          - {data: 117_5_BRK_CableG1_Busbar A, model: 117_5_BRK_Cable_G1_Busbar_A, rule: same name after spelling}
+          - {data: 117_5_BRK_CableG1_Busbar B, model: 117_5_BRK_Cable_G1_Busbar_B, rule: same name after spelling}
+          - {data: P_CableD1, model: P_Cable D1, rule: same name after spelling}
+          - {data: P_CEE1, model: P_CEE_1, rule: same name after spelling}
+          - {data: P_Container1, model: P_Container_1, rule: same name after spelling}
+          - {data: P_Container2, model: P_Container_2, rule: same name after spelling}
+          - {data: P_CableG1, model: P_Cable G1, rule: same name after spelling}
+          same: 0
+          unmatched_data: []
+          unmatched_model: []
+          not_in_headers: []
+    - status: proposed
+      from: 2023-10-31
+      to: 2024-02-26
+      targets:
+      - from: 2023-10-31
+        nodes:
+          syslab-11: a61c8f814
+      switchboards:
+        117-2:
+          carried: ebb1fb939
+          pairs:
+          - {data: 117_2_BRK_Battery_Busbar A, model: 117_2_BRK_Battery_Busbar_A, rule: same name after spelling}
+          - {data: 117_2_BRK_Battery_Busbar B, model: 117_2_BRK_Battery_Busbar_B, rule: same name after spelling}
+          - {data: 117_2_BRK_CEEx2_Busbar A, model: 117_2_BRK_CEEx2_Busbar_A, rule: same name after spelling}
+          - {data: 117_2_BRK_CEEx2_Busbar B, model: 117_2_BRK_CEEx2_Busbar_B, rule: same name after spelling}
+          - {data: 117_2_BRK_CableC1A_Busbar A, model: 117_2_BRK_Cable_C1A_Busbar_A, rule: same name after spelling}
+          - {data: 117_2_BRK_CableC1A_Busbar B, model: 117_2_BRK_Cable_C1A_Busbar_B, rule: same name after spelling}
+          - {data: 117_2_BRK_CableC1B_Busbar A, model: 117_2_BRK_Cable_C1B_Busbar_A, rule: same name after spelling}
+          - {data: 117_2_BRK_CableC1B_Busbar B, model: 117_2_BRK_Cable_C1B_Busbar_B, rule: same name after spelling}
+          - {data: 117_2_BRK_CableC2A_Busbar A, model: 117_2_BRK_Cable_C2A_Busbar_A, rule: same name after spelling}
+          - {data: 117_2_BRK_CableC2A_Busbar B, model: 117_2_BRK_Cable_C2A_Busbar_B, rule: same name after spelling}
+          - {data: 117_2_BRK_CableC2B_Busbar A, model: 117_2_BRK_Cable_C2B_Busbar_A, rule: same name after spelling}
+          - {data: 117_2_BRK_CableC2B_Busbar B, model: 117_2_BRK_Cable_C2B_Busbar_B, rule: same name after spelling}
+          - {data: 117_2_BRK_PV_Busbar A, model: 117_2_BRK_PV_Busbar_A, rule: same name after spelling}
+          - {data: 117_2_BRK_PV_Busbar B, model: 117_2_BRK_PV_Busbar_B, rule: same name after spelling}
+          - {data: P_CableC1A, model: P_Cable_C1A, rule: same name after spelling}
+          - {data: P_CableC1B, model: P_Cable_C1B, rule: same name after spelling}
+          - {data: P_CableC2A, model: P_Cable_C2A, rule: same name after spelling}
+          - {data: P_CableC2B, model: P_Cable_C2B, rule: same name after spelling}
+          same: 3
+          unmatched_data:
+          - 117_2_BRK_CableX1_Busbar A
+          - 117_2_BRK_CableX1_Busbar B
+          - 117_2_BRK_Grid_Busbar A
+          - 117_2_BRK_Grid_Busbar B
+          - 117_2_BRK_Grid_Grid
+          - P_Grid
+          unmatched_model:
+          - 117_2_BRK_Cable_X1_2_Busbar_A
+          - 117_2_BRK_Cable_X1_2_Busbar_B
+          - 117_2_BRK_Grid_2_Busbar_A
+          - 117_2_BRK_Grid_2_Busbar_B
+          - 117_2_BRK_Grid_2_Busbar_Grid
+          - P_Grid_2
+          not_in_headers: []
+        117-4:
+          carried: ebb1fb939
+          pairs:
+          - {data: P_Grid, model: P_Grid_4, rule: same bay}
+          - {data: 117_4_BRK_Grid_Busbar A, model: 117_4_BRK_Grid_Busbar_A, rule: same name after spelling}
+          - {data: 117_4_BRK_Container3_Busbar A, model: 117_4_BRK_Container_3_Busbar_A, rule: same name after spelling}
+          - {data: 117_4_BRK_CableH1_Busbar A, model: 117_4_BRK_Cable_H1_Busbar_A, rule: same name after spelling}
+          - {data: P_Container3, model: P_Container_3, rule: same name after spelling}
+          same: 0
+          unmatched_data: []
+          unmatched_model: []
+          not_in_headers: []
+        117-5:
+          carried: ebb1fb939
+          pairs:
+          - {data: 117_5_BRK_CableD1_Busbar A, model: 117_5_BRK_Cable_D1_Busbar_A, rule: same name after spelling}
+          - {data: 117_5_BRK_CableD1_Busbar B, model: 117_5_BRK_Cable_D1_Busbar_B, rule: same name after spelling}
+          - {data: 117_5_BRK_CEE1_Busbar A, model: 117_5_BRK_CEE_1_Busbar_A, rule: same name after spelling}
+          - {data: 117_5_BRK_CEE1_Busbar B, model: 117_5_BRK_CEE_1_Busbar_B, rule: same name after spelling}
+          - {data: 117_5_BRK_Container1_Busbar A, model: 117_5_BRK_Container_1_Busbar_A, rule: same name after spelling}
+          - {data: 117_5_BRK_Container1_Busbar B, model: 117_5_BRK_Container_1_Busbar_B, rule: same name after spelling}
+          - {data: 117_5_BRK_Container2_Busbar A, model: 117_5_BRK_Container_2_Busbar_A, rule: same name after spelling}
+          - {data: 117_5_BRK_Container2_Busbar B, model: 117_5_BRK_Container_2_Busbar_B, rule: same name after spelling}
+          - {data: 117_5_BRK_CableG1_Busbar A, model: 117_5_BRK_Cable_G1_Busbar_A, rule: same name after spelling}
+          - {data: 117_5_BRK_CableG1_Busbar B, model: 117_5_BRK_Cable_G1_Busbar_B, rule: same name after spelling}
+          - {data: P_CableD1, model: P_Cable_D1, rule: same name after spelling}
+          - {data: P_CEE1, model: P_CEE_1, rule: same name after spelling}
+          - {data: P_Container1, model: P_Container_1, rule: same name after spelling}
+          - {data: P_Container2, model: P_Container_2, rule: same name after spelling}
+          - {data: P_CableG1, model: P_Cable_G1, rule: same name after spelling}
+          same: 0
+          unmatched_data:
+          - 117_5_BRK_CableX1_Busbar A
+          - 117_5_BRK_CableX1_Busbar B
+          unmatched_model:
+          - 117_5_BRK_Cable_X1_5_Busbar_A
+          - 117_5_BRK_Cable_X1_5_Busbar_B
+          not_in_headers: []
   - id: E6-H04
     switchboards: [319-2, 319-3]
     from: 2023-06-16
@@ -467,6 +968,259 @@ header_periods:
       pre-rebuild names in operational periods 6-a to 6-c, although master has the rebuild configuration
       (319-2 since 2023-06-14, 319-3 since 2023-06-23); new names from 2023-12-01
     status: proposed
+    column_map:
+    - status: proposed
+      from: 2023-06-16
+      to: 2023-06-22
+      targets:
+      - from: 2023-06-16
+        nodes: {}
+      switchboards:
+        319-3:
+          carried: f9d699cd5
+          pairs: []
+          same: 0
+          unmatched_data:
+          - 319_3_BRK_B2 to 715-2_Busbar A
+          - 319_3_BRK_B2 to 715-2_Busbar B
+          - 319_3_BRK_B1 to 715-2_Busbar B
+          - 319_3_BRK_B1 to 715-2_Busbar C
+          - 319_3_BRK_A2 to 319-2_Busbar B
+          - 319_3_BRK_A2 to 319-2_Busbar C
+          - 319_3_BRK_A1 to 319-2_Busbar A
+          - 319_3_BRK_A1 to 319-2_Busbar C
+          - 319_3_BRK_C2 to 117-2_Busbar A
+          - 319_3_BRK_C2 to 117-2_Busbar B
+          - 319_3_BRK_C1 to 117-2_Busbar A
+          - 319_3_BRK_C1 to 117-2_Busbar C
+          - 319_3_BRK_B2B-Ship_Busbar B
+          - 319_3_BRK_B2B-Ship_Busbar C
+          - 319_3_BRK_B2B-Shore_Busbar A
+          - 319_3_BRK_B2B-Shore_Grid
+          - 319_3_BRK_E1 to 716-2_Busbar A
+          - 319_3_BRK_E1 to 716-2_Busbar C
+          - 319_3_BRK_E2 to 716-2_Busbar A
+          - 319_3_BRK_E2 to 716-2_Busbar B
+          - P_B2 to 715-2
+          - P_B1 to 715-2
+          - P_A2 to 319-2
+          - P_A1 to 319-2
+          - P_C2 to 117-2
+          - P_C1 to 117-2
+          - P_B2B-Ship
+          - P_B2B-Shore
+          - P_E1 to 716-2
+          - P_E2 to 716-2
+          unmatched_model: []
+          not_in_headers: []
+      no_map:
+        319-2: commit b5d64e3d4 not in the lab repository (another branch than master?)
+    - status: proposed
+      from: 2023-06-23
+      to: 2023-07-01
+      targets:
+      - from: 2023-06-23
+        nodes:
+          syslab-52: ebb1fb939
+      switchboards:
+        319-3:
+          carried: f9d699cd5
+          pairs: []
+          same: 0
+          unmatched_data:
+          - 319_3_BRK_A1 to 319-2_Busbar A
+          - 319_3_BRK_A1 to 319-2_Busbar C
+          - 319_3_BRK_A2 to 319-2_Busbar B
+          - 319_3_BRK_A2 to 319-2_Busbar C
+          - 319_3_BRK_B1 to 715-2_Busbar B
+          - 319_3_BRK_B1 to 715-2_Busbar C
+          - 319_3_BRK_B2 to 715-2_Busbar A
+          - 319_3_BRK_B2 to 715-2_Busbar B
+          - 319_3_BRK_B2B-Ship_Busbar B
+          - 319_3_BRK_B2B-Ship_Busbar C
+          - 319_3_BRK_B2B-Shore_Busbar A
+          - 319_3_BRK_B2B-Shore_Grid
+          - 319_3_BRK_C1 to 117-2_Busbar A
+          - 319_3_BRK_C1 to 117-2_Busbar C
+          - 319_3_BRK_C2 to 117-2_Busbar A
+          - 319_3_BRK_C2 to 117-2_Busbar B
+          - 319_3_BRK_E1 to 716-2_Busbar A
+          - 319_3_BRK_E1 to 716-2_Busbar C
+          - 319_3_BRK_E2 to 716-2_Busbar A
+          - 319_3_BRK_E2 to 716-2_Busbar B
+          - P_A1 to 319-2
+          - P_A2 to 319-2
+          - P_B1 to 715-2
+          - P_B2 to 715-2
+          - P_B2B-Ship
+          - P_B2B-Shore
+          - P_C1 to 117-2
+          - P_C2 to 117-2
+          - P_E1 to 716-2
+          - P_E2 to 716-2
+          unmatched_model:
+          - 319_3_BRK_ABBSec_Busbar_Busbar B
+          - 319_3_BRK_ABBSec_Busbar_Busbar C
+          - 319_3_BRK_CableA1A_Busbar_Busbar A
+          - 319_3_BRK_CableA1A_Busbar_Busbar C
+          - 319_3_BRK_CableA1B_Busbar_Busbar A
+          - 319_3_BRK_CableA1B_Busbar_Busbar C
+          - 319_3_BRK_CableA2A_Busbar_Busbar B
+          - 319_3_BRK_CableA2A_Busbar_Busbar C
+          - 319_3_BRK_CableA2B_Busbar_Busbar B
+          - 319_3_BRK_CableA2B_Busbar_Busbar C
+          - 319_3_BRK_CableB1A_Busbar_Busbar B
+          - 319_3_BRK_CableB1A_Busbar_Busbar C
+          - 319_3_BRK_CableB1B_Busbar_Busbar B
+          - 319_3_BRK_CableB1B_Busbar_Busbar C
+          - 319_3_BRK_CableB2A_Busbar_Busbar A
+          - 319_3_BRK_CableB2A_Busbar_Busbar B
+          - 319_3_BRK_CableB2B_Busbar_Busbar A
+          - 319_3_BRK_CableB2B_Busbar_Busbar B
+          - 319_3_BRK_CableC1A_Busbar_Busbar A
+          - 319_3_BRK_CableC1A_Busbar_Busbar B
+          - 319_3_BRK_CableC1B_Busbar_Busbar A
+          - 319_3_BRK_CableC1B_Busbar_Busbar B
+          - 319_3_BRK_CableC2A_Busbar_Busbar A
+          - 319_3_BRK_CableC2A_Busbar_Busbar C
+          - 319_3_BRK_CableC2B_Busbar_Busbar A
+          - 319_3_BRK_CableC2B_Busbar_Busbar C
+          - 319_3_BRK_CableE1A_Busbar_Busbar A
+          - 319_3_BRK_CableE1A_Busbar_Busbar C
+          - 319_3_BRK_CableE1B_Busbar_Busbar A
+          - 319_3_BRK_CableE1B_Busbar_Busbar C
+          - 319_3_BRK_CableE2A_Busbar_Busbar A
+          - 319_3_BRK_CableE2A_Busbar_Busbar B
+          - 319_3_BRK_CableE2B_Busbar_Busbar A
+          - 319_3_BRK_CableE2B_Busbar_Busbar B
+          - 319_3_BRK_Grid_Busbar_Busbar A
+          - P_ABB Secondary
+          - P_Cable A1A
+          - P_Cable A1B
+          - P_Cable A2A
+          - P_Cable A2B
+          - P_Cable B1A
+          - P_Cable B1B
+          - P_Cable B2A
+          - P_Cable B2B
+          - P_Cable C1A
+          - P_Cable C1B
+          - P_Cable C2A
+          - P_Cable C2B
+          - P_Cable E1A
+          - P_Cable E1B
+          - P_Cable E2A
+          - P_Cable E2B
+          - P_Grid
+          not_in_headers: []
+      no_map:
+        319-2: commit b5d64e3d4 not in the lab repository (another branch than master?)
+    - status: proposed
+      from: 2023-07-02
+      to: 2023-11-30
+      targets:
+      - from: 2023-07-02
+        nodes:
+          syslab-52: e15deb9cc
+      - from: 2023-08-11
+        nodes:
+          syslab-52: d916a0c14
+      - from: 2023-10-19
+        nodes:
+          syslab-52: 6e24ea334
+      switchboards:
+        319-3:
+          carried: f9d699cd5
+          pairs: []
+          same: 0
+          unmatched_data:
+          - 319_3_BRK_A1 to 319-2_Busbar A
+          - 319_3_BRK_A1 to 319-2_Busbar C
+          - 319_3_BRK_A2 to 319-2_Busbar B
+          - 319_3_BRK_A2 to 319-2_Busbar C
+          - 319_3_BRK_B1 to 715-2_Busbar B
+          - 319_3_BRK_B1 to 715-2_Busbar C
+          - 319_3_BRK_B2 to 715-2_Busbar A
+          - 319_3_BRK_B2 to 715-2_Busbar B
+          - 319_3_BRK_B2B-Ship_Busbar B
+          - 319_3_BRK_B2B-Ship_Busbar C
+          - 319_3_BRK_B2B-Shore_Busbar A
+          - 319_3_BRK_B2B-Shore_Grid
+          - 319_3_BRK_C1 to 117-2_Busbar A
+          - 319_3_BRK_C1 to 117-2_Busbar C
+          - 319_3_BRK_C2 to 117-2_Busbar A
+          - 319_3_BRK_C2 to 117-2_Busbar B
+          - 319_3_BRK_E1 to 716-2_Busbar A
+          - 319_3_BRK_E1 to 716-2_Busbar C
+          - 319_3_BRK_E2 to 716-2_Busbar A
+          - 319_3_BRK_E2 to 716-2_Busbar B
+          - P_A1 to 319-2
+          - P_A2 to 319-2
+          - P_B1 to 715-2
+          - P_B2 to 715-2
+          - P_B2B-Ship
+          - P_B2B-Shore
+          - P_C1 to 117-2
+          - P_C2 to 117-2
+          - P_E1 to 716-2
+          - P_E2 to 716-2
+          unmatched_model:
+          - 319_3_BRK_ABB_Sec_Busbar_B
+          - 319_3_BRK_ABB_Sec_Busbar_C
+          - 319_3_BRK_Cable_A1A_Busbar_A
+          - 319_3_BRK_Cable_A1A_Busbar_C
+          - 319_3_BRK_Cable_A1B_Busbar_A
+          - 319_3_BRK_Cable_A1B_Busbar_C
+          - 319_3_BRK_Cable_A2A_Busbar_B
+          - 319_3_BRK_Cable_A2A_Busbar_C
+          - 319_3_BRK_Cable_A2B_Busbar_B
+          - 319_3_BRK_Cable_A2B_Busbar_C
+          - 319_3_BRK_Cable_B1A_Busbar_B
+          - 319_3_BRK_Cable_B1A_Busbar_C
+          - 319_3_BRK_Cable_B1B_Busbar_B
+          - 319_3_BRK_Cable_B1B_Busbar_C
+          - 319_3_BRK_Cable_B2A_Busbar_A
+          - 319_3_BRK_Cable_B2A_Busbar_B
+          - 319_3_BRK_Cable_B2B_Busbar_A
+          - 319_3_BRK_Cable_B2B_Busbar_B
+          - 319_3_BRK_Cable_C1A_Busbar_A
+          - 319_3_BRK_Cable_C1A_Busbar_B
+          - 319_3_BRK_Cable_C1B_Busbar_A
+          - 319_3_BRK_Cable_C1B_Busbar_B
+          - 319_3_BRK_Cable_C2A_Busbar_A
+          - 319_3_BRK_Cable_C2A_Busbar_C
+          - 319_3_BRK_Cable_C2B_Busbar_A
+          - 319_3_BRK_Cable_C2B_Busbar_C
+          - 319_3_BRK_Cable_E1A_Busbar_A
+          - 319_3_BRK_Cable_E1A_Busbar_C
+          - 319_3_BRK_Cable_E1B_Busbar_A
+          - 319_3_BRK_Cable_E1B_Busbar_C
+          - 319_3_BRK_Cable_E2A_Busbar_A
+          - 319_3_BRK_Cable_E2A_Busbar_B
+          - 319_3_BRK_Cable_E2B_Busbar_A
+          - 319_3_BRK_Cable_E2B_Busbar_B
+          - 319_3_BRK_Grid_Busbar_A
+          - P_ABB_Sec
+          - P_Cable_A1A
+          - P_Cable_A1B
+          - P_Cable_A2A
+          - P_Cable_A2B
+          - P_Cable_B1A
+          - P_Cable_B1B
+          - P_Cable_B2A
+          - P_Cable_B2B
+          - P_Cable_C1A
+          - P_Cable_C1B
+          - P_Cable_C2A
+          - P_Cable_C2B
+          - P_Cable_E1A
+          - P_Cable_E1B
+          - P_Cable_E2A
+          - P_Cable_E2B
+          - P_Grid
+          not_in_headers: []
+      no_map:
+        319-2: commit b5d64e3d4 not in the lab repository (another branch than master?)
   - id: E6-H05
     switchboards: [319-3]
     from: 2024-03-07
@@ -475,6 +1229,9 @@ header_periods:
     carries: "none: ABB_Pri breaker on busbar Grid_Distribution"
     note: the breaker comes into the configuration on 2024-06-19 on Busbar_Grid (E6-017)
     status: proposed
+    column_map:
+    - status: no map
+      reason: 'carries no configuration: none: ABB_Pri breaker on busbar Grid_Distribution'
   - id: E6-H06
     switchboards: [319-3]
     from: 2024-09-08
@@ -483,6 +1240,9 @@ header_periods:
     carries: "none: E1/E2 busbars swapped against b736d2d87"
     note: restart day of E6-008 and E6-018
     status: proposed
+    column_map:
+    - status: no map
+      reason: 'carries no configuration: none: E1/E2 busbars swapped against b736d2d87'
   - id: E6-H07
     switchboards: [715-2]
     from: 2023-08-13
@@ -491,6 +1251,53 @@ header_periods:
     carries: "syslab ebb1fb939 (Flexhouse)"
     note: E6-014; on 2023-10-19 a restart day with 'Flexhouse' in the new naming (transition)
     status: proposed
+    column_map:
+    - status: proposed
+      from: 2023-08-13
+      to: 2023-10-19
+      targets:
+      - from: 2023-08-13
+        nodes:
+          syslab-09: f3e088dc7
+      - from: 2023-10-19
+        nodes:
+          syslab-09: fce9dd0eb
+      switchboards:
+        715-2:
+          carried: ebb1fb939
+          pairs:
+          - {data: 715_2_BRK_Grid_Grid, model: 715_2_BRK_Grid_Busbar_Grid, rule: same bay and busbar}
+          - {data: 715_2_BRK_Grid_Busbar A, model: 715_2_BRK_Grid_Busbar_A, rule: same name after spelling}
+          - {data: 715_2_BRK_Grid_Busbar B, model: 715_2_BRK_Grid_Busbar_B, rule: same name after spelling}
+          - {data: 715_2_BRK_Spare_Busbar A, model: 715_2_BRK_Spare_Busbar_A, rule: same name after spelling}
+          - {data: 715_2_BRK_Spare_Busbar B, model: 715_2_BRK_Spare_Busbar_B, rule: same name after spelling}
+          - {data: 715_2_BRK_PV_Busbar A, model: 715_2_BRK_PV_Busbar_A, rule: same name after spelling}
+          - {data: 715_2_BRK_PV_Busbar B, model: 715_2_BRK_PV_Busbar_B, rule: same name after spelling}
+          - {data: 715_2_BRK_CableF1_Busbar A, model: 715_2_BRK_Cable_F1_Busbar_A, rule: same name after spelling}
+          - {data: 715_2_BRK_CableF1_Busbar B, model: 715_2_BRK_Cable_F1_Busbar_B, rule: same name after spelling}
+          - {data: 715_2_BRK_CableB2A_Busbar A, model: 715_2_BRK_Cable_B2A_Busbar_A, rule: same name after spelling}
+          - {data: 715_2_BRK_CableB2A_Busbar B, model: 715_2_BRK_Cable_B2A_Busbar_B, rule: same name after spelling}
+          - {data: 715_2_BRK_CableB2B_Busbar A, model: 715_2_BRK_Cable_B2B_Busbar_A, rule: same name after spelling}
+          - {data: 715_2_BRK_CableB2B_Busbar B, model: 715_2_BRK_Cable_B2B_Busbar_B, rule: same name after spelling}
+          - {data: 715_2_BRK_CableB1A_Busbar A, model: 715_2_BRK_Cable_B1A_Busbar_A, rule: same name after spelling}
+          - {data: 715_2_BRK_CableB1A_Busbar B, model: 715_2_BRK_Cable_B1A_Busbar_B, rule: same name after spelling}
+          - {data: 715_2_BRK_CableB1B_Busbar A, model: 715_2_BRK_Cable_B1B_Busbar_A, rule: same name after spelling}
+          - {data: 715_2_BRK_CableB1B_Busbar B, model: 715_2_BRK_Cable_B1B_Busbar_B, rule: same name after spelling}
+          - {data: P_CableF1, model: P_Cable_F1, rule: same name after spelling}
+          - {data: P_CableB2A, model: P_Cable_B2A, rule: same name after spelling}
+          - {data: P_CableB2B, model: P_Cable_B2B, rule: same name after spelling}
+          - {data: P_CableB1A, model: P_Cable_B1A, rule: same name after spelling}
+          - {data: P_CableB1B, model: P_Cable_B1B, rule: same name after spelling}
+          same: 3
+          unmatched_data:
+          - 715_2_BRK_Flexhouse_Busbar A
+          - 715_2_BRK_Flexhouse_Busbar B
+          - P_Flexhouse
+          unmatched_model:
+          - 715_2_BRK_Flexhouse_1_Busbar_A
+          - 715_2_BRK_Flexhouse_1_Busbar_B
+          - P_Flexhouse_1
+          not_in_headers: []
   - id: E6-H08
     switchboards: [716-2]
     from: 2023-10-27
@@ -499,6 +1306,82 @@ header_periods:
     carries: "syslab ebb1fb939"
     note: E6-016
     status: proposed
+    column_map:
+    - status: proposed
+      from: 2023-10-27
+      to: 2024-03-20
+      targets:
+      - from: 2023-10-27
+        nodes:
+          syslab-29: 20271a203
+      - from: 2023-10-31
+        nodes:
+          syslab-29: b9f692813
+      switchboards:
+        716-2:
+          carried: ebb1fb939
+          pairs:
+          - {data: 716_2_BRK_CEE_Busbar A, model: 716_2_BRK_CEE_Busbar_A, rule: same name after spelling}
+          - {data: 716_2_BRK_CEE_Busbar B, model: 716_2_BRK_CEE_Busbar_B, rule: same name after spelling}
+          - {data: 716_2_BRK_CableF1_Busbar A, model: 716_2_BRK_Cable_F1_Busbar_A, rule: same name after spelling}
+          - {data: 716_2_BRK_CableF1_Busbar B, model: 716_2_BRK_Cable_F1_Busbar_B, rule: same name after spelling}
+          - {data: 716_2_BRK_Flexhouse2_Busbar A, model: 716_2_BRK_Flexhouse_2_Busbar_A, rule: same name after spelling}
+          - {data: 716_2_BRK_Flexhouse2_Busbar B, model: 716_2_BRK_Flexhouse_2_Busbar_B, rule: same name after spelling}
+          - {data: 716_2_BRK_Flexhouse 3_Busbar A, model: 716_2_BRK_Flexhouse_3_Busbar_A, rule: same name after spelling}
+          - {data: 716_2_BRK_Flexhouse 3_Busbar B, model: 716_2_BRK_Flexhouse_3_Busbar_B, rule: same name after spelling}
+          - {data: 716_2_BRK_BoosterHeater_Busbar A, model: 716_2_BRK_BoosterHeater_Busbar_A, rule: same name after
+              spelling}
+          - {data: 716_2_BRK_BoosterHeater_Busbar B, model: 716_2_BRK_BoosterHeater_Busbar_B, rule: same name after
+              spelling}
+          - {data: P_CableF1, model: P_Cable_F1, rule: same name after spelling}
+          - {data: P_Flexhouse2, model: P_Flexhouse_2, rule: same name after spelling}
+          - {data: P_Flexhouse 3, model: P_Flexhouse_3, rule: same name after spelling}
+          same: 2
+          unmatched_data:
+          - 716_2_BRK_CableE1_Busbar A
+          - 716_2_BRK_CableE1_Busbar B
+          - 716_2_BRK_CableE2_Busbar A
+          - 716_2_BRK_CableE2_Busbar B
+          - 716_2_BRK_Heatpump1_Busbar A
+          - 716_2_BRK_Heatpump1_Busbar B
+          - P_CableE1
+          - P_CableE2
+          - P_Heatpump1
+          unmatched_model:
+          - 716_2_BRK_Cable_E1A_Busbar_A
+          - 716_2_BRK_Cable_E1A_Busbar_B
+          - 716_2_BRK_Cable_E1B_Busbar_A
+          - 716_2_BRK_Cable_E1B_Busbar_B
+          - 716_2_BRK_Cable_E2A_Busbar_A
+          - 716_2_BRK_Cable_E2A_Busbar_B
+          - 716_2_BRK_Cable_E2B_Busbar_A
+          - 716_2_BRK_Cable_E2B_Busbar_B
+          - 716_2_BRK_Grid_Busbar_A
+          - 716_2_BRK_Grid_Busbar_B
+          - 716_2_BRK_HeatPump_Busbar_A
+          - 716_2_BRK_HeatPump_Busbar_B
+          - 716_2_BRK_PV_Busbar_A
+          - 716_2_BRK_PV_Busbar_B
+          - 716_2_BRK_Spare_1_Busbar_A
+          - 716_2_BRK_Spare_1_Busbar_B
+          - 716_2_BRK_Spare_2_Busbar_A
+          - 716_2_BRK_Spare_2_Busbar_B
+          - 716_2_BRK_Spare_3_Busbar_A
+          - 716_2_BRK_Spare_3_Busbar_B
+          - 716_2_BRK_Spare_4_Busbar_A
+          - 716_2_BRK_Spare_4_Busbar_B
+          - P_Cable_E1A
+          - P_Cable_E1B
+          - P_Cable_E2A
+          - P_Cable_E2B
+          - P_Grid
+          - P_HeatPump
+          - P_PV
+          - P_Spare_1
+          - P_Spare_2
+          - P_Spare_3
+          - P_Spare_4
+          not_in_headers: []
   - id: E6-H09
     switchboards: [117-6]
     from: 2023-11-14
@@ -507,6 +1390,9 @@ header_periods:
     carries: "NEVIC names (syslab b5d64e3d4)"
     note: E6-007
     status: proposed
+    column_map:
+    - status: no map
+      reason: '117-6: commit b5d64e3d4 not in the lab repository (another branch than master?)'
   - id: E6-H10
     switchboards: [117-2, 117-4, 319-2]
     from: 2023-10-31
@@ -515,3 +1401,7 @@ header_periods:
     carries: "old meter names: 117-4 Grid (Grid_4 from 2023-10-31), 117-2 CEEx2 (CEEx2_1/_2 from 2024-10-14), 319-2 CEEx2 (CEEx2.A/B from 2026-06-15)"
     note: all three switch on 2026-06-24 (restart of syslab-11 and syslab-01?); breakers unaffected
     status: proposed
+    column_map:
+    - status: no map
+      reason: 'carries no configuration: old meter names: 117-4 Grid (Grid_4 from 2023-10-31), 117-2 CEEx2 (CEEx2_1/_2
+        from 2024-10-14), 319-2 CEEx2 (CEEx2.A/B from 2026-06-15)'

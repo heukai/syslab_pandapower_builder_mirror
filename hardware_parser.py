@@ -119,8 +119,9 @@ def _parse_bay(bay_el: ET.Element) -> BayDef:
         elif tag == "interlock":
             bay.interlocks.append(InterlockDef(
                 name=child.attrib["name"],
-                breaker_a=child.attrib["breakerA"],
-                breaker_b=child.attrib["breakerB"],
+                # older configurations (2016-2023) write brkA/brkB
+                breaker_a=child.attrib.get("breakerA", child.attrib.get("brkA")),
+                breaker_b=child.attrib.get("breakerB", child.attrib.get("brkB")),
             ))
         elif tag == "combination":
             bay.combinations.append(CombinationDef(
