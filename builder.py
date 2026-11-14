@@ -834,6 +834,10 @@ def portable_source_path(path: Path | str, base: Path | str | None = None) -> st
         return "/".join(path.parts[-2:])
 
 
+SITE_TIMEZONE = "Europe/Copenhagen"
+"""Where SYSLAB records (Risø, Denmark): its data times are UTC; local time there is CET/CEST."""
+
+
 def save_model_version(
     output_dir: Path | str,
     *,
@@ -846,7 +850,8 @@ def save_model_version(
     """Write model_version.json with validity and provenance metadata.
 
     With *model_version* (``era.revision.model[.CODE]``), the number, its era (``E6``) and configuration revision
-    (``6.7``) come first; without it the file keeps its earlier form.
+    (``6.7``) come first; without it the file keeps its earlier form. ``timestamps`` (always UTC) and
+    ``site_timezone`` (where the lab records) go along to every user of the model and its data.
     """
     from . import __version__ as builder_version
 
@@ -861,6 +866,8 @@ def save_model_version(
         "valid_from": valid_from,
         "valid_to": valid_to,
         "hardware_xml_source": hardware_xml_source,
+        "timestamps": "UTC",
+        "site_timezone": SITE_TIMEZONE,
         "notes": notes,
     }
     path = Path(output_dir) / "model_version.json"

@@ -45,3 +45,4 @@ def test_model_version_file_names_era_and_revision(tmp_path):
     save_model_version(tmp_path, valid_from="2026-08-13", model_version="6.7.1")
     info = json.loads((tmp_path / "model_version.json").read_text(encoding="utf-8"))
     assert (info["model_version"], info["era"], info["configuration_revision"]) == ("6.7.1", "E6", "6.7")
+    assert (info["timestamps"], info["site_timezone"]) == ("UTC", "Europe/Copenhagen")
